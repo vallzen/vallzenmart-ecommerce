@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Login - Yupita Shop</title>
-    <!-- CSS Eksternal -->
     <link rel="stylesheet" href="assets/css/stylelogin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -43,7 +42,6 @@
     <div class="login-container">
         <div class="login-box animate__animated animate__fadeInUp">
             
-            <!-- Ikon Header Form Login -->
             <div class="header-icon green">
                 <i class="fas fa-store"></i>
             </div>
@@ -92,7 +90,6 @@
         <div class="modal-content animate__animated animate__zoomIn">
             <span class="close">&times;</span>
             
-            <!-- Ikon Header Daftar -->
             <div class="header-icon">
                 <i class="fas fa-user-plus"></i>
             </div>
@@ -131,7 +128,6 @@
                     </button>
                     <div class="password-strength"></div>
                     
-                    <!-- TOOLTIP POP UP PASSWORD -->
                     <div class="password-tooltip" id="signupTooltip">
                         <div class="tooltip-title">Syarat Keamanan Password:</div>
                         <div class="password-feedback">
@@ -167,10 +163,7 @@
             </form>
             
             <div class="modal-footer">
-                <!-- PERBAIKAN TAMPILAN TAUTAN MASUK DISINI -->
-                <p>Sudah punya akun? 
-                    <a href="#" class="switch-to-login">Masuk disini <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
-                </p>
+                <p>Sudah punya akun? <a href="#" class="switch-to-login">Masuk disini</a></p>
             </div>
         </div>
     </div>
@@ -189,7 +182,6 @@
                 <p>Ikuti langkah di bawah untuk memulihkan akun</p>
             </div>
 
-            <!-- VISUAL STEPPER -->
             <div class="reset-steps">
                 <div class="step-item active" id="stepIndicator1">
                     <div class="step-icon"><i class="fas fa-search"></i></div>
@@ -213,7 +205,6 @@
             </div>
 
             <form id="forgotForm">
-                <!-- Step 1: Username -->
                 <div class="form-group floating">
                     <input type="text" id="resetUsername" name="resetUsername" required placeholder=" ">
                     <label for="resetUsername">Masukkan Username Anda</label>
@@ -223,7 +214,6 @@
                     </div>
                 </div>
 
-                <!-- Step 2: Email -->
                 <div class="form-group floating">
                     <input type="email" id="resetEmail" name="resetEmail" required placeholder=" " disabled>
                     <label for="resetEmail">Konfirmasi Email Terdaftar</label>
@@ -233,7 +223,6 @@
                     </div>
                 </div>
 
-                <!-- Step 3: Password Baru -->
                 <div class="form-group floating">
                     <input type="password" id="newResetPassword" name="newResetPassword" required placeholder=" " disabled>
                     <label for="newResetPassword">Masukkan Password Baru</label>
@@ -243,7 +232,6 @@
                     </button>
                     <div class="password-strength"></div>
                     
-                    <!-- TOOLTIP POP UP PASSWORD RESET -->
                     <div class="password-tooltip" id="resetTooltip">
                         <div class="tooltip-title">Syarat Keamanan Password:</div>
                         <div class="password-feedback">
@@ -270,10 +258,7 @@
             </form>
             
             <div class="modal-footer">
-                <!-- PERBAIKAN TAMPILAN TAUTAN MASUK DISINI -->
-                <p>Ingat password Anda? 
-                    <a href="#" class="switch-to-login">Masuk disini <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
-                </p>
+                <p>Ingat password Anda? <a href="#" class="switch-to-login">Masuk disini</a></p>
             </div>
         </div>
     </div>
@@ -681,7 +666,6 @@
             openModal(modals.forgot);
             document.getElementById('forgotForm').reset();
             
-            // Reset state stepper lupa password
             document.getElementById('resetEmail').disabled = true;
             document.getElementById('newResetPassword').disabled = true;
             document.getElementById('resetPasswordBtn').disabled = true;
