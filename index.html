@@ -2,494 +2,383 @@
 <html lang="en">
 
 <head>
-    <!-- Deklarasi tipe dokumen dan bahasa -->
-    <meta charset="UTF-8"> <!-- Menentukan encoding karakter -->
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <!-- Pengaturan viewport untuk responsif -->
-    <title>Login - Yupita Shop</title> <!-- Judul halaman -->
-    <link rel="stylesheet" href="assets/css/stylelogin.css"> <!-- Menghubungkan file CSS -->
+    <title>Login - Yupita Shop</title>
+    <!-- CSS Eksternal -->
+    <link rel="stylesheet" href="assets/css/stylelogin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <!-- Library animasi CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Library ikon Font Awesome -->
-    <style>
-        /* Tambahan style untuk password strength indicator */
-        .form-group.floating {
-            padding-top: 0;
-            margin-bottom: 25px;
-        }
-
-        .form-group.floating label {
-            position: absolute;
-            left: 45px;
-            top: 15px;
-            color: #718096;
-            font-size: 1rem;
-            font-weight: 400;
-            pointer-events: none;
-            transition: all 0.2s ease;
-            background: white;
-            padding: 0 5px;
-        }
-
-        .form-group.floating.focused label,
-        .form-group.floating input:focus+label,
-        .form-group.floating input:not(:placeholder-shown)+label {
-            top: -8px;
-            left: 35px;
-            font-size: 0.8rem;
-            color: #2b6cb0;
-            font-weight: 500;
-        }
-
-        .form-group.floating input {
-            width: 100%;
-            padding: 15px 15px 15px 40px;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 1rem;
-            transition: all 0.3s;
-            background-color: #ffffff;
-        }
-
-        .form-group.floating input:focus {
-            outline: none;
-            border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2);
-            background-color: white;
-        }
-
-        .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #a0aec0;
-            font-size: 1rem;
-        }
-
-        /* Gaya untuk toggle password */
-        .toggle-password {
-            position: absolute;
-            right: 15px;
-            top: 42%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            color: #a0aec0;
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 5px;
-        }
-
-        .toggle-password:hover {
-            color: #718096;
-        }
-
-        /* Hapus underline yang lama */
-        .form-group .underline {
-            display: none;
-        }
-
-        /* Style baru untuk validasi password */
-        .password-feedback {
-            margin-top: 8px;
-            display: none;
-        }
-
-        .password-feedback.active {
-            display: block;
-        }
-
-        .requirement {
-            display: flex;
-            align-items: center;
-            margin-bottom: 5px;
-            font-size: 12px;
-            color: #e53e3e;
-        }
-
-        .requirement.valid {
-            color: #38a169;
-        }
-
-        .requirement i {
-            margin-right: 5px;
-            font-size: 10px;
-        }
-
-        .requirement.invalid i {
-            color: #e53e3e;
-        }
-
-        .requirement.valid i {
-            color: #38a169;
-        }
-
-        /* Perbaikan posisi ikon untuk modal */
-        .modal .form-group.floating {
-            padding-top: 15px;
-        }
-
-        .modal .input-icon {
-            position: absolute;
-            left: 15px;
-            top: 41px;
-            /* Posisi awal saat tidak ada feedback */
-            color: #a0aec0;
-            font-size: 1rem;
-            transition: top 0.2s ease;
-        }
-
-        /* Saat ada feedback aktif */
-        .modal .password-feedback.active~.input-icon {
-            top: 15px;
-            /* Posisi saat feedback aktif */
-        }
-    </style>
 </head>
 
 <body>
     <!-- Background Animation -->
-    <div id="particles-js"></div> <!-- Container untuk animasi partikel -->
-    <div class="gradient-bg"></div> <!-- Latar belakang gradient -->
+    <div id="particles-js"></div>
+    <div class="gradient-bg"></div>
 
     <!-- NAV BAR -->
     <header class="navbar">
         <div class="navbar-container">
             <div class="navbar-brand">
                 <div class="logo">
-                    <i class="fas fa-shopping-bag"></i> <!-- Ikon toko -->
-                    <span>YUPITA SHOP</span> <!-- Nama toko -->
+                    <i class="fas fa-shopping-bag"></i>
+                    <span>YUPITA SHOP</span>
                 </div>
-                <div class="subtitle">Barang Berkualitas & Original</div> <!-- Slogan -->
+                <div class="subtitle">Barang Berkualitas & Original</div>
             </div>
             <div class="navbar-right">
                 <a href="https://wa.me/628990023990?text=Hallo Yupita Shop saya mau bertanya"
                     class="nav-button chat-button" title="Chat Admin">
-                    <i class="fab fa-whatsapp"></i> <!-- Ikon WhatsApp -->
-                    <span class="button-text">Chat Admin</span> <!-- Teks tombol -->
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="button-text">Chat Admin</span>
                 </a>
             </div>
         </div>
     </header>
 
     <!-- Notifikasi Error -->
-    <div id="errorNotification" class="error-notification"></div> <!-- Tempat menampilkan pesan error -->
+    <div id="errorNotification" class="error-notification"></div>
 
     <!-- LOGIN FORM -->
     <div class="login-container">
-        <div class="login-box animate__animated animate__fadeInUp"> <!-- Kotak login dengan animasi -->
-            <div class="login-header">
-                <h2>Masuk ke Akun Anda</h2> <!-- Judul form -->
-                <p>Silakan masuk untuk mulai berbelanja</p> <!-- Subjudul -->
+        <div class="login-box animate__animated animate__fadeInUp">
+            
+            <!-- Ikon Header Form Login -->
+            <div class="header-icon green">
+                <i class="fas fa-store"></i>
             </div>
-            <form id="loginForm"> <!-- Form login -->
-                <!-- Ubah form-group username menjadi -->
+
+            <div class="login-header">
+                <h2>Selamat Datang</h2>
+                <p>Silakan masuk untuk mulai berbelanja</p>
+            </div>
+            
+            <form id="loginForm">
                 <div class="form-group floating">
-                    <i class="fas fa-user input-icon"></i>
                     <input type="text" id="username" name="username" required placeholder=" ">
                     <label for="username">Username</label>
+                    <i class="fas fa-user input-icon"></i>
                 </div>
 
-                <!-- Ubah form-group password menjadi -->
                 <div class="form-group floating">
-                    <i class="fas fa-lock input-icon"></i>
                     <input type="password" id="password" name="password" required placeholder=" ">
                     <label for="password">Password</label>
+                    <i class="fas fa-lock input-icon"></i>
                     <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
-                <button type="submit" class="login-button"> <!-- Tombol submit -->
-                    <span class="button-text">Login</span>
-                    <span class="button-icon">→</span> <!-- Ikon panah -->
+                
+                <button type="submit" class="login-button">
+                    <span class="button-text">Masuk</span>
+                    <span class="button-icon"><i class="fas fa-arrow-right"></i></span>
                 </button>
+                
                 <div class="login-links">
-                    <a href="#" id="forgotPassword"><i class="fa-solid fa-masks-theater"></i> Lupa Password?</a>
-                    <!-- Link lupa password -->
+                    <a href="#" id="forgotPassword"><i class="fa-solid fa-unlock-keyhole"></i> Lupa Password?</a>
                     <a href="#" id="signUp"><i class="fa-solid fa-user-plus"></i> Daftar Akun Baru</a>
-                    <!-- Link pendaftaran -->
                 </div>
             </form>
+            
             <div class="login-footer">
-                <p>Dengan login, Anda menyetujui <a href="syaratketentuanlogin.html">Syarat & Ketentuan</a> kami.</p>
-                <p></p>
-                <p><a href="loginadmin.html" class="back-to-admin"><i class="fa-solid fa-user-shield"></i> Login
-                        Admin</a>
-                </p>
+                <p>Dengan login, Anda menyetujui <a href="#" id="openTermsModal">Syarat & Ketentuan</a> kami.</p>
+                <p style="margin-top: 10px;"><a href="loginadmin.html" class="back-to-admin"><i class="fa-solid fa-user-shield"></i> Login Admin</a></p>
             </div>
         </div>
     </div>
 
     <!-- SIGN UP MODAL -->
-    <div id="signupModal" class="modal"> <!-- Modal untuk pendaftaran -->
-        <div class="modal-content animate__animated animate__zoomIn"> <!-- Konten modal dengan animasi -->
-            <span class="close">&times;</span> <!-- Tombol tutup -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn">
+            <span class="close">&times;</span>
+            
+            <!-- Ikon Header Daftar -->
+            <div class="header-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+
             <div class="modal-header">
-                <h2>Buat Akun Baru</h2> <!-- Judul modal -->
-                <p>Isi data berikut untuk mendaftar</p> <!-- Subjudul -->
+                <h2>Buat Akun Baru</h2>
+                <p>Isi data Anda untuk bergabung bersama kami</p>
             </div>
-            <div id="signupError" class="signup-error"></div> <!-- Tempat pesan error -->
-            <div id="signupSuccess" class="signup-success"> <!-- Tempat pesan sukses -->
-                <div class="success-icon">✓</div> <!-- Ikon sukses -->
-                <p>Pendaftaran berhasil! Mengarahkan ke login...</p> <!-- Pesan sukses -->
+            
+            <div id="signupError" class="signup-error"></div>
+            <div id="signupSuccess" class="signup-success">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p>Pendaftaran berhasil!</p>
+                <p style="font-size: 13px; color: #4a5568; margin-top: 5px;">Mengarahkan ke halaman login...</p>
             </div>
-            <form id="signupForm"> <!-- Form pendaftaran -->
-                <!-- Contoh untuk form-group di modal signup -->
+            
+            <form id="signupForm">
                 <div class="form-group floating">
-                    <i class="fas fa-user input-icon"></i>
                     <input type="text" id="newUsername" name="newUsername" required placeholder=" ">
-                    <label for="newUsername">Username</label>
+                    <label for="newUsername">Username Baru</label>
+                    <i class="fas fa-user input-icon"></i>
                 </div>
 
                 <div class="form-group floating">
-                    <i class="fas fa-envelope input-icon"></i>
                     <input type="email" id="newEmail" name="newEmail" required placeholder=" ">
-                    <label for="newEmail">Email</label>
+                    <label for="newEmail">Alamat Email</label>
+                    <i class="fas fa-envelope input-icon"></i>
                 </div>
+                
                 <div class="form-group floating">
+                    <input type="password" id="newPassword" name="newPassword" required placeholder=" " minlength="8" maxlength="20">
+                    <label for="newPassword">Buat Password</label>
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="newPassword" name="newPassword" required placeholder=" " minlength="8"
-                        maxlength="20">
-                    <!-- Input password baru -->
-                    <label for="newPassword">Password</label>
-                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newPassword')"
-                        aria-label="Show password">
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newPassword')">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                     <div class="password-strength"></div>
-                    <div class="password-feedback">
-                        <div class="requirement invalid" id="lengthReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 8 karakter (maks. 20)</span>
-                        </div>
-                        <div class="requirement invalid" id="letterReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 huruf</span>
-                        </div>
-                        <div class="requirement invalid" id="numberReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 angka</span>
-                        </div>
-                        <div class="requirement invalid" id="specialReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 karakter khusus (# ? ! $ & @ _ .)</span>
+                    
+                    <!-- TOOLTIP POP UP PASSWORD -->
+                    <div class="password-tooltip" id="signupTooltip">
+                        <div class="tooltip-title">Syarat Keamanan Password:</div>
+                        <div class="password-feedback">
+                            <div class="requirement invalid" id="lengthReq">
+                                <i class="fas fa-times-circle"></i> <span>8 - 20 karakter</span>
+                            </div>
+                            <div class="requirement invalid" id="letterReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 huruf</span>
+                            </div>
+                            <div class="requirement invalid" id="numberReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 angka</span>
+                            </div>
+                            <div class="requirement invalid" id="specialReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 karakter khusus (#?!$&@_.)</span>
+                            </div>
                         </div>
                     </div>
                 </div>
+
                 <div class="form-group floating">
-                    <i class="fas fa-lock input-icon"></i>
                     <input type="password" id="confirmPassword" name="confirmPassword" required placeholder=" ">
-                    <!-- Konfirmasi password -->
                     <label for="confirmPassword">Konfirmasi Password</label>
-                    <button type="button" class="toggle-password" onclick="togglePasswordModal('confirmPassword')"
-                        aria-label="Show password">
+                    <i class="fas fa-shield-halved input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('confirmPassword')">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                 </div>
-                <button type="submit" class="signup-button"> <!-- Tombol submit -->
+                
+                <button type="submit" class="signup-button">
                     <span class="button-text">Daftar Sekarang</span>
-                    <span class="button-icon"><i class="fa-solid fa-plus"></i></span> <!-- Ikon centang -->
+                    <span class="button-icon"><i class="fa-solid fa-rocket"></i></span>
                 </button>
             </form>
+            
             <div class="modal-footer">
-                <p>Sudah punya akun? <a href="#" class="switch-to-login">Masuk disini</a></p> <!-- Link ke login -->
+                <!-- PERBAIKAN TAMPILAN TAUTAN MASUK DISINI -->
+                <p>Sudah punya akun? 
+                    <a href="#" class="switch-to-login">Masuk disini <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                </p>
             </div>
         </div>
     </div>
 
     <!-- FORGOT PASSWORD MODAL -->
-    <div id="forgotModal" class="modal"> <!-- Modal untuk lupa password -->
+    <div id="forgotModal" class="modal">
         <div class="modal-content animate__animated animate__zoomIn">
             <span class="close">&times;</span>
+            
+            <div class="header-icon">
+                <i class="fas fa-unlock-keyhole"></i>
+            </div>
+
             <div class="modal-header">
                 <h2>Reset Password</h2>
-                <p>Masukkan data berikut untuk reset password</p>
+                <p>Ikuti langkah di bawah untuk memulihkan akun</p>
             </div>
-            <div id="forgotError" class="signup-error"></div> <!-- Tempat pesan error -->
-            <div id="forgotSuccess" class="signup-success"> <!-- Tempat pesan sukses -->
-                <div class="success-icon">✓</div>
-                <p>Password berhasil direset! Mengarahkan ke login...</p>
+
+            <!-- VISUAL STEPPER -->
+            <div class="reset-steps">
+                <div class="step-item active" id="stepIndicator1">
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <div class="step-text">1. Cari Akun</div>
+                </div>
+                <div class="step-item" id="stepIndicator2">
+                    <div class="step-icon"><i class="fas fa-envelope-circle-check"></i></div>
+                    <div class="step-text">2. Verifikasi</div>
+                </div>
+                <div class="step-item" id="stepIndicator3">
+                    <div class="step-icon"><i class="fas fa-key"></i></div>
+                    <div class="step-text">3. Reset</div>
+                </div>
             </div>
-            <form id="forgotForm"> <!-- Form reset password -->
-                <!-- Username Input -->
+
+            <div id="forgotError" class="signup-error"></div>
+            <div id="forgotSuccess" class="signup-success">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p>Password Berhasil Direset!</p>
+                <p style="font-size: 13px; color: #4a5568; margin-top: 5px;">Mengarahkan ke halaman login...</p>
+            </div>
+
+            <form id="forgotForm">
+                <!-- Step 1: Username -->
                 <div class="form-group floating">
-                    <i class="fas fa-user input-icon"></i>
                     <input type="text" id="resetUsername" name="resetUsername" required placeholder=" ">
-                    <!-- Input username -->
-                    <label for="resetUsername">Username</label>
-                    <div id="usernameError" class="input-error-message"
-                        style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px;">
-                        Username tidak terdaftar <!-- Pesan error username -->
+                    <label for="resetUsername">Masukkan Username Anda</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <div id="usernameError" class="input-error-message" style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px; position: absolute;">
+                        <i class="fas fa-circle-exclamation"></i> Username tidak ditemukan
                     </div>
                 </div>
 
-                <!-- Email Input -->
+                <!-- Step 2: Email -->
                 <div class="form-group floating">
-                    <i class="fas fa-envelope input-icon"></i>
                     <input type="email" id="resetEmail" name="resetEmail" required placeholder=" " disabled>
-                    <!-- Input email -->
-                    <label for="resetEmail">Email Terdaftar</label>
-                    <div id="emailError" class="input-error-message"
-                        style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px;">
-                        Email tidak terdaftar <!-- Pesan error email -->
+                    <label for="resetEmail">Konfirmasi Email Terdaftar</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                    <div id="emailError" class="input-error-message" style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px; position: absolute;">
+                        <i class="fas fa-circle-exclamation"></i> Email tidak sesuai dengan username
                     </div>
                 </div>
 
-                <!-- New Password Input -->
+                <!-- Step 3: Password Baru -->
                 <div class="form-group floating">
+                    <input type="password" id="newResetPassword" name="newResetPassword" required placeholder=" " disabled>
+                    <label for="newResetPassword">Masukkan Password Baru</label>
                     <i class="fas fa-lock input-icon"></i>
-                    <input type="password" id="newResetPassword" name="newResetPassword" required placeholder=" "
-                        disabled> <!-- Input password baru -->
-                    <label for="newResetPassword">Password Baru</label>
-                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newResetPassword')"
-                        aria-label="Show password">
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newResetPassword')">
                         <i class="fa-solid fa-eye"></i>
                     </button>
                     <div class="password-strength"></div>
-                    <div class="password-feedback">
-                        <div class="requirement invalid" id="resetLengthReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 8 karakter (maks. 20)</span>
-                        </div>
-                        <div class="requirement invalid" id="resetLetterReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 huruf</span>
-                        </div>
-                        <div class="requirement invalid" id="resetNumberReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 angka</span>
-                        </div>
-                        <div class="requirement invalid" id="resetSpecialReq">
-                            <i class="fas fa-circle"></i>
-                            <span>Minimal 1 karakter khusus (# ? ! $ & @ _ .)</span>
+                    
+                    <!-- TOOLTIP POP UP PASSWORD RESET -->
+                    <div class="password-tooltip" id="resetTooltip">
+                        <div class="tooltip-title">Syarat Keamanan Password:</div>
+                        <div class="password-feedback">
+                            <div class="requirement invalid" id="resetLengthReq">
+                                <i class="fas fa-times-circle"></i> <span>8 - 20 karakter</span>
+                            </div>
+                            <div class="requirement invalid" id="resetLetterReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 huruf</span>
+                            </div>
+                            <div class="requirement invalid" id="resetNumberReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 angka</span>
+                            </div>
+                            <div class="requirement invalid" id="resetSpecialReq">
+                                <i class="fas fa-times-circle"></i> <span>Minimal 1 karakter khusus (#?!$&@_.)</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <button type="submit" id="resetPasswordBtn" class="reset-button" disabled> <!-- Tombol submit -->
-                    <span class="button-text">Reset Password</span>
-                    <span class="button-icon"><i class="fa-solid fa-key"></i></span> <!-- Ikon kunci -->
+                <button type="submit" id="resetPasswordBtn" class="reset-button" disabled>
+                    <span class="button-text">Simpan Password Baru</span>
+                    <span class="button-icon"><i class="fa-solid fa-floppy-disk"></i></span>
                 </button>
             </form>
+            
             <div class="modal-footer">
-                <p>Ingat password? <a href="#" class="switch-to-login">Masuk disini</a></p> <!-- Link ke login -->
+                <!-- PERBAIKAN TAMPILAN TAUTAN MASUK DISINI -->
+                <p>Ingat password Anda? 
+                    <a href="#" class="switch-to-login">Masuk disini <i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                </p>
             </div>
         </div>
     </div>
 
-    <!-- Tambahkan library particles.js -->
+    <!-- TERMS AND CONDITIONS MODAL -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content animate__animated animate__zoomIn" style="max-width: 700px; width: 90%;">
+            <span class="close terms-close">&times;</span>
+            <div class="modal-header">
+                <h2>Syarat & Ketentuan Penggunaan</h2>
+                <p>Terakhir diperbarui: 12 Juni 2024</p>
+            </div>
+            
+            <div class="terms-content-box" style="max-height: 50vh; overflow-y: auto; padding: 20px; text-align: left; line-height: 1.6; color: #4a5568; margin-bottom: 25px; border: 2px solid #e2e8f0; border-radius: 12px; background-color: #f8fafc;">
+                <p>Dengan mengakses dan menggunakan layanan Yupita Shop, Anda setuju untuk terikat oleh syarat dan ketentuan berikut. Harap baca dengan seksama sebelum menggunakan layanan kami.</p>
+
+                <h3>1. Definisi</h3>
+                <p>Dalam dokumen ini, yang dimaksud dengan:</p>
+                <ul>
+                    <li>"Kami" atau "Yupita Shop" merujuk pada penyedia layanan e-commerce ini.</li>
+                    <li>"Anda" merujuk pada pengguna yang mengakses atau menggunakan layanan kami.</li>
+                    <li>"Akun" merujuk pada profil pengguna yang dibuat untuk mengakses layanan kami.</li>
+                </ul>
+
+                <h3>2. Pembuatan Akun</h3>
+                <h4>2.1 Persyaratan Pendaftaran</h4>
+                <p>Untuk membuat akun di Yupita Shop, Anda harus:</p>
+                <ul>
+                    <li>Berusia minimal 13 tahun</li>
+                    <li>Menyediakan informasi yang akurat dan lengkap</li>
+                    <li>Memiliki alamat email yang valid</li>
+                    <li>Membuat password yang memenuhi kriteria keamanan</li>
+                </ul>
+
+                <h4>2.2 Tanggung Jawab Akun</h4>
+                <p>Anda bertanggung jawab penuh untuk:</p>
+                <ul>
+                    <li>Menjaga kerahasiaan informasi login Anda</li>
+                    <li>Segala aktivitas yang terjadi di bawah akun Anda</li>
+                    <li>Segera melaporkan penyalahgunaan atau pelanggaran keamanan akun</li>
+                </ul>
+
+                <h3>3. Penggunaan Layanan</h3>
+                <h4>3.1 Perilaku Pengguna</h4>
+                <p>Anda setuju untuk tidak:</p>
+                <ul>
+                    <li>Menggunakan layanan untuk tujuan ilegal atau melanggar hukum</li>
+                    <li>Mengganggu operasi normal layanan kami</li>
+                    <li>Mencoba mendapatkan akses tidak sah ke sistem atau data kami</li>
+                    <li>Menyebarkan konten yang bersifat menghina, diskriminatif, atau melanggar hak orang lain</li>
+                </ul>
+                
+                <h3>4. Kontak Bantuan</h3>
+                <p>Jika ada pertanyaan, silakan hubungi tim dukungan kami melalui WhatsApp atau Email yang tertera pada bagian atas website.</p>
+            </div>
+
+            <button type="button" class="login-button close-terms-btn" style="width: 100%;">
+                <span class="button-text">Saya Mengerti & Setuju</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-    <!-- Library animasi partikel -->
     <script>
-        // Inisialisasi particles.js untuk animasi background
         document.addEventListener('DOMContentLoaded', function () {
             particlesJS('particles-js', {
                 "particles": {
-                    "number": {
-                        "value": 80,
-                        "density": {
-                            "enable": true,
-                            "value_area": 800
-                        }
-                    },
-                    "color": {
-                        "value": ["#48bb78", "#2b6cb0", "#e53e3e", "#f6ad55"]
-                    },
-                    "shape": {
-                        "type": ["circle", "triangle", "polygon"],
-                        "stroke": {
-                            "width": 0,
-                            "color": "#000000"
-                        },
-                        "polygon": {
-                            "nb_sides": 6
-                        }
-                    },
-                    "opacity": {
-                        "value": 0.3,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 1,
-                            "opacity_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "size": {
-                        "value": 8,
-                        "random": true,
-                        "anim": {
-                            "enable": false,
-                            "speed": 40,
-                            "size_min": 0.1,
-                            "sync": false
-                        }
-                    },
-                    "line_linked": {
-                        "enable": true,
-                        "distance": 150,
-                        "color": "#a0aec0",
-                        "opacity": 0.2,
-                        "width": 1
-                    },
-                    "move": {
-                        "enable": true,
-                        "speed": 2,
-                        "direction": "none",
-                        "random": true,
-                        "straight": false,
-                        "out_mode": "out",
-                        "bounce": false,
-                        "attract": {
-                            "enable": false,
-                            "rotateX": 600,
-                            "rotateY": 1200
-                        }
-                    }
+                    "number": { "value": 60, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": ["#48bb78", "#2b6cb0", "#a0aec0"] },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.4, "random": false, "anim": { "enable": false } },
+                    "size": { "value": 4, "random": true, "anim": { "enable": false } },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#cbd5e0", "opacity": 0.4, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
                 },
                 "interactivity": {
                     "detect_on": "canvas",
-                    "events": {
-                        "onhover": {
-                            "enable": true,
-                            "mode": "grab"
-                        },
-                        "onclick": {
-                            "enable": true,
-                            "mode": "push"
-                        },
-                        "resize": true
-                    },
-                    "modes": {
-                        "grab": {
-                            "distance": 140,
-                            "line_linked": {
-                                "opacity": 1
-                            }
-                        },
-                        "bubble": {
-                            "distance": 400,
-                            "size": 40,
-                            "duration": 2,
-                            "opacity": 8,
-                            "speed": 3
-                        },
-                        "push": {
-                            "particles_nb": 4
-                        }
-                    }
+                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                    "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } }, "push": { "particles_nb": 3 } }
                 },
                 "retina_detect": true
             });
 
-            // Event listener untuk username pada form reset password
+            // TOOLTIP FOKUS LOGIC
+            const newPasswordInput = document.getElementById('newPassword');
+            const signupTooltip = document.getElementById('signupTooltip');
+            newPasswordInput.addEventListener('focus', () => { signupTooltip.classList.add('active'); });
+            newPasswordInput.addEventListener('blur', () => { signupTooltip.classList.remove('active'); });
+
+            const resetPasswordInput = document.getElementById('newResetPassword');
+            const resetTooltip = document.getElementById('resetTooltip');
+            resetPasswordInput.addEventListener('focus', () => { resetTooltip.classList.add('active'); });
+            resetPasswordInput.addEventListener('blur', () => { resetTooltip.classList.remove('active'); });
+
+            // LOGIC LUPA PASSWORD (DENGAN VISUAL STEPPER)
+            const step1 = document.getElementById('stepIndicator1');
+            const step2 = document.getElementById('stepIndicator2');
+            const step3 = document.getElementById('stepIndicator3');
+
+            // Step 1: Validasi Username
             document.getElementById('resetUsername').addEventListener('blur', function () {
                 const username = this.value.trim();
                 const users = JSON.parse(localStorage.getItem('users')) || [];
                 const userExists = users.some(u => u.username === username);
-
                 const usernameError = document.getElementById('usernameError');
                 const resetEmailInput = document.getElementById('resetEmail');
 
@@ -497,26 +386,32 @@
                     usernameError.style.display = 'block';
                     resetEmailInput.disabled = true;
                     document.getElementById('resetPasswordBtn').disabled = true;
+                    this.style.borderColor = '#fc8181';
+                    
+                    // Reset Stepper jika salah
+                    step1.className = 'step-item active';
+                    step2.className = 'step-item';
+                    step3.className = 'step-item';
                 } else {
                     usernameError.style.display = 'none';
+                    this.style.borderColor = '#e2e8f0';
                     resetEmailInput.disabled = false;
-
-                    // Jika username valid, fokus ke email
+                    
                     if (username) {
+                        // Maju ke Step 2
+                        step1.className = 'step-item completed';
+                        step2.className = 'step-item active';
                         resetEmailInput.focus();
                     }
                 }
             });
 
-            // Event listener untuk email pada form reset password
+            // Step 2: Validasi Email
             document.getElementById('resetEmail').addEventListener('blur', function () {
                 const email = this.value.trim();
                 const username = document.getElementById('resetUsername').value.trim();
                 const users = JSON.parse(localStorage.getItem('users')) || [];
-
-                // Cari user dengan username dan email yang sesuai
                 const user = users.find(u => u.username === username && u.email === email);
-
                 const emailError = document.getElementById('emailError');
                 const newPasswordInput = document.getElementById('newResetPassword');
 
@@ -524,68 +419,68 @@
                     emailError.style.display = 'block';
                     newPasswordInput.disabled = true;
                     document.getElementById('resetPasswordBtn').disabled = true;
+                    this.style.borderColor = '#fc8181';
+                    
+                    // Mundur Stepper
+                    step2.className = 'step-item active';
+                    step3.className = 'step-item';
                 } else {
                     emailError.style.display = 'none';
+                    this.style.borderColor = '#e2e8f0';
                     newPasswordInput.disabled = false;
-
-                    // Jika email valid, fokus ke password baru
+                    
                     if (email && user) {
+                        // Maju ke Step 3
+                        step2.className = 'step-item completed';
+                        step3.className = 'step-item active';
                         newPasswordInput.focus();
                     }
                 }
             });
 
-            // Event listener untuk password baru pada form reset password
+            // Step 3: Input Password Baru Live
             document.getElementById('newResetPassword').addEventListener('input', function () {
                 const password = this.value;
                 const username = document.getElementById('resetUsername').value.trim();
                 const email = document.getElementById('resetEmail').value.trim();
 
-                // Update password strength indicator
                 updatePasswordStrengthIndicator(password);
                 validatePasswordRequirements(password, 'reset');
 
-                // Aktifkan tombol reset jika semua field valid
                 if (username && email && password) {
                     const users = JSON.parse(localStorage.getItem('users')) || [];
                     const userExists = users.some(u => u.username === username && u.email === email);
+                    
+                    const { requirements } = checkPasswordStrength(password);
+                    const isStrong = requirements.length && requirements.hasNumber && requirements.hasLetter && requirements.hasSpecialChar;
 
-                    if (userExists) {
+                    if (userExists && isStrong) {
                         document.getElementById('resetPasswordBtn').disabled = false;
+                        step3.className = 'step-item completed'; // Selesai
+                    } else {
+                        document.getElementById('resetPasswordBtn').disabled = true;
+                        step3.className = 'step-item active';
                     }
                 }
             });
 
-            // Form submission untuk reset password
+            // Submit Reset Form
             document.getElementById('forgotForm').addEventListener('submit', function (e) {
                 e.preventDefault();
-
                 const username = document.getElementById('resetUsername').value.trim();
                 const email = document.getElementById('resetEmail').value.trim();
                 const newPassword = document.getElementById('newResetPassword').value;
-
-                // Validasi password
-                const { requirements } = checkPasswordStrength(newPassword);
-                if (!requirements.length || !requirements.hasNumber || !requirements.hasLetter || !requirements.hasSpecialChar) {
-                    document.getElementById('forgotError').textContent = 'Password tidak memenuhi persyaratan!';
-                    document.getElementById('forgotError').style.display = 'block';
-                    document.getElementById('newResetPassword').classList.add('input-error');
-                    return;
-                }
 
                 let users = JSON.parse(localStorage.getItem('users')) || [];
                 const userIndex = users.findIndex(u => u.username === username && u.email === email);
 
                 if (userIndex !== -1) {
-                    // Update password
                     users[userIndex].password = newPassword;
                     localStorage.setItem('users', JSON.stringify(users));
 
-                    // Tampilkan pesan sukses
                     document.getElementById('forgotSuccess').style.display = 'flex';
                     document.getElementById('forgotForm').style.display = 'none';
 
-                    // Redirect ke login setelah 2 detik
                     setTimeout(() => {
                         document.getElementById('forgotModal').style.display = 'none';
                         document.getElementById('forgotForm').reset();
@@ -593,21 +488,24 @@
                         document.getElementById('forgotForm').style.display = 'block';
                         document.body.classList.remove('body-no-scroll');
 
-                        // Reset semua input dan disable state
+                        // Reset Disabled State & Stepper
                         document.getElementById('resetEmail').disabled = true;
                         document.getElementById('newResetPassword').disabled = true;
                         document.getElementById('resetPasswordBtn').disabled = true;
-                    }, 2000);
+                        step1.className = 'step-item active';
+                        step2.className = 'step-item';
+                        step3.className = 'step-item';
+                    }, 2500);
                 }
             });
         });
 
-        let users = JSON.parse(localStorage.getItem('users')) || []; // Mengambil data user dari localStorage
+        // ================= FUNGSIONALITAS UMUM ================= //
+        let users = JSON.parse(localStorage.getItem('users')) || [];
 
-        // Fungsi untuk menampilkan notifikasi error
         function showError(message) {
             const errorDiv = document.getElementById('errorNotification');
-            errorDiv.textContent = message;
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> ${message}`;
             errorDiv.style.display = 'block';
             errorDiv.classList.add('animate__animated', 'animate__fadeInDown');
 
@@ -621,267 +519,138 @@
             }, 4500);
         }
 
-        // Fungsi reset error state
-        function resetErrorState() {
-            document.getElementById('errorNotification').style.display = 'none';
-            document.querySelectorAll('.input-error').forEach(el => {
-                el.classList.remove('input-error');
+        function togglePassword() { toggleVisibility('password'); }
+        function togglePasswordModal(inputId) { toggleVisibility(inputId); }
+
+        function toggleVisibility(id) {
+            const input = document.getElementById(id);
+            const eyeIcon = input.parentNode.querySelector('.toggle-password i');
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye-slash');
+            eyeIcon.classList.toggle('fa-eye');
+        }
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const req = { length: false, hasNumber: false, hasLetter: false, hasSpecialChar: false };
+            if (password.length >= 8 && password.length <= 20) { strength++; req.length = true; }
+            if (/\d/.test(password)) { strength++; req.hasNumber = true; }
+            if (/[a-zA-Z]/.test(password)) { strength++; req.hasLetter = true; }
+            if (/[#?!$&@_\.]/.test(password)) { strength++; req.hasSpecialChar = true; }
+            return { strength, requirements: req };
+        }
+
+        function validatePasswordRequirements(password, type = 'signup') {
+            const { requirements } = checkPasswordStrength(password);
+            const prefix = type === 'signup' ? '' : 'reset';
+            
+            const updateIcon = (id, isValid) => {
+                const el = document.getElementById(id);
+                if(isValid) {
+                    el.className = 'requirement valid';
+                    el.querySelector('i').className = 'fas fa-check-circle';
+                } else {
+                    el.className = 'requirement invalid';
+                    el.querySelector('i').className = 'fas fa-times-circle';
+                }
+            };
+
+            updateIcon(type === 'signup' ? 'lengthReq' : 'resetLengthReq', requirements.length);
+            updateIcon(type === 'signup' ? 'letterReq' : 'resetLetterReq', requirements.hasLetter);
+            updateIcon(type === 'signup' ? 'numberReq' : 'resetNumberReq', requirements.hasNumber);
+            updateIcon(type === 'signup' ? 'specialReq' : 'resetSpecialReq', requirements.hasSpecialChar);
+        }
+
+        function updatePasswordStrengthIndicator(password) {
+            const bars = document.querySelectorAll('.password-strength');
+            const { strength } = checkPasswordStrength(password);
+            bars.forEach(bar => {
+                bar.className = 'password-strength';
+                bar.classList.add(`strength-${Math.min(strength, 5)}`);
             });
         }
 
-        // Toggle password visibility untuk form utama
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const eyeIcon = document.querySelector('.toggle-password i');
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            eyeIcon.classList.toggle('fa-eye-slash');
-            eyeIcon.classList.toggle('fa-eye');
-        }
-
-        // Toggle password visibility untuk modal
-        function togglePasswordModal(inputId) {
-            const passwordInput = document.getElementById(inputId);
-            const eyeIcon = passwordInput.nextElementSibling.querySelector('i');
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            eyeIcon.classList.toggle('fa-eye-slash');
-            eyeIcon.classList.toggle('fa-eye');
-        }
-
-        // Fungsi untuk mengecek kekuatan password
-        function checkPasswordStrength(password) {
-            let strength = 0;
-            const requirements = {
-                length: false,
-                hasNumber: false,
-                hasLetter: false,
-                hasSpecialChar: false
-            };
-
-            // Cek panjang password
-            if (password.length >= 8 && password.length <= 20) {
-                strength++;
-                requirements.length = true;
-            }
-
-            // Cek mengandung angka
-            if (/\d/.test(password)) {
-                strength++;
-                requirements.hasNumber = true;
-            }
-
-            // Cek mengandung huruf
-            if (/[a-zA-Z]/.test(password)) {
-                strength++;
-                requirements.hasLetter = true;
-            }
-
-            // Cek mengandung karakter khusus
-            if (/[#?!$&@_\.]/.test(password)) {
-                strength++;
-                requirements.hasSpecialChar = true;
-            }
-
-            return { strength, requirements };
-        }
-
-        // Fungsi untuk memvalidasi persyaratan password
-        function validatePasswordRequirements(password, type = 'signup') {
-            const { requirements } = checkPasswordStrength(password);
-
-            // Tampilkan feedback
-            const feedbackContainer = type === 'signup' ?
-                document.querySelector('#signupForm .password-feedback') :
-                document.querySelector('#forgotForm .password-feedback');
-
-            // Update tampilan persyaratan
-            const lengthReq = type === 'signup' ?
-                document.getElementById('lengthReq') :
-                document.getElementById('resetLengthReq');
-            const letterReq = type === 'signup' ?
-                document.getElementById('letterReq') :
-                document.getElementById('resetLetterReq');
-            const numberReq = type === 'signup' ?
-                document.getElementById('numberReq') :
-                document.getElementById('resetNumberReq');
-            const specialReq = type === 'signup' ?
-                document.getElementById('specialReq') :
-                document.getElementById('resetSpecialReq');
-
-            // Update kelas berdasarkan validasi
-            if (requirements.length) {
-                lengthReq.classList.remove('invalid');
-                lengthReq.classList.add('valid');
-                lengthReq.querySelector('i').className = 'fas fa-check-circle';
-            } else {
-                lengthReq.classList.remove('valid');
-                lengthReq.classList.add('invalid');
-                lengthReq.querySelector('i').className = 'fas fa-circle';
-            }
-
-            if (requirements.hasLetter) {
-                letterReq.classList.remove('invalid');
-                letterReq.classList.add('valid');
-                letterReq.querySelector('i').className = 'fas fa-check-circle';
-            } else {
-                letterReq.classList.remove('valid');
-                letterReq.classList.add('invalid');
-                letterReq.querySelector('i').className = 'fas fa-circle';
-            }
-
-            if (requirements.hasNumber) {
-                numberReq.classList.remove('invalid');
-                numberReq.classList.add('valid');
-                numberReq.querySelector('i').className = 'fas fa-check-circle';
-            } else {
-                numberReq.classList.remove('valid');
-                numberReq.classList.add('invalid');
-                numberReq.querySelector('i').className = 'fas fa-circle';
-            }
-
-            if (requirements.hasSpecialChar) {
-                specialReq.classList.remove('invalid');
-                specialReq.classList.add('valid');
-                specialReq.querySelector('i').className = 'fas fa-check-circle';
-            } else {
-                specialReq.classList.remove('valid');
-                specialReq.classList.add('invalid');
-                specialReq.querySelector('i').className = 'fas fa-circle';
-            }
-
-            // Tampilkan feedback jika password tidak kosong
-            if (password.length > 0) {
-                feedbackContainer.classList.add('active');
-            } else {
-                feedbackContainer.classList.remove('active');
-            }
-        }
-
-        // Update tampilan indikator password
-        function updatePasswordStrengthIndicator(password) {
-            const strengthIndicator = document.querySelector('.password-strength');
-            const { strength } = checkPasswordStrength(password);
-
-            // Reset semua indikator
-            strengthIndicator.className = 'password-strength';
-            strengthIndicator.classList.add(`strength-${Math.min(strength, 5)}`);
-        }
-
-        // Event listener untuk input password baru
         document.getElementById('newPassword').addEventListener('input', function () {
-            const password = this.value;
-            updatePasswordStrengthIndicator(password);
-            validatePasswordRequirements(password);
+            updatePasswordStrengthIndicator(this.value);
+            validatePasswordRequirements(this.value);
         });
 
-        // Form submission untuk login
+        // Submit Login Utama
         document.getElementById('loginForm').addEventListener('submit', function (e) {
             e.preventDefault();
-
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
-
-            const users = JSON.parse(localStorage.getItem('users')) || [];
             const user = users.find(u => u.username === username);
 
             if (!user) {
-                showError('Akun tidak ditemukan atau telah dihapus');
-                document.getElementById('username').classList.add('input-error');
+                showError('Akun tidak ditemukan atau belum terdaftar.');
                 return;
             }
-
             if (user.password !== password) {
-                showError('Password salah');
-                document.getElementById('password').classList.add('input-error');
+                showError('Password yang Anda masukkan salah.');
                 return;
             }
 
-            // Animasi sebelum redirect
-            document.querySelector('.login-button').classList.add('loading');
-            document.querySelector('.login-button .button-text').textContent = 'Memproses...';
+            const btn = document.querySelector('.login-button');
+            btn.classList.add('loading');
+            btn.querySelector('.button-text').textContent = 'Memproses...';
 
             setTimeout(() => {
-                localStorage.setItem('loggedInUser', username); // Menyimpan data user yang login
-                window.location.href = 'webtoko.html'; // Redirect ke halaman toko
+                localStorage.setItem('loggedInUser', username);
+                window.location.href = 'webtoko.html';
             }, 1500);
         });
 
-        // Sign Up Form
+        // Submit Daftar Akun
         document.getElementById('signupForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            document.getElementById('signupError').style.display = 'none';
-            document.getElementById('signupSuccess').style.display = 'none';
-
             const username = document.getElementById('newUsername').value.trim();
             const email = document.getElementById('newEmail').value.trim();
             const password = document.getElementById('newPassword').value;
             const confirmPassword = document.getElementById('confirmPassword').value;
 
-            document.querySelectorAll('#signupForm .input-error').forEach(el => {
-                el.classList.remove('input-error');
-            });
+            const errorBox = document.getElementById('signupError');
+            errorBox.style.display = 'none';
 
             if (password !== confirmPassword) {
-                document.getElementById('signupError').textContent = 'Password tidak cocok!';
-                document.getElementById('signupError').style.display = 'block';
-                document.getElementById('newPassword').classList.add('input-error');
-                document.getElementById('confirmPassword').classList.add('input-error');
+                errorBox.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Password konfirmasi tidak sama!';
+                errorBox.style.display = 'block';
                 return;
             }
 
-            // Validasi persyaratan password
             const { requirements } = checkPasswordStrength(password);
             if (!requirements.length || !requirements.hasNumber || !requirements.hasLetter || !requirements.hasSpecialChar) {
-                document.getElementById('signupError').textContent = 'Password tidak memenuhi persyaratan!';
-                document.getElementById('signupError').style.display = 'block';
-                document.getElementById('newPassword').classList.add('input-error');
-
-                // Scroll ke input password
-                document.getElementById('newPassword').scrollIntoView({ behavior: 'smooth', block: 'center' });
+                errorBox.innerHTML = '<i class="fas fa-shield-halved"></i> Password belum memenuhi syarat keamanan!';
+                errorBox.style.display = 'block';
+                document.getElementById('newPassword').focus();
                 return;
             }
 
             if (users.some(u => u.username === username)) {
-                document.getElementById('signupError').textContent = 'Username sudah digunakan!';
-                document.getElementById('signupError').style.display = 'block';
-                document.getElementById('newUsername').classList.add('input-error');
+                errorBox.innerHTML = '<i class="fas fa-user-xmark"></i> Username sudah dipakai, pilih yang lain.';
+                errorBox.style.display = 'block';
                 return;
             }
 
             if (users.some(u => u.email === email)) {
-                document.getElementById('signupError').textContent = 'Email sudah terdaftar!';
-                document.getElementById('signupError').style.display = 'block';
-                document.getElementById('newEmail').classList.add('input-error');
+                errorBox.innerHTML = '<i class="fas fa-envelope-open-text"></i> Email sudah terdaftar.';
+                errorBox.style.display = 'block';
                 return;
             }
 
-            // Animasi loading
-            document.querySelector('.signup-button').classList.add('loading');
-            document.querySelector('.signup-button .button-text').textContent = 'Mendaftarkan...';
+            const btn = document.querySelector('.signup-button');
+            btn.classList.add('loading');
+            btn.querySelector('.button-text').textContent = 'Mendaftarkan...';
 
             setTimeout(() => {
-                // Format tanggal pendaftaran
-                const registrationDate = new Date().toLocaleDateString('id-ID', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-
-                // Tambahkan user baru
-                const newUser = {
-                    username,
-                    email,
-                    password,
-                    registrationDate,
-                    joinDate: new Date().toISOString() // Tambahkan timestamp untuk statistik
+                const newUser = { 
+                    username, email, password, 
+                    registrationDate: new Date().toLocaleDateString('id-ID'), 
+                    joinDate: new Date().toISOString() 
                 };
-
                 users.push(newUser);
-                localStorage.setItem('users', JSON.stringify(users)); // Simpan user baru ke localStorage
-
-                // Update statistik pengguna baru
-                updateNewUserStats();
+                localStorage.setItem('users', JSON.stringify(users));
 
                 document.getElementById('signupSuccess').style.display = 'flex';
                 document.getElementById('signupForm').style.display = 'none';
@@ -891,139 +660,76 @@
                     document.getElementById('signupForm').reset();
                     document.getElementById('signupSuccess').style.display = 'none';
                     document.getElementById('signupForm').style.display = 'block';
-                    document.querySelector('.signup-button').classList.remove('loading');
-                    document.querySelector('.signup-button .button-text').textContent = 'Daftar Sekarang';
+                    btn.classList.remove('loading');
+                    btn.querySelector('.button-text').textContent = 'Daftar Sekarang';
                     document.body.classList.remove('body-no-scroll');
                 }, 2000);
-            }, 1000);
+            }, 1500);
         });
 
-        // Fungsi untuk update statistik pengguna baru
-        function updateNewUserStats() {
-            // Ambil data statistik yang ada atau buat baru jika belum ada
-            const stats = JSON.parse(localStorage.getItem('userStats')) || {
-                totalUsers: 0,
-                monthlyNewUsers: {},
-                dailyNewUsers: {}
-            };
+        // Kontrol Modals
+        const modals = {
+            terms: document.getElementById('termsModal'),
+            signup: document.getElementById('signupModal'),
+            forgot: document.getElementById('forgotModal')
+        };
 
-            // Update total pengguna
-            stats.totalUsers = users.length;
-
-            // Dapatkan bulan dan tahun saat ini
-            const now = new Date();
-            const currentMonth = now.toLocaleString('id-ID', { month: 'long', year: 'numeric' });
-            const today = now.toLocaleDateString('id-ID');
-
-            // Update statistik bulanan
-            if (!stats.monthlyNewUsers[currentMonth]) {
-                stats.monthlyNewUsers[currentMonth] = 0;
-            }
-            stats.monthlyNewUsers[currentMonth]++;
-
-            // Update statistik harian
-            if (!stats.dailyNewUsers[today]) {
-                stats.dailyNewUsers[today] = 0;
-            }
-            stats.dailyNewUsers[today]++;
-
-            // Simpan kembali ke localStorage
-            localStorage.setItem('userStats', JSON.stringify(stats));
-        }
-
-        // Modal handlers
-        document.getElementById('signUp').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById('signupModal').style.display = 'block'; // Tampilkan modal signup
-            document.body.classList.add('body-no-scroll'); // Nonaktifkan scroll
-        });
-
-        document.getElementById('forgotPassword').addEventListener('click', function (e) {
-            e.preventDefault();
-            document.getElementById('forgotModal').style.display = 'block'; // Tampilkan modal lupa password
-            document.body.classList.add('body-no-scroll');
-
-            // Reset form reset password saat dibuka
+        document.getElementById('openTermsModal').addEventListener('click', e => { e.preventDefault(); openModal(modals.terms); });
+        document.getElementById('signUp').addEventListener('click', e => { e.preventDefault(); openModal(modals.signup); });
+        document.getElementById('forgotPassword').addEventListener('click', e => { 
+            e.preventDefault(); 
+            openModal(modals.forgot);
             document.getElementById('forgotForm').reset();
+            
+            // Reset state stepper lupa password
             document.getElementById('resetEmail').disabled = true;
             document.getElementById('newResetPassword').disabled = true;
             document.getElementById('resetPasswordBtn').disabled = true;
+            document.getElementById('stepIndicator1').className = 'step-item active';
+            document.getElementById('stepIndicator2').className = 'step-item';
+            document.getElementById('stepIndicator3').className = 'step-item';
             document.getElementById('usernameError').style.display = 'none';
             document.getElementById('emailError').style.display = 'none';
         });
 
-        // Switch to login from modals
+        document.querySelector('.close-terms-btn').addEventListener('click', () => closeModal(modals.terms));
+        
         document.querySelectorAll('.switch-to-login').forEach(btn => {
-            btn.addEventListener('click', function (e) {
+            btn.addEventListener('click', e => {
                 e.preventDefault();
-                document.querySelectorAll('.modal').forEach(modal => {
-                    modal.style.display = 'none'; // Tutup semua modal
-                });
-                document.body.classList.remove('body-no-scroll'); // Aktifkan scroll kembali
+                Object.values(modals).forEach(closeModal);
             });
         });
 
-        const closeButtons = document.getElementsByClassName('close');
-        for (let i = 0; i < closeButtons.length; i++) {
-            closeButtons[i].addEventListener('click', function () {
-                this.closest('.modal').style.display = 'none'; // Tutup modal
-                const forms = this.closest('.modal').querySelectorAll('form');
-                forms.forEach(form => form.reset()); // Reset form
-                this.closest('.modal').querySelectorAll('.input-error').forEach(el => {
-                    el.classList.remove('input-error'); // Hapus class error
-                });
-                const errorDivs = this.closest('.modal').querySelectorAll('.signup-error, .signup-success');
-                errorDivs.forEach(div => div.style.display = 'none'); // Sembunyikan pesan error/sukses
-                document.body.classList.remove('body-no-scroll'); // Aktifkan scroll kembali
-
-                // Reset form reset password saat ditutup
-                document.getElementById('resetEmail').disabled = true;
-                document.getElementById('newResetPassword').disabled = true;
-                document.getElementById('resetPasswordBtn').disabled = true;
-                document.getElementById('usernameError').style.display = 'none';
-                document.getElementById('emailError').style.display = 'none';
+        document.querySelectorAll('.close').forEach(btn => {
+            btn.addEventListener('click', function() {
+                closeModal(this.closest('.modal'));
             });
+        });
+
+        window.addEventListener('click', e => {
+            if (e.target.classList.contains('modal')) closeModal(e.target);
+        });
+
+        function openModal(modal) {
+            modal.style.display = 'block';
+            document.body.classList.add('body-no-scroll');
         }
 
-        window.addEventListener('click', function (event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none'; // Tutup modal saat klik di luar
-                const forms = event.target.querySelectorAll('form');
-                forms.forEach(form => form.reset()); // Reset form
-                event.target.querySelectorAll('.input-error').forEach(el => {
-                    el.classList.remove('input-error'); // Hapus class error
-                });
-                const errorDivs = event.target.querySelectorAll('.signup-error, .signup-success');
-                errorDivs.forEach(div => div.style.display = 'none'); // Sembunyikan pesan error/sukses
-                document.body.classList.remove('body-no-scroll'); // Aktifkan scroll kembali
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.classList.remove('body-no-scroll');
+            const forms = modal.querySelectorAll('form');
+            if(forms) forms.forEach(f => f.reset());
+            modal.querySelectorAll('.signup-error, .signup-success, .input-error-message').forEach(el => el.style.display = 'none');
+        }
 
-                // Reset form reset password saat diklik di luar modal
-                document.getElementById('resetEmail').disabled = true;
-                document.getElementById('newResetPassword').disabled = true;
-                document.getElementById('resetPasswordBtn').disabled = true;
-                document.getElementById('usernameError').style.display = 'none';
-                document.getElementById('emailError').style.display = 'none';
-            }
-        });
-
-        // Floating label effect
+        // Animasi Label Input CSS
         document.querySelectorAll('.floating input').forEach(input => {
-            input.addEventListener('focus', function () {
-                this.parentNode.classList.add('focused'); // Tambahkan class focused saat input aktif
-            });
-
-            input.addEventListener('blur', function () {
-                if (!this.value) {
-                    this.parentNode.classList.remove('focused'); // Hapus class focused jika input kosong
-                }
-            });
-
-            // Initialize
-            if (input.value) {
-                input.parentNode.classList.add('focused'); // Set class focused jika input sudah berisi
-            }
+            input.addEventListener('focus', function () { this.parentNode.classList.add('focused'); });
+            input.addEventListener('blur', function () { if (!this.value) this.parentNode.classList.remove('focused'); });
+            if (input.value) input.parentNode.classList.add('focused');
         });
     </script>
 </body>
-
 </html>
