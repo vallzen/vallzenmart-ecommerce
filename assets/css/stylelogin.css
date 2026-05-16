@@ -162,7 +162,7 @@ body {
     font-size: 14px;
 }
 
-/* FLOATING FORM GROUPS (Lebih Modern) */
+/* FLOATING FORM GROUPS */
 .form-group.floating {
     position: relative;
     margin-bottom: 25px;
@@ -528,7 +528,7 @@ body {
     transform: rotate(90deg);
 }
 
-/* PERBAIKAN DESAIN TULISAN "MASUK DISINI" PADA MODAL */
+/* Modal Footer (Desain Baru "Masuk disini") */
 .modal-footer {
     margin-top: 25px;
     text-align: center;
@@ -539,33 +539,22 @@ body {
 }
 
 .modal-footer p {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    margin: 0;
 }
 
-/* Membuat tulisan masuk disini seperti tombol biru yang interaktif */
 .modal-footer a.switch-to-login {
-    color: #2b6cb0;
+    color: #2b6cb0; /* Biru terang */
+    font-weight: 600; /* Ditebalkan */
     text-decoration: none;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 6px 12px;
-    background-color: #ebf8ff; /* Background biru sangat muda */
-    border-radius: 8px;
-    border: 1px solid transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent; /* Tanpa background */
+    padding: 0;
+    margin-left: 5px;
+    transition: all 0.3s ease;
 }
 
 .modal-footer a.switch-to-login:hover {
-    color: #1a4d85;
-    background-color: #bee3f8;
-    border-color: #90cdf4;
-    transform: translateX(4px); /* Bergeser sedikit ke kanan saat disorot */
-    box-shadow: 0 2px 4px rgba(43, 108, 176, 0.1);
+    color: #1e40af; /* Biru lebih gelap saat disentuh */
+    text-decoration: underline; /* Muncul garis bawah saat hover */
 }
 
 /* Modals Syarat Ketentuan */
@@ -633,7 +622,4 @@ body {
     .login-box, .modal-content { padding: 30px 20px; }
     .login-links { flex-direction: column; align-items: center; gap: 15px; }
     .header-icon { width: 50px; height: 50px; font-size: 20px; }
-    
-    /* Responsive adjustment untuk tulisan "Masuk disini" */
-    .modal-footer p { flex-direction: column; gap: 10px; }
 }
