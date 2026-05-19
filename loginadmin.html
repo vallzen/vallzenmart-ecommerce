@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Admin Yupita Shop</title>
+    <title>Login - Admin VallzenMart</title>
     <link rel="stylesheet" href="assets/css/styleloginadmin.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+    <div class="gradient-bg"></div>
     <div class="particles-container" id="particles-js"></div>
 
     <div class="admin-login-container">
@@ -18,11 +19,12 @@
             <div class="admin-login-header">
                 <div class="logo-container">
                     <div class="logo-circle">
-                        <i class="fas fa-user-shield logo-icon"></i>
+                        <!-- Ikon diganti dengan gambar logo tas -->
+                        <img src="assets/images/logo_tas_3264x3264.png" alt="Admin Logo" class="admin-logo-img">
                     </div>
                 </div>
                 <h2>Admin Panel</h2>
-                <p>Yupita Shop Management System</p>
+                <p>VallzenMart Management System</p>
             </div>
 
             <div id="adminLoginError" class="error-message"></div>
@@ -52,10 +54,8 @@
             </form>
 
             <div class="admin-login-footer">
-                <p>Hanya untuk staff administrasi Yupita Shop</p>
-                <a href="index.html" class="back-to-store">
-                    <i class="fa-solid fa-user-large"></i> Login ke Toko
-                </a>
+                <p>Hanya untuk staff administrasi VallzenMart</p>
+                <!-- Tautan Login ke Toko telah dihapus -->
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
                 }
             });
 
-            // Daftar admin yang diizinkan (untuk demo saja)
+            // Daftar admin yang diizinkan
             const adminAccounts = [
                 { username: "Vallzen", password: "23010039" },
                 { username: "Nata", password: "23010029" }
@@ -149,7 +149,7 @@
                     );
 
                     if (admin) {
-                        // Simpan session admin (sementara)
+                        // Simpan session admin
                         sessionStorage.setItem('adminAuthenticated', 'true');
                         sessionStorage.setItem('adminUsername', username);
 
