@@ -542,52 +542,49 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 768px) {
-    .navbar-container { flex-wrap: wrap; }
-    .navbar-right { width: 100%; justify-content: space-between; margin-top: 15px; }
+    /* 1. MEMBUAT HEADER BERJAJAR KE SAMPING (TANPA GARIS 3) */
+    .navbar-container { flex-wrap: nowrap; padding-right: 10px; }
+    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; gap: 10px; }
     
-    /* UBAHAN MENU NAVBAR (Berjajar ke samping) */
-    .navbar-buttons { 
-        display: none; 
-        flex-direction: row; /* Membuatnya berjajar ke samping */
-        justify-content: space-between; /* Menyebar rata */
-        width: 100%; 
-        gap: 10px; 
-        margin-top: 15px; 
-    }
-    .navbar-buttons.show { display: flex; }
-    .hamburger-menu { display: block; }
+    .navbar-buttons { display: flex !important; flex-direction: row; width: auto; gap: 5px; margin-top: 0; }
+    .hamburger-menu { display: none !important; } /* Matikan ikon garis 3 */
     
-    /* Sembunyikan teks agar ikon bisa berjajar satu baris tanpa melebihi layar */
-    .button-text { display: none; } 
-    .nav-button { flex: 1; justify-content: center; padding: 10px; }
-
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+    /* Sembunyikan Teks Profil & Sesuaikan Ukuran Avatar agar muat */
+    .user-display { display: none; } 
+    .user-profile-btn { padding: 0; }
+    .nav-avatar { width: 30px; height: 30px; }
+    
+    /* Sembunyikan teks di tombol, kecilkan padding icon */
+    .button-text { display: none !important; }
+    .nav-button { padding: 8px 10px; font-size: 0.9rem; }
+    
+    /* Sisa desain tablet/mobile */
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
     .qv-details { padding: 20px; max-height: none; }
-    
     .cart-item { grid-template-columns: auto 60px 1fr; }
     .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
     .footer-container { grid-template-columns: 1fr; gap: 35px; }
 }
 
 @media (max-width: 576px) {
-    /* UBAHAN PRODUK 2 KOLOM */
-    .product-grid { 
-        grid-template-columns: repeat(2, 1fr) !important; /* Memaksa 2 kolom */
-        gap: 10px; 
-    }
-    .product-image { height: 160px; } /* Sesuaikan tinggi gambar */
+    /* 2. MEMAKSA PRODUK 2 BARIS KE SAMPING DI HP */
+    .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
     
-    /* Penyesuaian agar teks tidak berantakan karena kartu semakin sempit */
-    .product-info h3 { font-size: 0.85rem; height: 2.6em; }
-    .product-price { font-size: 1.05rem; }
-    .product-actions { flex-direction: column; } /* Tombol keranjang & Beli ditumpuk vertikal */
-    
+    /* Menyesuaikan ukuran kartu produk agar proporsional di 2 kolom HP */
+    .product-image { height: 160px; }
+    .product-info { padding: 10px; }
+    .product-info h3 { font-size: 0.85rem; height: 2.6em; margin-bottom: 5px; }
+    .product-price { font-size: 1.1rem; margin-bottom: 10px; }
+    .product-actions button { padding: 8px; font-size: 0.75rem; }
+    .styled-pill-select { padding: 6px; font-size: 0.75rem; }
+
+    /* Sisa desain form & review */
     .qv-options-grid { grid-template-columns: 1fr; }
     .qv-actions { flex-direction: column; }
-    .hero-title { font-size: 2rem; }
+    .hero-title { font-size: 1.8rem; }
     .form-grid { grid-template-columns: 1fr; }
     .review-form-actions { flex-direction: column; gap: 10px; align-items: stretch; }
     .submit-review-btn { width: 100%; }
