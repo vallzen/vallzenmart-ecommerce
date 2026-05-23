@@ -551,8 +551,8 @@ input:checked + .slider:before { transform: translateX(20px); }
     }
     .navbar-container::-webkit-scrollbar { display: none; }
     
-    .navbar-brand { width: 100px; height: 60px; flex-shrink: 0; }
-    .navbar-logo-img { height: 60px; transform: translateY(-50%); }
+    .navbar-brand { width: 135px; height: 75px; flex-shrink: 0; }
+    .navbar-logo-img { height: 75px; transform: translateY(-50%); }
     .navbar-logo-img:hover { transform: translateY(-50%); } /* Matikan efek hover/melar di HP */
     
     .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; gap: 5px; }
