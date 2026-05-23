@@ -8,8 +8,16 @@
     <link rel="stylesheet" href="assets/css/stylewebtoko.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* Posisi logo untuk Laptop (Dibiarkan -4px karena sudah pas) */
         .navbar-logo-img {
-            left: -4px !important; /* 👈 Menggeser logo lebih ke kiri, ubah ke -20px jika ingin lebih kiri lagi */
+            left: -4px !important; 
+        }
+
+        /* DITAMBAHKAN: Posisi logo KHUSUS untuk Mobile (HP) */
+        @media (max-width: 768px) {
+            .navbar-logo-img {
+                left: 8px !important; /* 👈 Ubah angka ini. Semakin besar angkanya (misal: 10px, 15px), logo akan semakin geser ke kanan */
+            }
         }
 
         /* === BASE & LAYOUT === */
