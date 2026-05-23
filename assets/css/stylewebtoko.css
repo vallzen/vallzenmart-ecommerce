@@ -535,90 +535,74 @@ input:checked + .slider:before { transform: translateX(20px); }
    RESPONSIVE DESIGN (UPDATE VERSI 2 SEJAJAR)
    ========================================= */
 
-@media (max-width: 1200px) {
-    .footer-container { grid-template-columns: 1fr 1fr; gap: 40px; }
-    .contact-info { grid-column: 1 / -1; }
-}
-
-@media (max-width: 1024px) {
-    .product-grid { grid-template-columns: repeat(3, 1fr); }
-}
-
 @media (max-width: 768px) {
-    /* --- 1. HEADER TETAP SEJAJAR KESAMPING --- */
-    .navbar-container { flex-wrap: nowrap; padding: 0 10px; }
+    /* 1. KEMBALIKAN HEADER BERJAJAR (TANPA GARIS 3) */
+    .navbar-container { 
+        flex-wrap: nowrap; /* Memaksa elemen tetap dalam 1 baris */
+        overflow-x: auto; /* Memunculkan scroll horizontal kecil jika layar HP sangat sempit */
+        gap: 10px; 
+    }
+    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; }
+    .navbar-buttons { 
+        display: flex !important; /* Memaksa tombol tetap muncul */
+        flex-direction: row !important; 
+        width: auto; 
+        gap: 8px; 
+        margin-top: 0; 
+    }
+    .hamburger-menu { display: none !important; } /* Sembunyikan garis 3 */
     
-    /* Pengecilan Logo agar sisa ruang cukup untuk tombol lain */
-    .navbar-brand { width: auto; flex-shrink: 0; height: 60px; }
-    .navbar-logo-img { height: 65px; position: relative; transform: none; top: 0; }
-    
-    /* Hilangkan tombol garis 3 (hamburger menu) secara permanen */
-    .hamburger-menu { display: none !important; }
-    
-    /* Deretan Menu Kanan */
-    .navbar-right { width: auto; justify-content: flex-end; gap: 5px; margin-top: 0; flex-wrap: nowrap;}
-    .navbar-buttons { display: flex !important; flex-direction: row !important; width: auto; gap: 5px; margin-top: 0; }
-    
-    /* Penyesuaian Tombol Icon */
-    .nav-button { padding: 6px 10px; font-size: 0.85rem; border-radius: 6px; }
-    .button-text { display: none !important; } /* Sembunyikan teks tombol */
-    
-    /* Profile: Hanya tampilkan foto, sembunyikan nama agar muat */
-    .user-profile-btn { padding: 3px; gap: 0; }
-    .nav-avatar { width: 32px; height: 32px; border-width: 1px; }
-    .user-display { display: none; }
+    /* Menghemat Ruang agar Muat di 1 Baris */
+    .button-text { display: none !important; } /* Sembunyikan tulisan di tombol */
+    .user-display { display: none !important; } /* Sembunyikan nama user, hanya foto */
+    .nav-button { padding: 8px 12px; } /* Perkecil sedikit tombol icon */
 
-    /* --- LAIN-LAIN --- */
+    /* Aturan untuk Quick View & Keranjang */
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
     .qv-details { padding: 20px; max-height: none; }
-    
     .cart-item { grid-template-columns: auto 60px 1fr; }
     .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
     .footer-container { grid-template-columns: 1fr; gap: 35px; }
 }
 
 @media (max-width: 576px) {
-    .hero-title { font-size: 1.6rem; }
-    .hero-subtitle { font-size: 0.9rem; }
-    
-    /* --- 2. FITUR 3 SEJAJAR KESAMPING --- */
-    .features { 
-        flex-wrap: nowrap; /* Paksa agar tidak turun baris */
-        gap: 5px; 
-        padding: 15px 5px; 
-        margin: 20px 10px 10px 10px;
-    }
-    .feature-item { 
-        min-width: unset; /* Hapus paksaan lebar minimal */
-        padding: 5px; 
-        flex: 1; /* Dibagi 3 rata */
-    }
-    .feature-icon { 
-        width: 40px; height: 40px; /* Icon dikecilkan */
-        font-size: 1.1rem; 
-        margin: 0 auto 8px; 
-    }
-    .feature-item h3 { font-size: 0.7rem; margin-bottom: 3px; }
-    .feature-item p { font-size: 0.55rem; line-height: 1.2; } /* Teks disusutkan agar muat */
-
-    /* --- 3. PRODUK 2 KOLOM KE SAMPING --- */
-    /* Tambahan !important memastikan kode ini tidak bisa ditimpa oleh kode manapun */
+    /* 2. PAKSA PRODUK MENJADI 2 KOLOM KE SAMPING */
     .product-grid { 
-        grid-template-columns: repeat(2, 1fr) !important; 
+        grid-template-columns: repeat(2, 1fr) !important; /* !important memaksa 2 kolom */
         gap: 10px; 
     }
-    .product-image { height: 160px; } /* Tinggi area gambar disesuaikan */
+    .product-image { height: 160px; } /* Sesuaikan tinggi gambar agar proporsional */
     .product-info { padding: 10px; }
-    .product-info h3 { font-size: 0.8rem; height: 2.8em; margin-bottom: 5px; }
-    .product-price { font-size: 1rem; margin-bottom: 8px; }
-    .product-options { flex-direction: column; gap: 5px; } /* Ukuran & Warna disusun atas-bawah */
-    .product-actions button { padding: 8px 5px; font-size: 0.75rem; }
+    .product-info h3 { font-size: 0.85rem; height: 2.8em; } /* Kecilkan teks judul */
+    .product-price { font-size: 1.1rem; margin-bottom: 10px; }
+    .product-actions button { padding: 6px; font-size: 0.75rem; } /* Kecilkan tombol beli */
 
-    /* --- MODAL MOBILE --- */
+    /* 3. FITUR: 2 DI ATAS, 1 DI TENGAH BAWAH */
+    .features {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px;
+        padding: 20px 10px;
+    }
+    .feature-item { 
+        min-width: 0 !important; 
+        padding: 10px; 
+    }
+    .feature-item:last-child {
+        grid-column: span 2; /* Memaksa item ke-3 mengisi penuh lebar bawah */
+        width: 60%; /* Mengecilkan ukurannya */
+        margin: 0 auto; /* Memposisikannya tepat di tengah */
+    }
+    .feature-icon { width: 45px; height: 45px; font-size: 1.2rem; margin-bottom: 10px; }
+    .feature-item h3 { font-size: 0.9rem; }
+    .feature-item p { font-size: 0.75rem; }
+
+    /* Aturan Lainnya di Mobile */
     .qv-options-grid { grid-template-columns: 1fr; }
     .qv-actions { flex-direction: column; }
+    .hero-title { font-size: 2rem; }
     .form-grid { grid-template-columns: 1fr; }
     .review-form-actions { flex-direction: column; gap: 10px; align-items: stretch; }
     .submit-review-btn { width: 100%; }
