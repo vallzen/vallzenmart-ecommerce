@@ -561,8 +561,9 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 576px) {
-    .product-grid { grid-template-columns: 1fr; }
-    .product-image { height: 280px; }
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* Diubah jadi 2 kolom, jarak dirapatkan sedikit */
+    .product-image { height: 180px; } /* Tinggi gambar dikecilkan agar proporsional untuk 2 kolom di HP */
+    
     .qv-options-grid { grid-template-columns: 1fr; }
     .qv-actions { flex-direction: column; }
     .hero-title { font-size: 2rem; }
