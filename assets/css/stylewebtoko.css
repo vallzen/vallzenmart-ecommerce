@@ -531,75 +531,175 @@ body {
 input:checked + .slider { background-color: #48bb78; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-/* =========================================
-   RESPONSIVE DESIGN (UPDATE VERSI 2 SEJAJAR)
-   ========================================= */
+/* =========================================================
+   RESPONSIVE DESIGN (MODERN MOBILE E-COMMERCE UI)
+========================================================= */
+
+@media (max-width: 1024px) {
+    .product-grid { grid-template-columns: repeat(3, 1fr); }
+}
 
 @media (max-width: 768px) {
-    /* 1. HEADER CONTAINER MURNI FLEXBOX */
+    /* --- HEADER: Toolbar 1 Baris Ala Aplikasi --- */
     .navbar-container { 
         flex-wrap: nowrap; 
+        padding: 0 10px;
+        gap: 5px; 
         overflow-x: auto; 
-        gap: 15px; 
-        padding-left: 10px; /* Tambahkan sedikit jarak di kiri */
-        -ms-overflow-style: none;  
-        scrollbar-width: none;  
+        -ms-overflow-style: none; 
+        scrollbar-width: none; 
     }
-    .navbar-container::-webkit-scrollbar {
-        display: none; /* Hilangkan scrollbar */
-    }
-
-    /* 2. MATIKAN EFEK ABSOLUTE PADA LOGO */
-    .navbar-brand { 
-        width: auto; 
-        height: auto; 
-        position: static; /* Hilangkan batas box melayang */
-        display: flex;
-        align-items: center;
-    }
-    .navbar-logo-img { 
-        position: static; /* Mengembalikan logo ke dalam barisan (tidak melayang/nabrak) */
-        transform: none; /* Matikan efek geser Y */
-        height: 45px; /* Ukuran yang pas untuk Header HP */
-        width: auto;
-    }
-    .navbar-logo-img:hover {
-        transform: none; /* Matikan efek zoom saat disentuh di HP */
-    }
-
-    /* 3. PERBAIKAN PROFIL & TOMBOL AGAR RAPI */
-    .navbar-right { 
-        width: 100%; 
-        justify-content: flex-end; 
-        margin-top: 0; 
-        gap: 8px; 
-        flex-shrink: 0; /* Mencegah menu gepeng */
-    }
-    .user-profile-btn { padding: 4px; }
+    .navbar-container::-webkit-scrollbar { display: none; }
+    
+    .navbar-brand { width: 100px; height: 60px; flex-shrink: 0; }
+    .navbar-logo-img { height: 60px; transform: translateY(-50%); }
+    .navbar-logo-img:hover { transform: translateY(-50%); } /* Matikan efek hover/melar di HP */
+    
+    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; gap: 5px; }
+    
+    /* Profil & Tombol Ikon Bundar */
+    .user-profile-btn { padding: 2px; }
     .nav-avatar { width: 32px; height: 32px; }
+    
     .navbar-buttons { 
         display: flex !important; 
         flex-direction: row !important; 
         width: auto; 
-        gap: 8px; 
+        gap: 6px; 
         margin-top: 0; 
     }
     .nav-button { 
-        padding: 8px 12px; 
-        font-size: 1rem;
+        padding: 0; 
+        border-radius: 50%; /* Membuat tombol menjadi bundar sempurna */
+        width: 35px; 
+        height: 35px; 
+        justify-content: center; 
+        font-size: 0.9rem;
     }
     
-    /* 4. SEMBUNYIKAN ELEMEN YANG MEMBUAT PENUH */
-    .hamburger-menu, .button-text, .user-display { 
-        display: none !important; 
-    }
+    /* Sembunyikan elemen yang memakan tempat */
+    .hamburger-menu, .button-text, .user-display { display: none !important; }
 
-    /* Bawaan Modal & Cart (Biarkan sama) */
+    /* --- HERO SECTION --- */
+    .hero { height: 300px; }
+    .hero-title { font-size: 2rem; }
+    .hero-subtitle { font-size: 0.95rem; margin-bottom: 20px; }
+    .search-input { padding: 12px 20px; font-size: 0.9rem; }
+    
+    /* --- FOOTER --- */
+    .footer-container { grid-template-columns: 1fr; gap: 30px; }
+    .footer { padding: 40px 15px 20px; margin-top: 40px; }
+}
+
+@media (max-width: 576px) {
+    /* --- FILTER KATEGORI (Bisa Di-Swipe Ke Samping) --- */
+    .section-title { font-size: 1.5rem; margin-bottom: 20px; }
+    .product-filters { 
+        flex-wrap: nowrap; 
+        overflow-x: auto; 
+        justify-content: flex-start; 
+        padding-bottom: 10px; 
+        scrollbar-width: none;
+        gap: 10px;
+    }
+    .product-filters::-webkit-scrollbar { display: none; }
+    .filter-btn { white-space: nowrap; padding: 6px 16px; font-size: 0.85rem; }
+
+    /* --- KARTU PRODUK (2 Kolom Presisi) --- */
+    .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+    .product-card { border-radius: 8px; }
+    .product-image { height: 150px; }
+    .product-info { padding: 10px; }
+    .product-info h3 { font-size: 0.85rem; height: 2.8em; margin-bottom: 5px; }
+    .product-price { font-size: 1.1rem; margin-bottom: 10px; }
+    
+    /* Atribut Tambahan Produk */
+    .product-category { font-size: 0.6rem; padding: 2px 5px; }
+    .product-rating { font-size: 0.7rem; }
+    .styled-pill-select { padding: 5px 8px; font-size: 0.75rem; }
+    
+    /* Tombol Aksi di Kartu */
+    .product-actions { gap: 5px; }
+    .product-actions button { padding: 8px 5px; font-size: 0.8rem; border-radius: 4px; }
+    .product-actions i { font-size: 0.9rem; }
+
+    /* --- FITUR UNGGULAN (2 Atas, 1 Tengah Bawah) --- */
+    .features {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 10px;
+        padding: 15px;
+        margin: 20px 15px;
+        border-radius: 12px;
+    }
+    .feature-item { padding: 10px 5px; min-width: 0 !important; }
+    .feature-item:last-child {
+        grid-column: span 2; 
+        width: 70%; 
+        margin: 0 auto;
+    }
+    .feature-icon { width: 40px; height: 40px; font-size: 1.2rem; margin: 0 auto 10px; }
+    .feature-item h3 { font-size: 0.85rem; margin-bottom: 5px; }
+    .feature-item p { font-size: 0.7rem; }
+
+    /* --- TAMPILAN MODAL / POPUP ALA APLIKASI NATIVE --- */
+    .modal { padding: 10px; }
+    .modal-content { 
+        margin: 5vh auto; 
+        border-radius: 12px; 
+        width: 100%; 
+        max-height: 90vh; /* Agar modal tidak kepanjangan */
+        display: flex; 
+        flex-direction: column;
+    }
+    
+    /* Tombol Close Elegan */
+    .close { 
+        top: 10px; right: 15px; 
+        font-size: 1.5rem; 
+        background: white; 
+        border-radius: 50%; 
+        width: 32px; height: 32px; 
+        display: flex; align-items: center; justify-content: center; 
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2); 
+        z-index: 20;
+    }
+    
+    .info-body, .qv-details { padding: 15px; overflow-y: auto; flex: 1; }
+    .modal-header-text { padding: 15px; }
+    .modal-header-text h2 { font-size: 1.1rem; }
+
+    /* --- QUICK VIEW DETAIL PRODUK --- */
     .quick-view-wrapper { grid-template-columns: 1fr; }
-    .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
-    .qv-image img { max-height: 250px; }
-    .qv-details { padding: 20px; max-height: none; }
-    .cart-item { grid-template-columns: auto 60px 1fr; }
-    .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
-    .footer-container { grid-template-columns: 1fr; gap: 35px; }
-} 
+    .qv-image { padding: 15px; border-right: none; border-bottom: 1px solid #e2e8f0; background: white;}
+    .qv-image img { max-height: 220px; }
+    .qv-details h3 { font-size: 1.2rem; }
+    .qv-price { font-size: 1.5rem; margin: 10px 0; }
+    .qv-options-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .qv-actions { flex-direction: row; gap: 10px; } /* Tombol keranjang & beli tetap sejajar */
+    .qv-actions button { font-size: 0.9rem; padding: 12px; }
+
+    /* --- KERANJANG --- */
+    .cart-item { grid-template-columns: auto 50px 1fr; gap: 10px; padding: 10px; }
+    .item-image img { width: 50px; height: 50px; }
+    .item-details h4 { font-size: 0.85rem; }
+    .item-price { font-size: 0.9rem; }
+    .item-controls { gap: 3px; }
+    .quantity-btn { width: 25px; height: 25px; }
+    .quantity-input { width: 30px; height: 25px; font-size: 0.85rem; }
+    .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 8px; font-size: 1rem; }
+    
+    /* --- FORM PROFIL & ALAMAT --- */
+    .form-grid { grid-template-columns: 1fr; gap: 0; } /* Form input diubah ke 1 kolom susun bawah */
+    .profile-pic-container img { width: 90px; height: 90px; }
+    .address-card { padding: 12px; }
+    .addr-name { font-size: 0.95rem; }
+    .addr-full, .addr-phone, .addr-notes { font-size: 0.8rem; }
+    
+    /* --- POPUP KONFIRMASI & TOAST --- */
+    .confirmation-content { width: 95%; padding: 20px; }
+    .confirmation-icon { font-size: 2.5rem; }
+    .confirmation-title { font-size: 1.2rem; }
+    .confirmation-message { font-size: 0.9rem; }
+    .toast { width: 90%; text-align: center; justify-content: center; }
+}
