@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Login - VallzenMart</title>
+    <link rel="stylesheet" href="assets/css/stylelogin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="gradient-bg"></div>
+    <div id="particles-js"></div>
+
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <div class="logo">
+                    <img src="assets/images/logo_full_3264x1836.png" alt="VallzenMart Logo" class="navbar-logo-img">
+                </div>
+            </div>
+            
+            <!-- MULAI: RUNNING TEXT TENGAH HEADER -->
+            <div class="navbar-center">
+                <div class="running-text-container">
+                    <span class="running-text">
+                        <i class="fas fa-bullhorn"></i> Selamat datang di VallzenMart! Penuhi segala kebutuhan harian Anda dengan produk berkualitas terbaik, terjamin keamanannya, dan pelayanan yang memuaskan. Kebutuhan Lengkap, Belanja Mantap hanya di VallzenMart!
+                    </span>
+                </div>
+            </div>
+            <!-- SELESAI: RUNNING TEXT -->
+
+            <div class="navbar-right">
+                <a href="https://wa.me/628990023990?text=Hallo VallzenMart saya mau bertanya"
+                    class="nav-button chat-button" title="Chat Admin">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="button-text">Chat Admin</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <div id="errorNotification" class="error-notification"></div>
+
+    <div class="login-container">
+        <div class="login-box animate__animated animate__fadeIn">
+            
+            <div class="login-brand-panel">
+                <div class="brand-content">
+                    <div class="logo-big">
+                        <img src="assets/images/logo_tas_3264x3264.png" alt="VallzenMart Icon" class="brand-tas-img">
+                    </div>
+                    <h2>VallzenMart</h2>
+                    <p>Kebutuhan Lengkap, Belanja Mantap.</p>
+                </div>
+                <div class="glass-circles">
+                    <div class="circle c1"></div>
+                    <div class="circle c2"></div>
+                </div>
+            </div>
+
+            <div class="login-form-panel">
+                <div class="login-header">
+                    <h2>VallzenMart Log In</h2>
+                    <p>Silakan masuk ke akun Anda</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group floating">
+                        <input type="text" id="username" name="username" required placeholder=" ">
+                        <label for="username">Username</label>
+                        <i class="fas fa-user input-icon"></i>
+                    </div>
+
+                    <div class="form-group floating">
+                        <input type="password" id="password" name="password" required placeholder=" ">
+                        <label for="password">Password</label>
+                        <i class="fas fa-lock input-icon"></i>
+                        <button type="button" class="toggle-password" onclick="togglePassword()" aria-label="Show password">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                    
+                    <button type="submit" class="login-button">
+                        <span class="button-text">Masuk Sekarang</span>
+                        <span class="button-icon"><i class="fas fa-arrow-right"></i></span>
+                    </button>
+                    
+                    <div class="login-links">
+                        <a href="#" id="forgotPassword"><i class="fa-solid fa-unlock-keyhole"></i> Lupa Password?</a>
+                        <a href="#" id="signUp"><i class="fa-solid fa-user-plus"></i> Daftar Baru</a>
+                    </div>
+                </form>
+                
+                <div class="login-footer">
+                    <p>Dengan login, Anda menyetujui <a href="#" id="openTermsModal">Syarat & Ketentuan</a> kami.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Modal Daftar Baru -->
+    <div id="signupModal" class="modal">
+        <div class="modal-content animate__animated animate__fadeIn">
+            <span class="close">&times;</span>
+            
+            <div class="header-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+
+            <div class="modal-header">
+                <h2>Buat Akun Baru</h2>
+                <p>Isi data Anda untuk bergabung bersama kami</p>
+            </div>
+            
+            <div id="signupError" class="signup-error"></div>
+            <div id="signupSuccess" class="signup-success">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p>Pendaftaran berhasil!</p>
+                <p style="font-size: 13px; color: #4a5568; margin-top: 5px;">Mengarahkan ke halaman login...</p>
+            </div>
+            
+            <form id="signupForm">
+                <div class="form-group floating">
+                    <input type="text" id="newUsername" name="newUsername" required placeholder=" ">
+                    <label for="newUsername">Username Baru</label>
+                    <i class="fas fa-user input-icon"></i>
+                    
+                    <div class="password-tooltip" id="usernameTooltip">
+                        <div class="tooltip-title">Syarat Username:</div>
+                        <div class="password-feedback">
+                            <div class="requirement invalid" id="userLowerReq"><i class="fas fa-times-circle"></i> <span>Hanya huruf kecil (tanpa spasi)</span></div>
+                            <div class="requirement invalid" id="userSpecialReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 karakter khusus ( . atau _ )</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="email" id="newEmail" name="newEmail" required placeholder=" ">
+                    <label for="newEmail">Alamat Email</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                </div>
+                
+                <div class="form-group floating">
+                    <input type="password" id="newPassword" name="newPassword" required placeholder=" " minlength="8" maxlength="20">
+                    <label for="newPassword">Buat Password</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newPassword')">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <div class="password-strength"></div>
+                    
+                    <div class="password-tooltip" id="signupTooltip">
+                        <div class="tooltip-title">Syarat Keamanan Password:</div>
+                        <div class="password-feedback">
+                            <div class="requirement invalid" id="lengthReq"><i class="fas fa-times-circle"></i> <span>8 - 20 karakter</span></div>
+                            <div class="requirement invalid" id="letterReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 huruf kapital</span></div>
+                            <div class="requirement invalid" id="numberReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 angka</span></div>
+                            <div class="requirement invalid" id="specialReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 karakter khusus (#?!$&@_.)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required placeholder=" ">
+                    <label for="confirmPassword">Konfirmasi Password</label>
+                    <i class="fas fa-shield-halved input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('confirmPassword')">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                
+                <button type="submit" class="signup-button">
+                    <span class="button-text">Daftar Sekarang</span>
+                    <span class="button-icon"><i class="fa-solid fa-rocket"></i></span>
+                </button>
+            </form>
+            
+            <div class="modal-footer">
+                <p>Sudah punya akun? <a href="#" class="switch-to-login">Masuk disini</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Lupa Password -->
+    <div id="forgotModal" class="modal">
+        <div class="modal-content animate__animated animate__fadeIn">
+            <span class="close">&times;</span>
+            
+            <div class="header-icon">
+                <i class="fas fa-unlock-keyhole"></i>
+            </div>
+
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <p>Ikuti langkah di bawah untuk memulihkan akun</p>
+            </div>
+
+            <div class="reset-steps">
+                <div class="step-item active" id="stepIndicator1">
+                    <div class="step-icon"><i class="fas fa-search"></i></div>
+                    <div class="step-text">1. Cari Akun</div>
+                </div>
+                <div class="step-item" id="stepIndicator2">
+                    <div class="step-icon"><i class="fas fa-envelope-circle-check"></i></div>
+                    <div class="step-text">2. Verifikasi</div>
+                </div>
+                <div class="step-item" id="stepIndicator3">
+                    <div class="step-icon"><i class="fas fa-key"></i></div>
+                    <div class="step-text">3. Reset</div>
+                </div>
+            </div>
+
+            <div id="forgotError" class="signup-error"></div>
+            <div id="forgotSuccess" class="signup-success">
+                <i class="fas fa-check-circle success-icon"></i>
+                <p>Password Berhasil Direset!</p>
+                <p style="font-size: 13px; color: #4a5568; margin-top: 5px;">Mengarahkan ke halaman login...</p>
+            </div>
+
+            <form id="forgotForm">
+                <div class="form-group floating">
+                    <input type="text" id="resetUsername" name="resetUsername" required placeholder=" ">
+                    <label for="resetUsername">Masukkan Username Anda</label>
+                    <i class="fas fa-user input-icon"></i>
+                    <div id="usernameError" class="input-error-message" style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px; position: absolute;">
+                        <i class="fas fa-circle-exclamation"></i> Username tidak ditemukan
+                    </div>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="email" id="resetEmail" name="resetEmail" required placeholder=" " disabled>
+                    <label for="resetEmail">Konfirmasi Email Terdaftar</label>
+                    <i class="fas fa-envelope input-icon"></i>
+                    <div id="emailError" class="input-error-message" style="display: none; color: #e53e3e; font-size: 12px; margin-top: 5px; position: absolute;">
+                        <i class="fas fa-circle-exclamation"></i> Email tidak sesuai dengan username
+                    </div>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="password" id="newResetPassword" name="newResetPassword" required placeholder=" " disabled>
+                    <label for="newResetPassword">Masukkan Password Baru</label>
+                    <i class="fas fa-lock input-icon"></i>
+                    <button type="button" class="toggle-password" onclick="togglePasswordModal('newResetPassword')">
+                        <i class="fa-solid fa-eye"></i>
+                    </button>
+                    <div class="password-strength"></div>
+                    
+                    <div class="password-tooltip" id="resetTooltip">
+                        <div class="tooltip-title">Syarat Keamanan Password:</div>
+                        <div class="password-feedback">
+                            <div class="requirement invalid" id="resetLengthReq"><i class="fas fa-times-circle"></i> <span>8 - 20 karakter</span></div>
+                            <div class="requirement invalid" id="resetLetterReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 huruf kapital</span></div>
+                            <div class="requirement invalid" id="resetNumberReq"><i class="fas fa-times-circle"></i> <span>Minimal 1 angka</span></div>
+                            <div class="requirement invalid" id="resetSpecialReq"><i class="fas fa-times-circle"></i> <span>Karakter khusus (#?!$&@_.)</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="resetPasswordBtn" class="reset-button" disabled>
+                    <span class="button-text">Simpan Password Baru</span>
+                    <span class="button-icon"><i class="fa-solid fa-floppy-disk"></i></span>
+                </button>
+            </form>
+            
+            <div class="modal-footer">
+                <p>Ingat password Anda? <a href="#" class="switch-to-login">Masuk disini</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Syarat & Ketentuan (Desain Baru & Ketat) -->
+    <div id="termsModal" class="modal">
+        <div class="modal-content terms-modal-content animate__animated animate__fadeIn">
+            <span class="close terms-close">&times;</span>
+            
+            <div class="header-icon contract-icon">
+                <i class="fas fa-file-contract"></i>
+            </div>
+
+            <div class="modal-header">
+                <h2>Syarat & Ketentuan Penggunaan</h2>
+                <p>Dokumen Hukum Mengikat | Efektif Berlaku Sejak: Pendaftaran Akun</p>
+            </div>
+            
+            <div class="terms-scroll-area">
+                <div class="legal-section">
+                    <h3><i class="fas fa-gavel"></i> 1. Pendahuluan & Sifat Mengikat</h3>
+                    <p>Syarat dan Ketentuan ini ("Perjanjian") merupakan kontrak sah, mengikat secara hukum, dan absolut antara Anda ("Pengguna") dan VallzenMart ("Platform"). Dengan menekan tombol setuju, melakukan pendaftaran, atau mengakses sebagian/seluruh layanan VallzenMart, Anda menyatakan telah membaca, memahami, dan menyetujui secara sadar seluruh pasal dalam dokumen ini tanpa terkecuali.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h3><i class="fas fa-id-card"></i> 2. Kebijakan Identitas & Keamanan Akun</h3>
+                    <p>VallzenMart menerapkan kebijakan toleransi nol <em>(zero tolerance)</em> terhadap pemalsuan data. Anda diwajibkan untuk:</p>
+                    <ul>
+                        <li>Menggunakan identitas dan alamat email asli, valid, dan dapat dipertanggungjawabkan di hadapan hukum.</li>
+                        <li>Tidak memperjualbelikan, meminjamkan, atau memindahtangankan akun Anda kepada pihak ketiga dengan alasan apa pun.</li>
+                        <li>Bertanggung jawab 100% secara materil maupun imateril atas segala aktivitas yang terjadi menggunakan kredensial akun Anda.</li>
+                    </ul>
+                    <div class="legal-alert">
+                        <i class="fas fa-ban"></i> Pelanggaran terhadap pasal ini akan berakibat pada penutupan akun permanen secara sepihak oleh VallzenMart tanpa pemberitahuan sebelumnya, serta pelaporan kepada pihak berwajib jika terindikasi penipuan.
+                    </div>
+                </div>
+
+                <div class="legal-section">
+                    <h3><i class="fas fa-credit-card"></i> 3. Transaksi & Ketentuan Finansial</h3>
+                    <p>Sebagai platform e-commerce, segala proses perpindahan dana diatur sangat ketat:</p>
+                    <ul>
+                        <li>VallzenMart tidak bertanggung jawab atas kerugian yang diakibatkan oleh kesalahan transfer yang dilakukan oleh pengguna ke rekening yang salah/tidak resmi.</li>
+                        <li>Seluruh transaksi yang telah dibayar dan masuk ke tahap "Diproses" bersifat final, mengikat, dan <strong>tidak dapat dibatalkan (Non-Refundable)</strong> secara sepihak oleh pembeli.</li>
+                        <li>Upaya manipulasi sistem pembayaran (seperti struk transfer palsu atau *chargeback* curang) merupakan tindak pidana siber yang akan langsung kami proses melalui jalur hukum.</li>
+                    </ul>
+                </div>
+
+                <div class="legal-section">
+                    <h3><i class="fas fa-shield-virus"></i> 4. Aktivitas Terlarang & Sanksi</h3>
+                    <p>Selama menggunakan sistem VallzenMart, Pengguna dengan tegas dilarang untuk:</p>
+                    <ul>
+                        <li>Melakukan <em>web scraping</em>, ekstraksi data otomatis, atau penggunaan bot/script tanpa izin tertulis dari VallzenMart.</li>
+                        <li>Mengeksploitasi <em>bug</em> sistem untuk mendapatkan keuntungan sepihak (pencurian diskon, manipulasi harga).</li>
+                        <li>Melakukan ancaman, pelecehan, intimidasi, atau tindakan merugikan lainnya kepada staf atau layanan pelanggan kami.</li>
+                    </ul>
+                    <p><strong>SANKSI:</strong> VallzenMart berhak mutlak untuk membekukan akun, menyita dana/saldo yang ada di dalam platform (jika ada), serta mengambil langkah hukum perdata/pidana atas kerugian yang ditimbulkan oleh aktivitas di atas.</p>
+                </div>
+
+                <div class="legal-section">
+                    <h3><i class="fas fa-balance-scale"></i> 5. Batasan Tanggung Jawab (Limitation of Liability)</h3>
+                    <p>Platform VallzenMart disediakan secara <em>"As Is"</em> (sebagaimana adanya) dan <em>"As Available"</em> (sebagaimana tersedia). Kami tidak menjamin sistem akan selalu terbebas dari interupsi atau kesalahan operasional. VallzenMart dibebaskan secara hukum dari tuntutan ganti rugi atas kehilangan data, kerusakan perangkat, atau hilangnya potensi keuntungan <em>(loss of profit)</em> yang timbul secara langsung maupun tidak langsung dari penggunaan sistem kami.</p>
+                </div>
+            </div>
+
+            <!-- Area Persetujuan Ketat (Baru) -->
+            <div class="terms-consent">
+                <label class="custom-checkbox">
+                    <input type="checkbox" id="agreeTermsCheck">
+                    <span class="checkmark"></span>
+                    <span class="consent-text">Saya menyatakan dengan sadar telah membaca, memahami, dan tunduk pada seluruh pasal Syarat & Ketentuan di atas yang bersifat mengikat secara hukum.</span>
+                </label>
+            </div>
+
+            <button type="button" id="acceptTermsBtn" class="login-button close-terms-btn" disabled>
+                <span class="button-text">Saya Mengerti & Setuju</span>
+                <span class="button-icon"><i class="fas fa-check-double"></i></span>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Konfigurasi Partikel
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle" },
+                    "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                    "size": { "value": 4, "random": true, "anim": { "enable": false } },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.3, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" }, "resize": true },
+                    "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 0.8 } }, "push": { "particles_nb": 3 } }
+                },
+                "retina_detect": true
+            });
+
+            // TOOLTIP USERNAME
+            const newUsernameInput = document.getElementById('newUsername');
+            const usernameTooltip = document.getElementById('usernameTooltip');
+            newUsernameInput.addEventListener('focus', () => { usernameTooltip.classList.add('active'); });
+            newUsernameInput.addEventListener('blur', () => { usernameTooltip.classList.remove('active'); });
+
+            // VALIDASI USERNAME LIVE
+            newUsernameInput.addEventListener('input', function() {
+                const val = this.value;
+                if (/\s/.test(val)) { this.value = val.replace(/\s/g, ''); }
+                const isLowercase = val.length > 0 && !/[A-Z]/.test(val);
+                const hasSpecial = /[._]/.test(val);
+
+                updateIcon('userLowerReq', isLowercase);
+                updateIcon('userSpecialReq', hasSpecial);
+            });
+
+            // TOOLTIP FOKUS LOGIC (PASSWORD)
+            const newPasswordInput = document.getElementById('newPassword');
+            const signupTooltip = document.getElementById('signupTooltip');
+            newPasswordInput.addEventListener('focus', () => { signupTooltip.classList.add('active'); });
+            newPasswordInput.addEventListener('blur', () => { signupTooltip.classList.remove('active'); });
+
+            const resetPasswordInput = document.getElementById('newResetPassword');
+            const resetTooltip = document.getElementById('resetTooltip');
+            resetPasswordInput.addEventListener('focus', () => { resetTooltip.classList.add('active'); });
+            resetPasswordInput.addEventListener('blur', () => { resetTooltip.classList.remove('active'); });
+
+            // LOGIC LUPA PASSWORD
+            const step1 = document.getElementById('stepIndicator1');
+            const step2 = document.getElementById('stepIndicator2');
+            const step3 = document.getElementById('stepIndicator3');
+
+            document.getElementById('resetUsername').addEventListener('blur', function () {
+                const username = this.value.trim();
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const userExists = users.some(u => u.username === username);
+                const usernameError = document.getElementById('usernameError');
+                const resetEmailInput = document.getElementById('resetEmail');
+
+                if (username && !userExists) {
+                    usernameError.style.display = 'block';
+                    resetEmailInput.disabled = true;
+                    document.getElementById('resetPasswordBtn').disabled = true;
+                    this.style.borderColor = '#fc8181';
+                    
+                    step1.className = 'step-item active';
+                    step2.className = 'step-item';
+                    step3.className = 'step-item';
+                } else {
+                    usernameError.style.display = 'none';
+                    this.style.borderColor = '#e2e8f0';
+                    resetEmailInput.disabled = false;
+                    
+                    if (username) {
+                        step1.className = 'step-item completed';
+                        step2.className = 'step-item active';
+                        resetEmailInput.focus();
+                    }
+                }
+            });
+
+            document.getElementById('resetEmail').addEventListener('blur', function () {
+                const email = this.value.trim();
+                const username = document.getElementById('resetUsername').value.trim();
+                const users = JSON.parse(localStorage.getItem('users')) || [];
+                const user = users.find(u => u.username === username && u.email === email);
+                const emailError = document.getElementById('emailError');
+                const newPasswordInput = document.getElementById('newResetPassword');
+
+                if (email && !user) {
+                    emailError.style.display = 'block';
+                    newPasswordInput.disabled = true;
+                    document.getElementById('resetPasswordBtn').disabled = true;
+                    this.style.borderColor = '#fc8181';
+                    
+                    step2.className = 'step-item active';
+                    step3.className = 'step-item';
+                } else {
+                    emailError.style.display = 'none';
+                    this.style.borderColor = '#e2e8f0';
+                    newPasswordInput.disabled = false;
+                    
+                    if (email && user) {
+                        step2.className = 'step-item completed';
+                        step3.className = 'step-item active';
+                        newPasswordInput.focus();
+                    }
+                }
+            });
+
+            document.getElementById('newResetPassword').addEventListener('input', function () {
+                const password = this.value;
+                const username = document.getElementById('resetUsername').value.trim();
+                const email = document.getElementById('resetEmail').value.trim();
+
+                updatePasswordStrengthIndicator(password);
+                validatePasswordRequirements(password, 'reset');
+
+                if (username && email && password) {
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    const userExists = users.some(u => u.username === username && u.email === email);
+                    
+                    const { requirements } = checkPasswordStrength(password);
+                    const isStrong = requirements.length && requirements.hasNumber && requirements.hasLetter && requirements.hasSpecialChar;
+
+                    if (userExists && isStrong) {
+                        document.getElementById('resetPasswordBtn').disabled = false;
+                        step3.className = 'step-item completed'; 
+                    } else {
+                        document.getElementById('resetPasswordBtn').disabled = true;
+                        step3.className = 'step-item active';
+                    }
+                }
+            });
+
+            document.getElementById('forgotForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const username = document.getElementById('resetUsername').value.trim();
+                const email = document.getElementById('resetEmail').value.trim();
+                const newPassword = document.getElementById('newResetPassword').value;
+
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                const userIndex = users.findIndex(u => u.username === username && u.email === email);
+
+                if (userIndex !== -1) {
+                    users[userIndex].password = newPassword;
+                    localStorage.setItem('users', JSON.stringify(users));
+
+                    document.getElementById('forgotSuccess').style.display = 'flex';
+                    document.getElementById('forgotForm').style.display = 'none';
+
+                    setTimeout(() => {
+                        document.getElementById('forgotModal').style.display = 'none';
+                        document.getElementById('forgotForm').reset();
+                        document.getElementById('forgotSuccess').style.display = 'none';
+                        document.getElementById('forgotForm').style.display = 'block';
+                        document.body.classList.remove('body-no-scroll');
+
+                        document.getElementById('resetEmail').disabled = true;
+                        document.getElementById('newResetPassword').disabled = true;
+                        document.getElementById('resetPasswordBtn').disabled = true;
+                        step1.className = 'step-item active';
+                        step2.className = 'step-item';
+                        step3.className = 'step-item';
+                    }, 2500);
+                }
+            });
+
+            // LOGIC CHECKBOX SYARAT & KETENTUAN (BARU)
+            const agreeCheckbox = document.getElementById('agreeTermsCheck');
+            const acceptTermsBtn = document.getElementById('acceptTermsBtn');
+
+            agreeCheckbox.addEventListener('change', function() {
+                acceptTermsBtn.disabled = !this.checked;
+            });
+
+        });
+
+        // ================= FUNGSIONALITAS UMUM ================= //
+        let users = JSON.parse(localStorage.getItem('users')) || [];
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorNotification');
+            errorDiv.innerHTML = `<i class="fas fa-exclamation-triangle" style="margin-right:8px;"></i> ${message}`;
+            errorDiv.style.display = 'block';
+            errorDiv.classList.add('animate__animated', 'animate__fadeInDown');
+
+            setTimeout(() => {
+                errorDiv.classList.remove('animate__fadeInDown');
+                errorDiv.classList.add('animate__fadeOutUp');
+                setTimeout(() => {
+                    errorDiv.style.display = 'none';
+                    errorDiv.classList.remove('animate__fadeOutUp');
+                }, 500);
+            }, 4500);
+        }
+
+        window.togglePassword = function() { toggleVisibility('password'); }
+        window.togglePasswordModal = function(inputId) { toggleVisibility(inputId); }
+
+        function toggleVisibility(id) {
+            const input = document.getElementById(id);
+            const eyeIcon = input.parentNode.querySelector('.toggle-password i');
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            eyeIcon.classList.toggle('fa-eye-slash');
+            eyeIcon.classList.toggle('fa-eye');
+        }
+
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            const req = { length: false, hasNumber: false, hasLetter: false, hasSpecialChar: false };
+            if (password.length >= 8 && password.length <= 20) { strength++; req.length = true; }
+            if (/\d/.test(password)) { strength++; req.hasNumber = true; }
+            if (/[a-zA-Z]/.test(password)) { strength++; req.hasLetter = true; }
+            if (/[#?!$&@_\.]/.test(password)) { strength++; req.hasSpecialChar = true; }
+            return { strength, requirements: req };
+        }
+
+        function updateIcon(id, isValid) {
+            const el = document.getElementById(id);
+            if(isValid) {
+                el.className = 'requirement valid';
+                el.querySelector('i').className = 'fas fa-check-circle';
+            } else {
+                el.className = 'requirement invalid';
+                el.querySelector('i').className = 'fas fa-times-circle';
+            }
+        }
+
+        function validatePasswordRequirements(password, type = 'signup') {
+            const { requirements } = checkPasswordStrength(password);
+            updateIcon(type === 'signup' ? 'lengthReq' : 'resetLengthReq', requirements.length);
+            updateIcon(type === 'signup' ? 'letterReq' : 'resetLetterReq', requirements.hasLetter);
+            updateIcon(type === 'signup' ? 'numberReq' : 'resetNumberReq', requirements.hasNumber);
+            updateIcon(type === 'signup' ? 'specialReq' : 'resetSpecialReq', requirements.hasSpecialChar);
+        }
+
+        function updatePasswordStrengthIndicator(password) {
+            const bars = document.querySelectorAll('.password-strength');
+            const { strength } = checkPasswordStrength(password);
+            bars.forEach(bar => {
+                bar.className = 'password-strength';
+                bar.classList.add(`strength-${Math.min(strength, 5)}`);
+            });
+        }
+
+        document.getElementById('newPassword').addEventListener('input', function () {
+            updatePasswordStrengthIndicator(this.value);
+            validatePasswordRequirements(this.value);
+        });
+
+        // Submit Login Utama
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const user = users.find(u => u.username === username);
+
+            if (!user) {
+                showError('Akun tidak ditemukan atau belum terdaftar.');
+                return;
+            }
+            if (user.password !== password) {
+                showError('Password yang Anda masukkan salah.');
+                return;
+            }
+
+            const btn = document.querySelector('.login-button');
+            btn.classList.add('loading');
+            btn.querySelector('.button-text').textContent = 'Memproses...';
+
+            setTimeout(() => {
+                localStorage.setItem('loggedInUser', username);
+                window.location.href = 'webtoko.html';
+            }, 1500);
+        });
+
+        // Submit Daftar Akun
+        document.getElementById('signupForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const username = document.getElementById('newUsername').value.trim();
+            const email = document.getElementById('newEmail').value.trim();
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            const errorBox = document.getElementById('signupError');
+            errorBox.style.display = 'none';
+
+            if (!username || !email || !password) return;
+
+            const isLowercase = username.length > 0 && !/[A-Z]/.test(username);
+            const hasSpecial = /[._]/.test(username);
+            if (!isLowercase || !hasSpecial) {
+                errorBox.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Syarat Username: Hanya huruf kecil dan harus ada titik (.) atau underscore (_)!';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            if (users.some(u => u.username === username)) {
+                errorBox.innerHTML = '<i class="fas fa-user-xmark"></i> Username sudah dipakai, silakan pilih yang lain.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            if (users.some(u => u.email === email)) {
+                errorBox.innerHTML = '<i class="fas fa-envelope-open-text"></i> Email sudah terdaftar.';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                errorBox.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Password konfirmasi tidak sama!';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const { requirements } = checkPasswordStrength(password);
+            if (!requirements.length || !requirements.hasNumber || !requirements.hasLetter || !requirements.hasSpecialChar) {
+                errorBox.innerHTML = '<i class="fas fa-shield-halved"></i> Password belum memenuhi syarat keamanan!';
+                errorBox.style.display = 'block';
+                return;
+            }
+
+            const btn = document.querySelector('.signup-button');
+            btn.classList.add('loading');
+            btn.querySelector('.button-text').textContent = 'Mendaftarkan...';
+
+            setTimeout(() => {
+                const newUser = { 
+                    username, email, password, 
+                    registrationDate: new Date().toLocaleDateString('id-ID'), 
+                    joinDate: new Date().toISOString() 
+                };
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+
+                document.getElementById('signupSuccess').style.display = 'flex';
+                document.getElementById('signupForm').style.display = 'none';
+
+                setTimeout(() => {
+                    document.getElementById('signupModal').style.display = 'none';
+                    document.getElementById('signupForm').reset();
+                    document.getElementById('signupSuccess').style.display = 'none';
+                    document.getElementById('signupForm').style.display = 'block';
+                    btn.classList.remove('loading');
+                    btn.querySelector('.button-text').textContent = 'Daftar Sekarang';
+                    document.body.classList.remove('body-no-scroll');
+                }, 2000);
+            }, 1500);
+        });
+
+        // Kontrol Modals
+        const modals = {
+            terms: document.getElementById('termsModal'),
+            signup: document.getElementById('signupModal'),
+            forgot: document.getElementById('forgotModal')
+        };
+
+        document.getElementById('openTermsModal').addEventListener('click', e => { 
+            e.preventDefault(); 
+            openModal(modals.terms);
+            // Reset status checkbox saat modal terms dibuka
+            document.getElementById('agreeTermsCheck').checked = false;
+            document.getElementById('acceptTermsBtn').disabled = true;
+        });
+        
+        document.getElementById('signUp').addEventListener('click', e => { e.preventDefault(); openModal(modals.signup); });
+        
+        document.getElementById('forgotPassword').addEventListener('click', e => { 
+            e.preventDefault(); 
+            openModal(modals.forgot);
+            document.getElementById('forgotForm').reset();
+            document.getElementById('resetEmail').disabled = true;
+            document.getElementById('newResetPassword').disabled = true;
+            document.getElementById('resetPasswordBtn').disabled = true;
+            document.getElementById('stepIndicator1').className = 'step-item active';
+            document.getElementById('stepIndicator2').className = 'step-item';
+            document.getElementById('stepIndicator3').className = 'step-item';
+            document.getElementById('usernameError').style.display = 'none';
+            document.getElementById('emailError').style.display = 'none';
+        });
+
+        document.querySelector('.close-terms-btn').addEventListener('click', () => {
+            if(!document.getElementById('acceptTermsBtn').disabled) {
+                closeModal(modals.terms);
+            }
+        });
+        
+        document.querySelectorAll('.switch-to-login').forEach(btn => {
+            btn.addEventListener('click', e => {
+                e.preventDefault();
+                Object.values(modals).forEach(closeModal);
+            });
+        });
+
+        document.querySelectorAll('.close').forEach(btn => {
+            btn.addEventListener('click', function() {
+                closeModal(this.closest('.modal'));
+            });
+        });
+
+        window.addEventListener('click', e => {
+            if (e.target.classList.contains('modal')) closeModal(e.target);
+        });
+
+        function openModal(modal) {
+            modal.style.display = 'block';
+            document.body.classList.add('body-no-scroll');
+        }
+
+        function closeModal(modal) {
+            modal.style.display = 'none';
+            document.body.classList.remove('body-no-scroll');
+            const forms = modal.querySelectorAll('form');
+            if(forms) forms.forEach(f => f.reset());
+            modal.querySelectorAll('.signup-error, .signup-success, .input-error-message').forEach(el => el.style.display = 'none');
+            document.querySelectorAll('.requirement').forEach(el => {
+                el.className = 'requirement invalid';
+                el.querySelector('i').className = 'fas fa-times-circle';
+            });
+        }
+
+        document.querySelectorAll('.floating input').forEach(input => {
+            input.addEventListener('focus', function () { this.parentNode.classList.add('focused'); });
+            input.addEventListener('blur', function () { if (!this.value) this.parentNode.classList.remove('focused'); });
+            if (input.value) input.parentNode.classList.add('focused');
+        });
+    </script>
+</body>
+</html>

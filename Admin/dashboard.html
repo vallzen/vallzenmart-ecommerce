@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Statistik - Admin VallzenMart</title>
+    <link rel="stylesheet" href="assets/css/stylekelolauser.css">
+    <link rel="stylesheet" href="assets/css/styledashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="confirmationPopup" class="confirmation-popup">
+        <div class="confirmation-content">
+            <i id="confirmationIcon" class="fas fa-sign-out-alt confirmation-icon text-red"></i>
+            <h3 class="confirmation-title">Konfirmasi Logout</h3>
+            <p class="confirmation-message">Apakah Anda yakin ingin keluar dari sistem?</p>
+            <div class="confirmation-buttons">
+                <button id="confirmAction" class="confirmation-btn confirm bg-red">Ya, Logout</button>
+                <button id="cancelAction" class="confirmation-btn cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo"><img src="assets/images/logo_putih_3264x3264.png" alt="Logo" style="width: 75px; height: 75px; object-fit: contain;"><h1>VallzenMart Admin</h1></div>
+                <nav class="admin-nav">
+                    <ul>
+                        <li class="active"><a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                        <li><a href="kelolauser.html"><i class="fas fa-users"></i> Kelola User</a></li>
+                        <li><a href="datapenjualan.html"><i class="fas fa-chart-line"></i> Data Penjualan</a></li>
+                        <li><a href="pesanancustomer.html"><i class="fas fa-shopping-cart"></i> Pesanan Customer</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-avatar">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <div class="admin-details">
+                        <span id="currentAdminName"></span>
+                        <small>Administrator</small>
+                    </div>
+                    <button id="logoutAdmin" class="logout-btn" title="Logout">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <main class="admin-main" style="grid-template-columns: 1fr;">
+            <div class="section-header">
+                <h2><i class="fas fa-chart-bar"></i> Dashboard Statistik</h2>
+                <p>Ringkasan performa toko VallzenMart. Klik pada kotak untuk melihat detail.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="openDetailModal('produk')">
+                    <div class="stat-icon bg-blue"><i class="fas fa-box"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Produk</h3>
+                        <p id="valProduk">0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="openDetailModal('pendapatan')">
+                    <div class="stat-icon bg-green"><i class="fas fa-wallet"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Pendapatan</h3>
+                        <p id="valPendapatan">Rp 0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="openDetailModal('customer')">
+                    <div class="stat-icon bg-purple"><i class="fas fa-users"></i></div>
+                    <div class="stat-info">
+                        <h3>Total Customer</h3>
+                        <p id="valCustomer">0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="openDetailModal('pending')">
+                    <div class="stat-icon bg-yellow"><i class="fas fa-clock"></i></div>
+                    <div class="stat-info">
+                        <h3>Pesanan Pending</h3>
+                        <p id="valPending">0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="openDetailModal('selesai')">
+                    <div class="stat-icon bg-teal"><i class="fas fa-check-double"></i></div>
+                    <div class="stat-info">
+                        <h3>Pesanan Selesai</h3>
+                        <p id="valSelesai">0</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="detailModal" class="modal-detail">
+        <div class="modal-detail-content">
+            <span class="close-detail">&times;</span>
+            <h2 id="detailTitle" class="detail-title">Detail</h2>
+            <div class="table-responsive">
+                <table class="detail-table">
+                    <thead id="detailHead"></thead>
+                    <tbody id="detailBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Master Produk (Berdasarkan WebToko)
+        const products = [
+            { id: "product1", name: "Aerostreet X Doraemon White Blue", price: 229999, category: "fashion", image: "assets/images/sepatu_aerostreet_doraemon_white_blue.jpg", sizes: ["38","39","40","41","42","43","44"], stok: 15 },
+            { id: "product2", name: "Aerostreet X Gibran Rakabuming Raka", price: 249999, category: "fashion", image: "assets/images/sepatu_aerostreet_gibran_s2.jpg", sizes: ["38","39","40","41","42","43","44"], stok: 20 },
+            { id: "product3", name: "Aerostreet Broklyn Series", price: 179999, category: "fashion", image: "assets/images/sepatu_broklyn_series.jpg", sizes: ["38","39","40","41","42","43","44"], colors: ["Merah", "Kuning", "Hijau"], stok: 10 },
+            { id: "product4", name: "Hoodie Hexsys Ryushiden", price: 249999, category: "fashion", image: "assets/images/hoodie_hexsys_ryushiden.jpg", sizes: ["S", "M", "L", "XL", "XXL"], stok: 5 },
+            { id: "product5", name: "Headset Gaming Rexus Vonix F30", price: 181999, category: "electronics", image: "assets/images/headset_rexus_vonix_f30.jpg", stok: 8 },
+            { id: "product6", name: "Helm NJS Kairoz Stone Grey", price: 799999, category: "accessories", image: "assets/images/helm_njs_kairoz_stone_grey.jpg", sizes: ["M", "L", "XL"], stok: 3 },
+            { id: "product7", name: "Jaket Varisty Deliwafa", price: 449999, category: "fashion", image: "assets/images/jaket_varisty_deliwafa.jpg", sizes: ["S", "M", "L", "XL", "XXL"], stok: 12 },
+            { id: "product8", name: "Intercom Helm Gearelec DK02", price: 179999, category: "accessories", image: "assets/images/intercom_gearelec_dk02.jpg", stok: 15 },
+            { id: "product9", name: "Helm JPX Supreme Hitam", price: 299999, category: "accessories", image: "assets/images/helm_jpx_supreme_black.jpg", sizes: ["M", "L"], stok: 7 },
+            { id: "product10", name: "Sarung Tangan Daymoton", price: 59999, category: "accessories", image: "assets/images/sarung_tangan_daymoton.jpg", sizes: ["M", "L"], stok: 25 },
+            { id: "product11", name: "Fan Cooler GAMEN GMR02", price: 149999, category: "electronics", image: "assets/images/fan_cooler_gamen_gmr02.jpg", stok: 10 },
+            { id: "product12", name: "Kisonli L-1030 Speaker", price: 109999, category: "electronics", image: "assets/images/speaker_kisonli_l1030.jpg", stok: 20 }
+        ];
+
+        // Autentikasi
+        if (!sessionStorage.getItem('adminAuthenticated')) window.location.href = 'loginadmin.html';
+        document.getElementById('currentAdminName').textContent = sessionStorage.getItem('adminUsername') || 'Admin';
+
+        // Logout
+        document.getElementById('logoutAdmin').onclick = () => {
+            document.getElementById('confirmationPopup').classList.add('show');
+        };
+        document.getElementById('cancelAction').onclick = () => {
+            document.getElementById('confirmationPopup').classList.remove('show');
+        };
+        document.getElementById('confirmAction').onclick = () => {
+            sessionStorage.clear(); window.location.href = 'loginadmin.html';
+        };
+
+        // Pengambilan Data
+        const adminOrders = JSON.parse(localStorage.getItem('orders')) || [];
+        const users = JSON.parse(localStorage.getItem('users')) || [];
+
+        const completedOrders = adminOrders.filter(o => o.status === 'completed');
+        const pendingOrders = adminOrders.filter(o => o.status === 'processing' || o.status === 'packing');
+        const totalPendapatan = completedOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+
+        // Render Angka Utama
+        document.getElementById('valProduk').textContent = products.length;
+        document.getElementById('valPendapatan').textContent = 'Rp ' + totalPendapatan.toLocaleString('id-ID');
+        document.getElementById('valCustomer').textContent = users.length;
+        document.getElementById('valPending').textContent = pendingOrders.length;
+        document.getElementById('valSelesai').textContent = completedOrders.length;
+
+        // Logika Pop-up Detail
+        const modal = document.getElementById('detailModal');
+        const thead = document.getElementById('detailHead');
+        const tbody = document.getElementById('detailBody');
+
+        document.querySelector('.close-detail').onclick = () => modal.style.display = 'none';
+        window.onclick = (e) => { if(e.target === modal) modal.style.display = 'none'; }
+
+        function formatTanggal(isoString) {
+            if(!isoString) return '-';
+            try {
+                if (isoString.includes(',') && !isoString.includes('T')) return isoString;
+                const d = new Date(isoString);
+                return `${d.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })} ${d.toLocaleTimeString('id-ID', { hour12: false }).replace(/:/g, '.')}`;
+            } catch(e) { return isoString; }
+        }
+
+        function openDetailModal(type) {
+            thead.innerHTML = '';
+            tbody.innerHTML = '';
+            
+            if(type === 'produk') {
+                document.getElementById('detailTitle').innerHTML = '<i class="fas fa-box text-blue"></i> Detail Produk Tersedia';
+                thead.innerHTML = `<tr><th>Gambar</th><th>Nama Produk</th><th>Kategori</th><th>Varian</th><th>Stok</th><th>Harga</th></tr>`;
+                products.forEach(p => {
+                    let varText = [];
+                    if(p.sizes) varText.push("Size: " + p.sizes.join(', '));
+                    if(p.colors) varText.push("Warna: " + p.colors.join(', '));
+                    tbody.innerHTML += `
+                        <tr>
+                            <td><img src="${p.image}" width="50" style="border-radius:6px; border:1px solid #ddd"></td>
+                            <td style="font-weight:600">${p.name}</td>
+                            <td style="text-transform:uppercase; font-size:0.85rem">${p.category}</td>
+                            <td style="font-size:0.85rem">${varText.length ? varText.join('<br>') : '-'}</td>
+                            <td style="font-weight:bold; color:#d69e2e">${p.stok || 10}</td>
+                            <td style="color:#38a169; font-weight:600">Rp ${p.price.toLocaleString('id-ID')}</td>
+                        </tr>
+                    `;
+                });
+            } 
+            else if(type === 'pendapatan') {
+                document.getElementById('detailTitle').innerHTML = '<i class="fas fa-wallet text-green"></i> Rincian Pendapatan';
+                thead.innerHTML = `<tr><th>No Pesanan</th><th>Waktu Transaksi</th><th>Jumlah Pendapatan</th></tr>`;
+                if(completedOrders.length === 0) tbody.innerHTML = `<tr><td colspan="3" class="text-center">Belum ada pendapatan</td></tr>`;
+                completedOrders.forEach(o => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600; color:#2b6cb0">#${o.orderId}</td>
+                            <td>${formatTanggal(o.date)}</td>
+                            <td style="color:#38a169; font-weight:600">Rp ${(o.total || 0).toLocaleString('id-ID')}</td>
+                        </tr>
+                    `;
+                });
+            }
+            else if(type === 'customer') {
+                document.getElementById('detailTitle').innerHTML = '<i class="fas fa-users text-purple"></i> Daftar Akun Customer';
+                thead.innerHTML = `<tr><th>Username</th><th>Email</th><th>Tanggal Pembuatan Akun</th></tr>`;
+                if(users.length === 0) tbody.innerHTML = `<tr><td colspan="3" class="text-center">Belum ada akun terdaftar</td></tr>`;
+                users.forEach(u => {
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600">@${u.username}</td>
+                            <td>${u.email}</td>
+                            <td>${formatTanggal(u.joinDate || u.registrationDate)}</td>
+                        </tr>
+                    `;
+                });
+            }
+            else if(type === 'pending' || type === 'selesai') {
+                const isPending = type === 'pending';
+                const dataArr = isPending ? pendingOrders : completedOrders;
+                
+                document.getElementById('detailTitle').innerHTML = isPending 
+                    ? '<i class="fas fa-clock text-yellow"></i> Detail Pesanan Pending' 
+                    : '<i class="fas fa-check-double text-teal"></i> Detail Pesanan Selesai';
+                
+                thead.innerHTML = `<tr><th>No Pesanan</th><th>Pelanggan</th><th>Produk Dipesan</th><th>Alamat & Kontak</th><th>Total & Metode</th><th>Waktu Pemesanan</th></tr>`;
+                if(dataArr.length === 0) tbody.innerHTML = `<tr><td colspan="6" class="text-center">Tidak ada data pesanan</td></tr>`;
+                
+                dataArr.forEach(o => {
+                    const prods = o.items.map(i => `• ${i.name} (${i.quantity}x)`).join('<br>');
+                    const payMethod = o.payment === 'transfer' ? 'Bank BRI' : o.payment === 'ewallet' ? 'DANA' : 'COD';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td style="font-weight:600; color:#2b6cb0">#${o.orderId}</td>
+                            <td><strong>${o.customer?.name||'-'}</strong></td>
+                            <td style="font-size:0.85rem; max-width: 250px;">${prods}</td>
+                            <td style="font-size:0.85rem">
+                                <strong>HP:</strong> ${o.customer?.phone||'-'}<br>
+                                <strong>Alamat:</strong> ${o.customer?.address||'-'}
+                            </td>
+                            <td>
+                                <strong style="color:#38a169;">Rp ${(o.total||0).toLocaleString('id-ID')}</strong><br>
+                                <small class="pay-badge">${payMethod}</small>
+                            </td>
+                            <td style="font-size:0.85rem">${formatTanggal(o.date)}</td>
+                        </tr>
+                    `;
+                });
+            }
+
+            modal.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

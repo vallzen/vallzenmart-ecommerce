@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pesanan Customer - Admin VallzenMart</title>
+    <link rel="stylesheet" href="assets/css/stylekelolauser.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        .orders-table { width: 100%; border-collapse: collapse; min-width: 1100px; font-size: 0.95rem; }
+        .orders-table th { background-color: #f1f5f9; padding: 1.2rem; text-align: left; border-bottom: 2px solid #e2e8f0; color: #4a5568; text-transform: uppercase; font-size: 0.85rem;}
+        .orders-table td { padding: 1.2rem; border-bottom: 1px solid #edf2f7; color: #2d3748; vertical-align: middle;}
+        
+        .action-btns { display: flex; gap: 8px; }
+        .action-btns button { width: 36px; height: 36px; border: none; border-radius: 50%; color: white; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center;}
+        .btn-view { background: #3182ce; } .btn-view:hover { background: #2b6cb0; transform: scale(1.1);}
+        .btn-approve { background: #38a169; } .btn-approve:hover { background: #2f855a; transform: scale(1.1);}
+        .btn-reject { background: #e53e3e; } .btn-reject:hover { background: #c53030; transform: scale(1.1);}
+
+        /* Desain Resi PDF */
+        .pdf-receipt { font-family: 'Helvetica', Arial, sans-serif; padding: 40px; background: white; color: #333; line-height: 1.5; }
+        .pdf-header { display: flex; align-items: center; border-bottom: 2px solid #1a365d; padding-bottom: 20px; margin-bottom: 20px; }
+        .pdf-logo { width: 80px; height: 80px; object-fit: contain; margin-right: 20px; }
+        .pdf-brand h1 { margin: 0; color: #1a365d; font-size: 24px; font-weight: 800; letter-spacing: 1px; }
+        .pdf-brand p { margin: 5px 0 0 0; color: #718096; font-size: 13px; }
+        .pdf-title { text-align: right; margin-left: auto; }
+        .pdf-title h2 { margin: 0; color: #48bb78; font-size: 20px; text-transform: uppercase; }
+        .pdf-title p { margin: 5px 0 0 0; font-size: 13px; font-weight: bold; }
+        
+        .pdf-info-grid { display: flex; justify-content: space-between; margin-bottom: 30px; }
+        .pdf-info-box { width: 48%; background: #f8fafc; padding: 15px; border-radius: 8px; border: 1px solid #edf2f7; }
+        .pdf-info-box h3 { margin: 0 0 10px 0; font-size: 14px; color: #4a5568; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+        .pdf-row { display: flex; margin-bottom: 6px; font-size: 13px; }
+        .pdf-label { width: 120px; font-weight: bold; color: #4a5568; }
+        .pdf-val { flex: 1; color: #1a202c; }
+
+        .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+        .pdf-table th { background: #1a365d; color: white; padding: 10px; font-size: 13px; text-align: left; }
+        .pdf-table td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
+        .pdf-totals { width: 300px; margin-left: auto; }
+        .pdf-totals .pdf-row { justify-content: space-between; font-size: 14px; margin-bottom: 8px;}
+        .pdf-totals .pdf-grand { font-size: 18px; font-weight: 800; color: #38a169; border-top: 2px solid #1a365d; padding-top: 10px; margin-top: 10px; }
+
+        .pdf-footer { margin-top: 40px; text-align: center; font-size: 12px; color: #a0aec0; border-top: 1px dashed #cbd5e0; padding-top: 15px; }
+
+        .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; display: inline-block;}
+        .status-badge.processing { background: #ebf8ff; color: #3182ce; }
+        .status-badge.packing { background: #fffff0; color: #d69e2e; }
+        .status-badge.completed { background: #f0fff4; color: #38a169; }
+        .status-badge.cancelled { background: #fff5f5; color: #e53e3e; }
+    </style>
+</head>
+
+<body>
+    <div id="notificationPopup" class="notification-popup">
+        <i class="fas fa-check-circle"></i><div class="notification-content"></div><button class="notification-close">&times;</button>
+    </div>
+    <div id="confirmationPopup" class="confirmation-popup">
+        <div class="confirmation-content">
+            <i id="confirmationIcon" class="fas fa-question-circle confirmation-icon"></i>
+            <h3 id="confirmationTitle" class="confirmation-title">Konfirmasi</h3>
+            <p id="confirmationMessage" class="confirmation-message">Apakah Anda yakin?</p>
+            <div class="confirmation-buttons">
+                <button id="confirmAction" class="confirmation-btn confirm">Ya</button>
+                <button id="cancelAction" class="confirmation-btn cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <!-- BAGIAN YANG DIUBAH: icon diganti dengan gambar dan diberi inline style 1:1 (45x45px) -->
+                <div class="logo"><img src="assets/images/logo_putih_3264x3264.png" alt="Logo" style="width: 75px; height: 75px; object-fit: contain;"><h1>VallzenMart Admin</h1></div>
+                <nav class="admin-nav">
+                    <ul>
+                        <li><a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                        <li><a href="kelolauser.html"><i class="fas fa-users"></i> Kelola User</a></li>
+                        <li><a href="datapenjualan.html"><i class="fas fa-chart-line"></i> Data Penjualan</a></li>
+                        <li class="active"><a href="#"><i class="fas fa-shopping-cart"></i> Pesanan Customer</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-avatar"><i class="fas fa-user-shield"></i></div>
+                    <div class="admin-details"><span id="currentAdminName"></span><small>Administrator</small></div>
+                    <button id="logoutAdmin" class="logout-btn"><i class="fas fa-power-off"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <main class="admin-main" style="grid-template-columns: 1fr;">
+            <section class="user-management">
+                <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                    <div>
+                        <h2><i class="fas fa-clipboard-check"></i> Kelola Pesanan Aktif</h2>
+                        <p>Konfirmasi pengiriman atau batalkan pesanan yang masuk.</p>
+                    </div>
+                    <a href="riwayatpesanan.html" style="background: #2d3748; color: white; padding: 10px 20px; border-radius: 8px; text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.3s;" onmouseover="this.style.background='#1a202c'" onmouseout="this.style.background='#2d3748'">
+                        <i class="fas fa-history"></i> Riwayat Pesanan
+                    </a>
+                </div>
+
+                <div class="tools-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchOrder" placeholder="Cari ID Pesanan, Nama, atau HP...">
+                    </div>
+                    <div class="filter-date-group">
+                        <label><i class="fas fa-filter"></i> Filter Status:</label>
+                        <select id="filterStatus" class="date-input" style="border:1px solid #cbd5e0; padding:5px 10px; border-radius:6px;">
+                            <option value="all">Semua Status</option>
+                            <option value="processing">Sedang Dikemas</option>
+                            <option value="packing">Dalam Pengiriman</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="user-list-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th width="15%">No Pesanan</th>
+                                <th width="20%">Pelanggan / No HP</th>
+                                <th width="20%">Total Bayar / Metode</th>
+                                <th width="15%">Status</th>
+                                <th width="15%">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div id="receiptModal" class="modal-detail" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.6); z-index:2000; align-items:center; justify-content:center; padding:20px;">
+        <div style="background:white; border-radius:12px; width:100%; max-width:850px; position:relative; overflow:hidden;">
+            <div style="padding:15px 20px; background:#f8fafc; border-bottom:1px solid #e2e8f0; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="margin:0; color:#2b6cb0;">Preview Invoice</h3>
+                <span class="close-receipt" style="font-size:1.5rem; cursor:pointer; color:#a0aec0;">&times;</span>
+            </div>
+            <div style="max-height:70vh; overflow-y:auto;">
+                <div id="receiptContent"></div>
+            </div>
+            <div style="padding:15px 20px; border-top:1px solid #e2e8f0; text-align:right; background:#f8fafc;">
+                <button id="downloadPdfBtn" style="background:#38a169; color:white; border:none; padding:10px 20px; border-radius:6px; font-weight:bold; cursor:pointer;"><i class="fas fa-file-pdf"></i> Unduh PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utilities (Sama)
+        function showNotification(msg, err=false) { const n=document.getElementById('notificationPopup'); n.querySelector('.notification-content').textContent=msg; n.className=err?'notification-popup error show':'notification-popup show'; setTimeout(()=>n.classList.remove('show'),4000); }
+        document.querySelector('.notification-close').onclick = () => document.getElementById('notificationPopup').classList.remove('show');
+
+        function showConfirm(title, msg, type, cb) {
+            const popup = document.getElementById('confirmationPopup');
+            document.getElementById('confirmationTitle').textContent = title;
+            document.getElementById('confirmationMessage').textContent = msg;
+            const icon = document.getElementById('confirmationIcon'), btn = document.getElementById('confirmAction');
+            
+            if(type === 'logout' || type === 'reject') { icon.className = 'fas fa-times-circle confirmation-icon text-red'; btn.className = 'confirmation-btn confirm bg-red'; }
+            else { icon.className = 'fas fa-truck confirmation-icon text-green'; btn.className = 'confirmation-btn confirm bg-green'; }
+            
+            popup.classList.add('show');
+            const handler = (res) => { popup.classList.remove('show'); btn.onclick = null; document.getElementById('cancelAction').onclick = null; cb(res); };
+            btn.onclick = () => handler(true); document.getElementById('cancelAction').onclick = () => handler(false);
+        }
+
+        // Auth
+        if (!sessionStorage.getItem('adminAuthenticated')) window.location.href = 'loginadmin.html';
+        document.getElementById('currentAdminName').textContent = sessionStorage.getItem('adminUsername') || 'Admin';
+        document.getElementById('logoutAdmin').onclick = () => showConfirm('Logout', 'Keluar dari sistem?', 'logout', (res) => { if(res){ sessionStorage.clear(); window.location.href='loginadmin.html'; }});
+
+        function getPaymentIcon(method) {
+            if(method === 'transfer') return '<span style="color:#1a365d; font-weight:bold;"><i class="fas fa-university"></i> Bank BRI</span>';
+            if(method === 'ewallet') return '<span style="color:#3182ce; font-weight:bold;"><i class="fas fa-wallet"></i> DANA</span>';
+            return '<span style="color:#38a169; font-weight:bold;"><i class="fas fa-money-bill-wave"></i> COD</span>';
+        }
+
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const term = document.getElementById('searchOrder').value.toLowerCase();
+            const status = document.getElementById('filterStatus').value;
+            const tbody = document.getElementById('ordersTableBody');
+            
+            // Filter hanya pesanan aktif yang belum selesai/dibatalkan (Kecuali difilter "all")
+            let filtered = orders.filter(o => o.status !== 'completed' && o.status !== 'cancelled');
+            
+            if(status !== 'all') filtered = filtered.filter(o => o.status === status);
+            if(term) {
+                filtered = filtered.filter(o => o.orderId.toLowerCase().includes(term) || (o.customer?.name||'').toLowerCase().includes(term) || (o.customer?.phone||'').includes(term));
+            }
+
+            filtered.sort((a,b) => new Date(b.date) - new Date(a.date));
+            tbody.innerHTML = '';
+
+            if(!filtered.length) { tbody.innerHTML = `<tr><td colspan="5" class="no-data" style="text-align:center; padding:30px; color:#a0aec0;">Tidak ada pesanan aktif.</td></tr>`; return; }
+
+            filtered.forEach(o => {
+                const statObj = { 'processing': {t:'Dikemas', c:'processing'}, 'packing':{t:'Dikirim', c:'packing'} };
+                const s = statObj[o.status] || {t:o.status, c:''};
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:700; color:#2b6cb0;">${o.orderId}<br><small style="color:#a0aec0; font-weight:normal;">${o.date}</small></td>
+                        <td><strong>${o.customer?.name||'-'}</strong><br><small>${o.customer?.phone||'-'}</small></td>
+                        <td><strong>Rp ${(o.total||0).toLocaleString('id-ID')}</strong><br>${getPaymentIcon(o.payment)}</td>
+                        <td><span class="status-badge ${s.c}">${s.t}</span></td>
+                        <td>
+                            <div class="action-btns">
+                                <button class="btn-view" onclick="previewReceipt('${o.orderId}')" title="Cetak Resi"><i class="fas fa-print"></i></button>
+                                ${o.status === 'processing' ? `<button class="btn-approve" onclick="updateStatus('${o.orderId}', 'packing')" title="Kirim Pesanan"><i class="fas fa-truck-fast"></i></button>` : ''}
+                                <button class="btn-reject" onclick="updateStatus('${o.orderId}', 'cancelled')" title="Batalkan Pesanan"><i class="fas fa-times"></i></button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        window.updateStatus = function(id, status) {
+            const title = status === 'packing' ? 'Konfirmasi Pengiriman' : 'Batalkan Pesanan';
+            const msg = status === 'packing' ? `Tandai pesanan ${id} telah diserahkan ke kurir?` : `Yakin ingin membatalkan pesanan ${id}?`;
+            const type = status === 'packing' ? 'approve' : 'reject';
+
+            showConfirm(title, msg, type, (confirm) => {
+                if(confirm) {
+                    const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                    const idx = orders.findIndex(o => o.orderId === id);
+                    if(idx > -1) {
+                        orders[idx].status = status;
+                        if(status === 'packing') orders[idx].shippedDate = new Date().toISOString();
+                        if(status === 'cancelled') { orders[idx].cancelledBy = 'Admin'; orders[idx].cancelDate = new Date().toISOString(); }
+                        localStorage.setItem('orders', JSON.stringify(orders));
+
+                        // Sync to User
+                        const userOrders = JSON.parse(localStorage.getItem('userOrders')) || [];
+                        const uIdx = userOrders.findIndex(o => o.orderId === id);
+                        if(uIdx > -1) { userOrders[uIdx].status = status; if(status==='packing') userOrders[uIdx].shippedDate=orders[idx].shippedDate; localStorage.setItem('userOrders', JSON.stringify(userOrders)); }
+                        
+                        showNotification('Status berhasil diperbarui!');
+                        loadOrders();
+                    }
+                }
+            });
+        }
+
+        let currentReceiptId = null;
+        window.previewReceipt = function(id) {
+            const order = (JSON.parse(localStorage.getItem('orders'))||[]).find(o => o.orderId === id);
+            if(!order) return;
+            currentReceiptId = id;
+            
+            const subtotal = order.items.reduce((s,i)=>s+(i.price*i.quantity),0);
+            const shipping = order.shippingCost || (order.shipping?.cost || 15000);
+            const totalQty = order.items.reduce((s,i)=>s+i.quantity,0);
+
+            let payText = 'Transfer Bank BRI';
+            if(order.payment === 'ewallet') payText = 'E-Wallet DANA';
+            if(order.payment === 'cod' || order.payment === 'COD (Bayar di Tempat)') payText = 'Bayar di Tempat (COD)';
+
+            document.getElementById('receiptContent').innerHTML = `
+                <div class="pdf-receipt" id="printArea">
+                    <div class="pdf-header">
+                        <img src="assets/images/logo_full_3264x3264.png" alt="Logo" class="pdf-logo">
+                        <div class="pdf-brand">
+                            <h1>VallzenMart</h1>
+                            <p>Sistem Management E-Commerce<br>Jl. H. Nimun, Kota Bekasi, Jawa Barat - 0899-0023-990</p>
+                        </div>
+                        <div class="pdf-title">
+                            <h2>INVOICE PESANAN</h2>
+                            <p>${order.orderId}</p>
+                        </div>
+                    </div>
+
+                    <div class="pdf-info-grid">
+                        <div class="pdf-info-box">
+                            <h3>Informasi Pelanggan</h3>
+                            <div class="pdf-row"><div class="pdf-label">Nama</div><div class="pdf-val">: ${order.customer?.name||'-'}</div></div>
+                            <div class="pdf-row"><div class="pdf-label">Telepon</div><div class="pdf-val">: ${order.customer?.phone||'-'}</div></div>
+                            <div class="pdf-row"><div class="pdf-label">Alamat</div><div class="pdf-val">: ${order.customer?.address||'-'}</div></div>
+                        </div>
+                        <div class="pdf-info-box">
+                            <h3>Informasi Transaksi</h3>
+                            <div class="pdf-row"><div class="pdf-label">Tanggal</div><div class="pdf-val">: ${order.date}</div></div>
+                            <div class="pdf-row"><div class="pdf-label">Pembayaran</div><div class="pdf-val">: <strong>${payText}</strong></div></div>
+                            <div class="pdf-row"><div class="pdf-label">Pengiriman</div><div class="pdf-val">: ${order.shippingMethod||order.shipping?.method||'JNE'}</div></div>
+                        </div>
+                    </div>
+
+                    <table class="pdf-table">
+                        <thead>
+                            <tr>
+                                <th>NAMA PRODUK</th>
+                                <th style="text-align:center">QTY</th>
+                                <th style="text-align:right">HARGA</th>
+                                <th style="text-align:right">SUBTOTAL</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${order.items.map(i => `
+                                <tr>
+                                    <td><strong>${i.name}</strong><br><span style="color:#718096; font-size:11px;">Varian: ${i.size||i.color? (i.size||'')+' '+(i.color||'') : '-'}</span></td>
+                                    <td style="text-align:center">${i.quantity}</td>
+                                    <td style="text-align:right">Rp ${i.price.toLocaleString('id-ID')}</td>
+                                    <td style="text-align:right">Rp ${(i.price*i.quantity).toLocaleString('id-ID')}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+
+                    <div class="pdf-totals">
+                        <div class="pdf-row"><div class="pdf-label">Total Barang</div><div class="pdf-val" style="text-align:right">${totalQty} Item</div></div>
+                        <div class="pdf-row"><div class="pdf-label">Subtotal Produk</div><div class="pdf-val" style="text-align:right">Rp ${subtotal.toLocaleString('id-ID')}</div></div>
+                        <div class="pdf-row"><div class="pdf-label">Ongkos Kirim</div><div class="pdf-val" style="text-align:right">Rp ${shipping.toLocaleString('id-ID')}</div></div>
+                        <div class="pdf-row"><div class="pdf-label">Biaya Layanan</div><div class="pdf-val" style="text-align:right">Rp 2.000</div></div>
+                        <div class="pdf-row pdf-grand"><div class="pdf-label" style="color:#38a169;">TOTAL BAYAR</div><div class="pdf-val" style="text-align:right">Rp ${(order.total||0).toLocaleString('id-ID')}</div></div>
+                    </div>
+
+                    <div class="pdf-footer">
+                        Terima kasih telah berbelanja di VallzenMart. Barang yang sudah dibeli tidak dapat ditukar/dikembalikan kecuali ada cacat pabrik.<br>
+                        <em>Invoice dicetak otomatis oleh sistem pada ${new Date().toLocaleString('id-ID')}</em>
+                    </div>
+                </div>
+            `;
+            document.getElementById('receiptModal').style.display = 'flex';
+        }
+
+        document.querySelector('.close-receipt').onclick = () => document.getElementById('receiptModal').style.display = 'none';
+        document.getElementById('downloadPdfBtn').onclick = () => {
+            const el = document.getElementById('printArea');
+            html2pdf().set({
+                margin: 0,
+                filename: `Invoice_VallzenMart_${currentReceiptId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).from(el).save();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadOrders();
+            let to; document.getElementById('searchOrder').oninput = () => { clearTimeout(to); to = setTimeout(loadOrders, 300); };
+            document.getElementById('filterStatus').onchange = loadOrders;
+            setInterval(loadOrders, 5000);
+        });
+    </script>
+</body>
+</html>

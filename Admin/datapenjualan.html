@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Penjualan - Admin VallzenMart</title>
+    <link rel="stylesheet" href="assets/css/stylekelolauser.css">
+    <link rel="stylesheet" href="assets/css/styledatapenjualan.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div id="notificationPopup" class="notification-popup">
+        <i class="fas fa-check-circle"></i><div class="notification-content"></div><button class="notification-close">&times;</button>
+    </div>
+
+    <div id="confirmationPopup" class="confirmation-popup">
+        <div class="confirmation-content">
+            <i id="confirmationIcon" class="fas fa-question-circle confirmation-icon"></i>
+            <h3 id="confirmationTitle" class="confirmation-title">Konfirmasi</h3>
+            <p id="confirmationMessage" class="confirmation-message">Apakah Anda yakin?</p>
+            <div class="confirmation-buttons">
+                <button id="confirmAction" class="confirmation-btn confirm">Ya, Lanjutkan</button>
+                <button id="cancelAction" class="confirmation-btn cancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo"><img src="assets/images/logo_putih_3264x3264.png" alt="Logo" style="width: 75px; height: 75px; object-fit: contain;"><h1>VallzenMart Admin</h1></div>
+                <nav class="admin-nav">
+                    <ul>
+                        <li><a href="dashboard.html"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
+                        <li><a href="kelolauser.html"><i class="fas fa-users"></i> Kelola User</a></li>
+                        <li class="active"><a href="#"><i class="fas fa-chart-line"></i> Data Penjualan</a></li>
+                        <li><a href="pesanancustomer.html"><i class="fas fa-shopping-cart"></i> Pesanan Customer</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="admin-info">
+                    <div class="admin-avatar"><i class="fas fa-user-shield"></i></div>
+                    <div class="admin-details"><span id="currentAdminName"></span><small>Administrator</small></div>
+                    <button id="logoutAdmin" class="logout-btn" title="Logout"><i class="fas fa-power-off"></i></button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="admin-container">
+        <main class="admin-main" style="grid-template-columns: 1fr;">
+            <section class="completed-orders">
+                <div class="section-header">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Laporan Data Penjualan</h2>
+                    <p>Memonitor riwayat pesanan yang berstatus selesai.</p>
+                </div>
+
+                <div class="tools-bar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchCompletedOrder" placeholder="Cari No Pesanan, Nama, atau No HP...">
+                    </div>
+                    <div class="filter-date-group">
+                        <label><i class="fas fa-calendar-alt"></i> Range Tanggal:</label>
+                        <input type="date" id="startDate" class="date-input">
+                        <span class="separator">s/d</span>
+                        <input type="date" id="endDate" class="date-input">
+                    </div>
+                    <button id="exportBtn" class="action-btn export-btn bg-green">
+                        <i class="fas fa-file-excel"></i> Ekspor ke XLSX
+                    </button>
+                </div>
+
+                <div class="orders-table-container">
+                    <table class="orders-table">
+                        <thead>
+                            <tr>
+                                <th>No Pesanan</th>
+                                <th>Nama Pelanggan</th>
+                                <th>No HP</th>
+                                <th>Produk Dipesan</th>
+                                <th>Waktu Pemesanan</th>
+                                <th>Total Bayar</th>
+                                <th>Pembayaran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="completedOrdersTableBody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Utilities
+        function showNotification(msg, err=false) { const n=document.getElementById('notificationPopup'); n.querySelector('.notification-content').textContent=msg; n.className=err?'notification-popup error show':'notification-popup show'; setTimeout(()=>n.classList.remove('show'),4000); }
+        document.querySelector('.notification-close').onclick = () => document.getElementById('notificationPopup').classList.remove('show');
+
+        function showConfirm(title, msg, type, cb) {
+            const popup = document.getElementById('confirmationPopup');
+            document.getElementById('confirmationTitle').textContent = title;
+            document.getElementById('confirmationMessage').textContent = msg;
+            const icon = document.getElementById('confirmationIcon'), btn = document.getElementById('confirmAction');
+            if(type === 'logout') { icon.className = 'fas fa-sign-out-alt confirmation-icon text-red'; btn.className = 'confirmation-btn confirm bg-red'; }
+            else { icon.className = 'fas fa-file-excel confirmation-icon text-green'; btn.className = 'confirmation-btn confirm bg-green'; }
+            popup.classList.add('show');
+            const handler = (res) => { popup.classList.remove('show'); btn.onclick = null; document.getElementById('cancelAction').onclick = null; cb(res); };
+            btn.onclick = () => handler(true); document.getElementById('cancelAction').onclick = () => handler(false);
+        }
+
+        // Auth
+        if (!sessionStorage.getItem('adminAuthenticated')) window.location.href = 'loginadmin.html';
+        document.getElementById('currentAdminName').textContent = sessionStorage.getItem('adminUsername') || 'Admin';
+        document.getElementById('logoutAdmin').onclick = () => showConfirm('Logout', 'Keluar dari sistem?', 'logout', (res) => { if(res){ sessionStorage.clear(); window.location.href='loginadmin.html'; }});
+
+        function parseDateIndo(dateStr) {
+            if(!dateStr) return new Date(0);
+            const d = new Date(dateStr);
+            if(!isNaN(d.getTime())) return d;
+            const match = dateStr.match(/(\d{1,2}) (\w+) (\d{4})/);
+            if(match) {
+                const months = {'Januari':0, 'Februari':1, 'Maret':2, 'April':3, 'Mei':4, 'Juni':5, 'Juli':6, 'Agustus':7, 'September':8, 'Oktober':9, 'November':10, 'Desember':11};
+                return new Date(match[3], months[match[2]], match[1]);
+            }
+            return new Date(0);
+        }
+
+        function getPaymentBadge(method) {
+            if(method === 'transfer') return '<span class="pay-badge" style="color:#1a365d; border-color:#90cdf4;"><i class="fas fa-university"></i> Bank BRI</span>';
+            if(method === 'ewallet') return '<span class="pay-badge" style="color:#3182ce; border-color:#63b3ed;"><i class="fas fa-wallet"></i> DANA</span>';
+            return '<span class="pay-badge" style="color:#38a169; border-color:#9ae6b4;"><i class="fas fa-money-bill"></i> COD</span>';
+        }
+
+        function getPaymentText(method) {
+            if(method === 'transfer') return 'Bank BRI';
+            if(method === 'ewallet') return 'DANA';
+            return 'COD';
+        }
+
+        function loadSales() {
+            const adminOrders = JSON.parse(localStorage.getItem('orders')) || [];
+            const tbody = document.getElementById('completedOrdersTableBody');
+            const term = document.getElementById('searchCompletedOrder').value.toLowerCase();
+            const start = document.getElementById('startDate').value;
+            const end = document.getElementById('endDate').value;
+
+            let completed = adminOrders.filter(o => o.status === 'completed');
+
+            if(term) {
+                completed = completed.filter(o => o.orderId.toLowerCase().includes(term) || (o.customer?.name||'').toLowerCase().includes(term) || (o.customer?.phone||'').includes(term));
+            }
+
+            if(start || end) {
+                completed = completed.filter(o => {
+                    const d = parseDateIndo(o.date).setHours(0,0,0,0);
+                    if(start && end) return d >= new Date(start).setHours(0,0,0,0) && d <= new Date(end).setHours(23,59,59,999);
+                    if(start) return d >= new Date(start).setHours(0,0,0,0);
+                    if(end) return d <= new Date(end).setHours(23,59,59,999);
+                });
+            }
+
+            completed.sort((a,b) => parseDateIndo(b.date) - parseDateIndo(a.date));
+            tbody.innerHTML = '';
+
+            if(!completed.length) { tbody.innerHTML = `<tr><td colspan="7" class="no-data" style="text-align:center; padding:30px; color:#a0aec0;">Tidak ada data penjualan.</td></tr>`; return; }
+
+            completed.forEach(o => {
+                const prods = o.items.map(i => `• ${i.name} (${i.quantity}x)`).join('<br>');
+                tbody.innerHTML += `
+                    <tr>
+                        <td style="font-weight:700; color:#2b6cb0;">${o.orderId}</td>
+                        <td style="font-weight:600;">${o.customer?.name||'-'}</td>
+                        <td>${o.customer?.phone||'-'}</td>
+                        <td style="font-size:0.85rem;">${prods}</td>
+                        <td style="font-size:0.85rem;">${o.date}</td>
+                        <td style="font-weight:700; color:#38a169;">Rp ${(o.total||0).toLocaleString('id-ID')}</td>
+                        <td>${getPaymentBadge(o.payment)}</td>
+                    </tr>
+                `;
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSales();
+            let to; document.getElementById('searchCompletedOrder').oninput = () => { clearTimeout(to); to=setTimeout(loadSales, 300); };
+            document.getElementById('startDate').onchange = loadSales;
+            document.getElementById('endDate').onchange = loadSales;
+
+            document.getElementById('exportBtn').onclick = () => {
+                const rows = document.querySelectorAll('#completedOrdersTableBody tr');
+                if(!rows.length || rows[0].querySelector('.no-data')) return showNotification('Tabel kosong', true);
+
+                showConfirm('Ekspor Data Penjualan', 'Unduh laporan penjualan ke format Excel (.xlsx)?', 'export', (res) => {
+                    if(res) {
+                        const data = [['No Pesanan', 'Nama Pelanggan', 'No HP', 'Produk Dipesan', 'Waktu', 'Total Bayar (Rp)', 'Metode Pembayaran']];
+                        const orders = JSON.parse(localStorage.getItem('orders')) || [];
+                        const completed = orders.filter(o => o.status === 'completed');
+                        
+                        completed.forEach(o => {
+                            const prods = o.items.map(i => `${i.name} (${i.quantity}x)`).join(', ');
+                            data.push([ o.orderId, o.customer?.name||'-', o.customer?.phone||'-', prods, o.date, o.total, getPaymentText(o.payment) ]);
+                        });
+
+                        const wb = XLSX.utils.book_new(), ws = XLSX.utils.aoa_to_sheet(data);
+                        ws['!cols'] = [{wch:20}, {wch:25}, {wch:15}, {wch:50}, {wch:25}, {wch:15}, {wch:20}];
+                        XLSX.utils.book_append_sheet(wb, ws, "Penjualan");
+                        XLSX.writeFile(wb, `Data_Penjualan_VallzenMart_${new Date().getTime()}.xlsx`);
+                    }
+                });
+            };
+        });
+    </script>
+</body>
+</html> 
