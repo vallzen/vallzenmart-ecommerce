@@ -544,12 +544,24 @@ input:checked + .slider:before { transform: translateX(20px); }
 @media (max-width: 768px) {
     .navbar-container { flex-wrap: wrap; }
     .navbar-right { width: 100%; justify-content: space-between; margin-top: 15px; }
-    .navbar-buttons { display: none; flex-direction: column; width: 100%; gap: 10px; margin-top: 15px; }
+    
+    /* UBAHAN MENU NAVBAR (Berjajar ke samping) */
+    .navbar-buttons { 
+        display: none; 
+        flex-direction: row; /* Membuatnya berjajar ke samping */
+        justify-content: space-between; /* Menyebar rata */
+        width: 100%; 
+        gap: 10px; 
+        margin-top: 15px; 
+    }
     .navbar-buttons.show { display: flex; }
     .hamburger-menu { display: block; }
-    .button-text { display: inline-block; }
     
-    .product-grid { grid-template-columns: repeat(2, 1fr); }
+    /* Sembunyikan teks agar ikon bisa berjajar satu baris tanpa melebihi layar */
+    .button-text { display: none; } 
+    .nav-button { flex: 1; justify-content: center; padding: 10px; }
+
+    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 15px; }
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
@@ -561,8 +573,17 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 576px) {
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } /* Diubah jadi 2 kolom, jarak dirapatkan sedikit */
-    .product-image { height: 180px; } /* Tinggi gambar dikecilkan agar proporsional untuk 2 kolom di HP */
+    /* UBAHAN PRODUK 2 KOLOM */
+    .product-grid { 
+        grid-template-columns: repeat(2, 1fr) !important; /* Memaksa 2 kolom */
+        gap: 10px; 
+    }
+    .product-image { height: 160px; } /* Sesuaikan tinggi gambar */
+    
+    /* Penyesuaian agar teks tidak berantakan karena kartu semakin sempit */
+    .product-info h3 { font-size: 0.85rem; height: 2.6em; }
+    .product-price { font-size: 1.05rem; }
+    .product-actions { flex-direction: column; } /* Tombol keranjang & Beli ditumpuk vertikal */
     
     .qv-options-grid { grid-template-columns: 1fr; }
     .qv-actions { flex-direction: column; }
