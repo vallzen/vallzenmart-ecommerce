@@ -121,6 +121,24 @@
             margin-left: 5px;
             font-weight: 600;
         }
+
+        /* Samakan Posisi Logo dengan Riwayat Pesanan */
+        .navbar-logo-img {
+            left: -4px !important; 
+        }
+
+        @media (max-width: 768px) {
+            .navbar-logo-img {
+                left: 0px !important; 
+            }
+        }
+
+        /* Sembunyikan teks batal pada layar HP kecil agar ukuran tombol bulat rapi */
+        @media (max-width: 576px) {
+            .text-batal {
+                display: none;
+            }
+        }
     </style>
 </head>
 
