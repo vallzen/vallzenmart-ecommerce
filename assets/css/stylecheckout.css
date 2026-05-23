@@ -392,7 +392,16 @@
     .checkout-grid {
         display: flex;
         flex-direction: column;
-        gap: 20px; /* Otomatis memberi jarak antar elemen */
+        gap: 20px;
+        align-items: stretch; /* DITAMBAHKAN: Memaksa semua elemen ditarik hingga sama panjang */
+    }
+    
+    /* DITAMBAHKAN: Pastikan semua elemen penuh 100% pada layar HP */
+    .customer-info, 
+    .order-summary, 
+    .payment-summary {
+        width: 100%;
+        box-sizing: border-box;
     }
     
     /* MELEPASKAN SEKAT KOLOM (DISPLAY: CONTENTS) */
@@ -424,7 +433,8 @@
         order: 4; 
         position: sticky; 
         bottom: 15px; 
-        z-index: 100; 
+        z-index: 100;
+        width: 100%;
     }
 }
 
