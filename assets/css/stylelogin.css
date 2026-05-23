@@ -542,189 +542,98 @@ body {
 
 /* Tablet & Layar Menengah */
 @media screen and (max-width: 850px) {
-    .login-box { 
-        flex-direction: column; 
-        max-width: 500px; 
-    }
-    
-    .login-brand-panel { 
-        padding: 40px 20px; 
-        border-radius: 24px 24px 0 0; 
-        min-height: 200px;
-    }
-    
-    .logo-big { 
-        width: 70px; 
-        height: 70px; 
-        margin-bottom: 15px; 
-    }
-    
-    .brand-content h2 { 
-        font-size: 1.6rem; 
-    }
-    
-    .brand-content p { 
-        font-size: 0.95rem; 
-    }
-    
-    .login-form-panel { 
-        border-radius: 0 0 24px 24px; 
-        padding: 40px 30px; 
-    }
+    .login-box { flex-direction: column; max-width: 450px; }
+    .login-brand-panel { padding: 30px 20px; border-radius: 24px 24px 0 0; }
+    .logo-big { width: 60px; height: 60px; font-size: 2rem; margin-bottom: 15px; }
+    .brand-content h2 { font-size: 1.5rem; }
+    .brand-content p { font-size: 0.9rem; }
+    .login-form-panel { border-radius: 0 0 24px 24px; padding: 30px 20px; }
 }
 
 @media screen and (max-width: 768px) {
-    .navbar-container { padding: 0 15px; }
+    .navbar-container { padding: 0 15px; position: relative; } 
     .modal-content { padding: 30px; margin: 20px auto; width: 90%; }
     .terms-content-box { max-height: 60vh !important; }
     
-    /* Responsive penyesuaian Running Text */
-    .navbar-center { margin: 0 15px; }
+    .navbar-center { margin: 0 10px; }
     .running-text { font-size: 0.85rem; }
 }
 
-/* Smartphone & Layar Kecil (Redesain Profesional) */
+/* Smartphone & Layar Kecil (Desain Professional Mobile) */
 @media screen and (max-width: 480px) {
-    .login-container { 
-        padding: 15px; 
-        min-height: calc(100vh - 65px); 
+    /* Layout Container Utama */
+    .login-container { padding: 15px; padding-top: 25px; align-items: flex-start; min-height: calc(100vh - 65px); }
+    
+    .login-box { border-radius: 20px; min-height: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.12); }
+    .login-brand-panel { display: none; }
+    
+    .login-form-panel { padding: 35px 20px; border-radius: 20px; }
+    .login-header { text-align: center; margin-bottom: 25px; }
+    .login-header h2 { font-size: 22px; margin-bottom: 6px; }
+    .login-header p { font-size: 13px; }
+
+    /* Perbaikan Header (Menyamakan Webtoko & Teks Sentris) */
+    .navbar { height: 65px; display: flex; align-items: center; }
+    .navbar-container { position: relative; width: 100%; display: flex; justify-content: space-between; align-items: center; }
+    
+    /* Logo Navbar Mobile */
+    .logo { width: 90px; height: 45px; }
+    .navbar-logo-img { height: 75px; left: -10px; } 
+
+    /* Running Text - Presisi di Tengah */
+    .navbar-center {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: calc(100% - 130px); /* Ruang aman menghindari tabrakan dengan logo & tombol */
+        margin: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .running-text-container { width: 100%; text-align: center; }
+    .running-text { font-size: 0.75rem; padding-left: 100%; animation-duration: 18s; }
+
+    /* Tombol Chat - Icon Bulat Minimalis */
+    .button-text { display: none; }
+    .nav-button { 
+        padding: 0; 
+        width: 38px; 
+        height: 38px; 
+        border-radius: 50%; 
+        display: flex; 
+        justify-content: center; 
         align-items: center; 
     }
-    
-    .login-box { 
-        border-radius: 20px; 
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-    }
-    
-    /* Menampilkan kembali brand panel sebagai banner top kontras tinggi */
-    .login-brand-panel { 
-        display: flex;
-        padding: 30px 20px 25px; 
-        border-radius: 20px 20px 0 0;
-        min-height: auto;
-    }
-    
-    .logo-big { 
-        width: 55px; 
-        height: 55px; 
-        margin-bottom: 12px; 
-    }
-    
-    .brand-content h2 { 
-        font-size: 1.4rem; 
-        margin-bottom: 5px; 
-    }
-    
-    .brand-content p { 
-        font-size: 0.85rem; 
-    }
-    
-    /* Sembunyikan elemen dekoratif berlebih agar lebih clean */
-    .glass-circles { display: none; }
-    
-    .login-form-panel { 
-        padding: 30px 20px; 
-        border-radius: 0 0 20px 20px; 
-    }
-    
-    .login-header { 
-        text-align: left; 
-        margin-bottom: 25px; 
-    }
-    
-    .login-header h2 { font-size: 22px; }
+    .nav-button i { margin: 0; font-size: 1.15rem; }
 
-    /* Modal Styling Mobile */
-    .modal-content { 
-        padding: 25px 20px; 
-        border-radius: 20px; 
-        margin: 15px auto;
-    }
-    
-    .header-icon { 
-        width: 50px; 
-        height: 50px; 
-        font-size: 20px; 
-        margin-bottom: 15px; 
-    }
-    
+    /* Modal & Penyesuaian Form Mobile */
+    .modal { padding: 15px 10px; }
+    .modal-content { padding: 30px 20px; border-radius: 20px; width: 100%; margin: auto; }
+    .header-icon { width: 55px; height: 55px; font-size: 22px; margin-bottom: 15px; }
     .modal-header h2 { font-size: 20px; }
+    .modal-header p { font-size: 12.5px; }
 
-    /* Input Forms */
     .form-group.floating { margin-bottom: 18px; }
-    .form-group.floating input { 
-        font-size: 14px; 
-        padding: 12px 14px 12px 40px; 
-    }
-    .form-group.floating label { 
-        font-size: 0.85rem; 
-        left: 40px; 
-        top: 13px; 
-    }
-    .form-group.floating.focused label,
-    .form-group.floating input:focus + label,
-    .form-group.floating input:not(:placeholder-shown) + label {
-        left: 30px;
-    }
+    .form-group.floating input { font-size: 14px; padding: 14px 14px 14px 42px; border-radius: 10px;}
+    .form-group.floating label { font-size: 0.85rem; left: 42px; top: 14px; }
+    .login-links { flex-direction: column; align-items: center; gap: 12px; margin-top: 18px; }
+    .login-button, .signup-button, .reset-button { padding: 12px; font-size: 14px; }
 
-    /* Links & Buttons */
-    .login-links { 
-        flex-direction: column; 
-        align-items: flex-start; 
-        gap: 12px; 
-        margin-top: 20px; 
-    }
+    /* Stepper Lupa Password Mobile */
+    .reset-steps { padding: 0 5px; margin-bottom: 25px; }
+    .reset-steps::before { top: 12px; left: 25px; width: calc(100% - 50px); }
+    .step-icon { width: 28px; height: 28px; font-size: 11px; border-width: 3px; margin-bottom: 6px; }
+    .step-text { font-size: 9.5px; }
 
-    .button-text { display: none; } /* Sembunyikan teks di navbar */
-    .nav-button { 
-        padding: 8px 12px; 
-        border-radius: 50%; /* Jadikan ikon bulat presisi */
-    }
-
-    /* Navbar Khusus Mobile */
-    .navbar-logo-img { height: 60px; left: -5px; }
-    .navbar-center { margin: 0 8px; }
-    .running-text { 
-        font-size: 0.75rem; 
-        padding-left: 100%; 
-        animation-duration: 20s; 
-    }
-
-    /* Stepper Lupa Password */
-    .reset-steps { padding: 0; margin-bottom: 25px; }
-    .reset-steps::before { top: 13px; left: 20px; width: calc(100% - 40px); }
-    .step-icon { 
-        width: 28px; 
-        height: 28px; 
-        font-size: 11px; 
-        border-width: 3px; 
-    }
-    .step-text { font-size: 10px; }
-
-    /* Tooltip Password Mobile (Perubahan Penting agar tidak terpotong layar) */
-    .password-tooltip { 
-        position: relative; /* Diubah menjadi relative agar mendorong konten ke bawah */
-        padding: 12px; 
-        left: 0; 
-        width: 100%; 
-        transform: none !important;
-        box-shadow: none;
-        border: 1px solid #e2e8f0;
-        background: #f8fafc;
-        margin-top: 5px;
-        display: none; /* Disembunyikan dulu */
-    }
-    
-    .password-tooltip.active {
-        display: block; /* Munculkan saat active */
-    }
-    
-    .password-tooltip::before { display: none; } /* Hilangkan panah di mode mobile */
+    /* Tooltip & Syarat Ketentuan Mobile */
+    .password-tooltip { padding: 12px; left: 0; width: 100%; margin-top: 8px; }
     .requirement { font-size: 11px; margin-bottom: 5px; }
-
-    .modal-footer { 
-        flex-direction: column; 
-        display: flex; 
-        gap: 10px; 
-    }
+    .tooltip-title { font-size: 11px; }
+    .modal-footer { flex-direction: column; display: flex; gap: 8px; font-size: 12px; }
+    
+    .terms-modal-content { padding: 25px 15px !important; }
+    .terms-scroll-area { max-height: 55vh; padding: 15px; font-size: 0.85rem; margin-bottom: 20px; }
+    .legal-section h3 { font-size: 1rem; margin-bottom: 12px; }
+    .custom-checkbox { gap: 12px; }
+    .consent-text { font-size: 0.85rem; }
 }
