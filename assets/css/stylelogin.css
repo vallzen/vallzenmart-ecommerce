@@ -540,123 +540,123 @@ body {
    RESPONSIVE DESIGN (MEDIA QUERIES) UNTUK LAPTOP & MOBILE
    ========================================================= */
 
+/* =========================================================
+   RESPONSIVE DESIGN (MEDIA QUERIES) UNTUK LAPTOP & MOBILE
+   ========================================================= */
+
+/* Tablet & Layar Menengah */
+@media screen and (max-width: 850px) {
+    .login-box { flex-direction: column; max-width: 450px; }
+    .login-brand-panel { padding: 30px 20px; border-radius: 24px 24px 0 0; }
+    .logo-big { width: 60px; height: 60px; font-size: 2rem; margin-bottom: 15px; }
+    .brand-content h2 { font-size: 1.5rem; }
+    .brand-content p { font-size: 0.9rem; }
+    .login-form-panel { border-radius: 0 0 24px 24px; padding: 30px 20px; }
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-container { padding: 0 10px; gap: 8px; }
+    .modal-content { padding: 30px; margin: 20px auto; }
+    .terms-content-box { max-height: 60vh !important; }
+    
+    /* Penyesuaian Running Text */
+    .navbar-center { margin: 0; }
+    .running-text { font-size: 0.85rem; }
+
+    /* Penyesuaian Logo Navigasi agar tidak menabrak */
+    .logo { width: 120px; }
+    .navbar-logo-img { height: 80px; left: -10px; }
+}
+
 /* Smartphone & Layar Kecil */
 @media screen and (max-width: 480px) {
-    /* =========================================
-       1. HEADER & RUNNING TEXT (Presisi & Rapi)
-       ========================================= */
-    .navbar-container {
-        padding: 0 12px;
-        width: 100%;
-    }
+    .login-container { padding: 15px; padding-top: 25px; align-items: flex-start; }
     
-    /* Mempertahankan tinggi header (65px) tapi menekan lebar container logo */
-    .logo { 
-        width: 100px; 
-        height: 65px; 
-    }
-    /* Sedikit memperkecil logo yang keluar agar tidak menabrak running text */
-    .navbar-logo-img { 
-        height: 80px; 
-        left: -10px; 
-    }
-
-    /* Mengamankan running text agar pas di tengah dengan sisa ruang (flex: 1) */
-    .navbar-center { 
-        margin: 0 10px; 
-        flex: 1; 
-        display: flex; 
-        justify-content: center;
-        min-width: 0; /* Mencegah overflow flexbox menabrak elemen lain */
-    }
-    .running-text { 
-        font-size: 0.75rem; 
-        padding-left: 100%; 
-        animation-duration: 20s;
-    }
-
-    /* Mengubah tombol Chat Admin menjadi icon bulat (hemat tempat) */
-    .navbar-right .button-text { display: none; }
-    .nav-button { 
-        padding: 0; 
-        width: 40px; 
-        height: 40px; 
-        border-radius: 50%; 
-        justify-content: center; 
-    }
-    .nav-button i { margin: 0; font-size: 1.2rem; }
-
-    /* =========================================
-       2. LOGIN CONTAINER & BRANDING (Tetap Tampil)
-       ========================================= */
-    .login-container { 
-        padding: 15px; 
-        padding-top: 20px; 
-        align-items: center; /* Memastikan box ada di tengah vertikal */
-    }
+    .login-box { border-radius: 20px; max-width: 100%; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15); }
     
-    .login-box { 
-        border-radius: 20px; 
-        flex-direction: column; /* Stacked view (Branding atas, Form bawah) */
-        min-height: auto;
-    }
-    
-    /* MENGEMBALIKAN BRANDING (Hapus display: none, ganti jadi flex) */
+    /* MENGEMBALIKAN BRANDING (TIDAK LAGI DISPLAY: NONE) DENGAN UKURAN RINGKAS */
     .login-brand-panel { 
         display: flex; 
-        padding: 25px 20px 15px; 
-        border-radius: 20px 20px 0 0;
+        padding: 25px 15px 20px; 
+        border-radius: 20px 20px 0 0; 
         min-height: auto;
     }
-    .logo-big { 
-        width: 55px; 
-        height: 55px; 
-        margin-bottom: 12px; 
-        padding: 8px; 
-    }
+    .logo-big { width: 50px; height: 50px; margin-bottom: 10px; padding: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.15); }
     .brand-content h2 { font-size: 1.3rem; margin-bottom: 5px; }
-    .brand-content p { font-size: 0.85rem; }
-    .glass-circles { display: none; } /* Matikan animasi background demi performa mobile */
+    .brand-content p { font-size: 0.8rem; line-height: 1.3; }
+    .c1 { width: 120px; height: 120px; top: -30px; left: -30px; }
+    .c2 { width: 150px; height: 150px; bottom: -50px; right: -50px; }
     
-    /* =========================================
-       3. FORM LOGIN & MODALS
-       ========================================= */
-    .login-form-panel { 
-        padding: 25px 20px 30px; 
-        border-radius: 0 0 20px 20px; 
-    }
-    .login-header { text-align: center; margin-bottom: 22px; }
-    .login-header h2 { font-size: 22px; margin-bottom: 4px; }
+    .login-form-panel { padding: 25px 20px; border-radius: 0 0 20px 20px; }
+    .login-header { text-align: center; margin-bottom: 20px; }
+    .login-header h2 { font-size: 20px; margin-bottom: 4px; }
     .login-header p { font-size: 13px; }
 
-    .modal-content { padding: 25px 20px; border-radius: 20px; margin: 15px auto; width: 95%; }
-    .header-icon { width: 55px; height: 55px; font-size: 24px; margin-bottom: 15px; }
-    .modal-header h2 { font-size: 20px; }
-
-    /* Input Fields */
-    .form-group.floating { margin-bottom: 18px; }
-    .form-group.floating input { font-size: 14px; padding: 13px 14px 13px 42px; }
-    .form-group.floating label { font-size: 0.85rem; left: 42px; top: 14px; }
-    .input-icon { left: 16px; font-size: 1.05rem; }
+    /* MENGATUR HEADER/NAVBAR AGAR TIDAK TERTUMPUK */
+    .navbar-container { padding: 0 5px; justify-content: space-between; }
+    .logo { width: 100px; height: 60px; } 
+    .navbar-logo-img { height: 70px; left: -8px; } /* Ukuran proporsional tanpa nabrak */
     
-    .login-button, .signup-button, .reset-button { padding: 13px; font-size: 14px; }
-    .login-links { flex-direction: column; align-items: center; gap: 12px; margin-top: 18px; }
+    .navbar-center { margin: 0 8px; flex: 1; }
+    .running-text { font-size: 0.75rem; animation-duration: 20s; }
+    
+    /* Tombol WA menjadi lingkaran ikon elegan (Hemat Ruang) */
+    .button-text { display: none; }
+    .nav-button { 
+        padding: 0; 
+        width: 36px; 
+        height: 36px; 
+        border-radius: 50%; 
+        justify-content: center; 
+        gap: 0;
+    }
+    .nav-button i { margin: 0; font-size: 1.1rem; }
 
-    /* =========================================
-       4. LUPA PASSWORD (STEPPER) & TOOLTIPS
-       ========================================= */
-    .reset-steps { padding: 0; margin-bottom: 25px; }
-    .reset-steps::before { top: 12px; left: 15px; width: calc(100% - 30px); }
-    .step-icon { width: 26px; height: 26px; font-size: 11px; border-width: 3px; margin: 0 auto 5px;}
-    .step-text { font-size: 10px; }
+    /* Penyesuaian Modals */
+    .modal { padding: 10px; }
+    .modal-content { padding: 25px 20px; border-radius: 20px; margin: 15px auto; }
+    .header-icon { width: 50px; height: 50px; font-size: 20px; margin-bottom: 15px; }
+    .modal-header h2 { font-size: 18px; }
+
+    /* Penyesuaian Input Form */
+    .form-group.floating { margin-bottom: 18px; }
+    .form-group.floating input { font-size: 14px; padding: 12px 14px 12px 40px; }
+    .form-group.floating label { font-size: 0.85rem; top: 13px; }
+    .input-icon { font-size: 1rem; }
+    
+    .login-links { flex-direction: column; align-items: center; gap: 12px; margin-top: 15px; }
+    
+    /* Stepper Lupa Password */
+    .reset-steps { padding: 0; margin-bottom: 20px; }
+    .reset-steps::before { top: 12px; left: 20px; width: calc(100% - 40px); }
+    .step-icon { width: 26px; height: 26px; font-size: 11px; border-width: 3px; margin: 0 auto 5px; }
+    .step-text { font-size: 9px; }
 
     .password-tooltip { padding: 12px; left: 0; width: 100%; }
-    .requirement { font-size: 11px; margin-bottom: 5px; }
+    .requirement { font-size: 11px; }
     
-    .modal-footer, .login-footer { 
-        flex-direction: column; 
-        display: flex; 
-        gap: 6px; 
-        padding-top: 15px;
-    }
+    /* Penyesuaian Footer Modal & Legal */
+    .modal-footer { flex-direction: column; display: flex; gap: 8px; margin-top: 15px; padding-top: 15px; }
+    .terms-modal-content { padding: 20px !important; }
+    .terms-scroll-area { padding: 15px; font-size: 0.85rem; max-height: 50vh; }
+    .custom-checkbox { gap: 10px; }
+    .consent-text { font-size: 0.85rem; }
+}
+
+/* Ekstra Kecil (Misal layar HP lama sekelas iPhone SE) */
+@media screen and (max-width: 360px) {
+    .logo { width: 80px; }
+    .navbar-logo-img { height: 60px; left: -5px; }
+    .running-text { font-size: 0.7rem; }
+    .nav-button { width: 32px; height: 32px; }
+    .nav-button i { font-size: 1rem; }
+    .login-brand-panel { padding: 15px; }
+    .logo-big { width: 45px; height: 45px; }
+    .brand-content h2 { font-size: 1.1rem; }
+    .form-group.floating input { padding: 10px 12px 10px 35px; }
+    .input-icon { left: 12px; }
+    .form-group.floating label { left: 35px; top: 11px; font-size: 0.8rem; }
+    .form-group.floating.focused label,
+    .form-group.floating input:focus + label,
+    .form-group.floating input:not(:placeholder-shown) + label { left: 25px; }
 }
