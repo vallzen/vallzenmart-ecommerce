@@ -531,7 +531,10 @@ body {
 input:checked + .slider { background-color: #48bb78; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-/* RESPONSIVE DESIGN */
+/* =========================================
+   RESPONSIVE DESIGN (UPDATE VERSI 2 SEJAJAR)
+   ========================================= */
+
 @media (max-width: 1200px) {
     .footer-container { grid-template-columns: 1fr 1fr; gap: 40px; }
     .contact-info { grid-column: 1 / -1; }
@@ -542,49 +545,80 @@ input:checked + .slider:before { transform: translateX(20px); }
 }
 
 @media (max-width: 768px) {
-    /* 1. MEMBUAT HEADER BERJAJAR KE SAMPING (TANPA GARIS 3) */
-    .navbar-container { flex-wrap: nowrap; padding-right: 10px; }
-    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; gap: 10px; }
+    /* --- 1. HEADER TETAP SEJAJAR KESAMPING --- */
+    .navbar-container { flex-wrap: nowrap; padding: 0 10px; }
     
-    .navbar-buttons { display: flex !important; flex-direction: row; width: auto; gap: 5px; margin-top: 0; }
-    .hamburger-menu { display: none !important; } /* Matikan ikon garis 3 */
+    /* Pengecilan Logo agar sisa ruang cukup untuk tombol lain */
+    .navbar-brand { width: auto; flex-shrink: 0; height: 60px; }
+    .navbar-logo-img { height: 65px; position: relative; transform: none; top: 0; }
     
-    /* Sembunyikan Teks Profil & Sesuaikan Ukuran Avatar agar muat */
-    .user-display { display: none; } 
-    .user-profile-btn { padding: 0; }
-    .nav-avatar { width: 30px; height: 30px; }
+    /* Hilangkan tombol garis 3 (hamburger menu) secara permanen */
+    .hamburger-menu { display: none !important; }
     
-    /* Sembunyikan teks di tombol, kecilkan padding icon */
-    .button-text { display: none !important; }
-    .nav-button { padding: 8px 10px; font-size: 0.9rem; }
+    /* Deretan Menu Kanan */
+    .navbar-right { width: auto; justify-content: flex-end; gap: 5px; margin-top: 0; flex-wrap: nowrap;}
+    .navbar-buttons { display: flex !important; flex-direction: row !important; width: auto; gap: 5px; margin-top: 0; }
     
-    /* Sisa desain tablet/mobile */
-    .product-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    /* Penyesuaian Tombol Icon */
+    .nav-button { padding: 6px 10px; font-size: 0.85rem; border-radius: 6px; }
+    .button-text { display: none !important; } /* Sembunyikan teks tombol */
+    
+    /* Profile: Hanya tampilkan foto, sembunyikan nama agar muat */
+    .user-profile-btn { padding: 3px; gap: 0; }
+    .nav-avatar { width: 32px; height: 32px; border-width: 1px; }
+    .user-display { display: none; }
+
+    /* --- LAIN-LAIN --- */
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
     .qv-details { padding: 20px; max-height: none; }
+    
     .cart-item { grid-template-columns: auto 60px 1fr; }
     .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
     .footer-container { grid-template-columns: 1fr; gap: 35px; }
 }
 
 @media (max-width: 576px) {
-    /* 2. MEMAKSA PRODUK 2 BARIS KE SAMPING DI HP */
-    .product-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+    .hero-title { font-size: 1.6rem; }
+    .hero-subtitle { font-size: 0.9rem; }
     
-    /* Menyesuaikan ukuran kartu produk agar proporsional di 2 kolom HP */
-    .product-image { height: 160px; }
-    .product-info { padding: 10px; }
-    .product-info h3 { font-size: 0.85rem; height: 2.6em; margin-bottom: 5px; }
-    .product-price { font-size: 1.1rem; margin-bottom: 10px; }
-    .product-actions button { padding: 8px; font-size: 0.75rem; }
-    .styled-pill-select { padding: 6px; font-size: 0.75rem; }
+    /* --- 2. FITUR 3 SEJAJAR KESAMPING --- */
+    .features { 
+        flex-wrap: nowrap; /* Paksa agar tidak turun baris */
+        gap: 5px; 
+        padding: 15px 5px; 
+        margin: 20px 10px 10px 10px;
+    }
+    .feature-item { 
+        min-width: unset; /* Hapus paksaan lebar minimal */
+        padding: 5px; 
+        flex: 1; /* Dibagi 3 rata */
+    }
+    .feature-icon { 
+        width: 40px; height: 40px; /* Icon dikecilkan */
+        font-size: 1.1rem; 
+        margin: 0 auto 8px; 
+    }
+    .feature-item h3 { font-size: 0.7rem; margin-bottom: 3px; }
+    .feature-item p { font-size: 0.55rem; line-height: 1.2; } /* Teks disusutkan agar muat */
 
-    /* Sisa desain form & review */
+    /* --- 3. PRODUK 2 KOLOM KE SAMPING --- */
+    /* Tambahan !important memastikan kode ini tidak bisa ditimpa oleh kode manapun */
+    .product-grid { 
+        grid-template-columns: repeat(2, 1fr) !important; 
+        gap: 10px; 
+    }
+    .product-image { height: 160px; } /* Tinggi area gambar disesuaikan */
+    .product-info { padding: 10px; }
+    .product-info h3 { font-size: 0.8rem; height: 2.8em; margin-bottom: 5px; }
+    .product-price { font-size: 1rem; margin-bottom: 8px; }
+    .product-options { flex-direction: column; gap: 5px; } /* Ukuran & Warna disusun atas-bawah */
+    .product-actions button { padding: 8px 5px; font-size: 0.75rem; }
+
+    /* --- MODAL MOBILE --- */
     .qv-options-grid { grid-template-columns: 1fr; }
     .qv-actions { flex-direction: column; }
-    .hero-title { font-size: 1.8rem; }
     .form-grid { grid-template-columns: 1fr; }
     .review-form-actions { flex-direction: column; gap: 10px; align-items: stretch; }
     .submit-review-btn { width: 100%; }
