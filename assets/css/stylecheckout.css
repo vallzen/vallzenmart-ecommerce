@@ -439,46 +439,7 @@
 }
 
 @media (max-width: 768px) {
-    /* Penyesuaian Header agar seragam Webtoko */
-    .navbar-container { 
-        flex-wrap: nowrap; 
-        padding: 0 10px;
-        gap: 5px; 
-        overflow-x: auto; 
-        -ms-overflow-style: none; 
-        scrollbar-width: none; 
-    }
-    .navbar-container::-webkit-scrollbar { display: none; }
-    
-    .navbar-brand { width: 100px; height: 60px; flex-shrink: 0; }
-    .navbar-logo-img { height: 60px; transform: translateY(-50%); }
-    .navbar-logo-img:hover { transform: translateY(-50%); }
-    
-    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; gap: 5px; }
-    
-    .user-profile-btn { padding: 2px; }
-    .nav-avatar { width: 32px; height: 32px; }
-    
-    .navbar-buttons { 
-        display: flex !important; 
-        flex-direction: row !important; 
-        width: auto; 
-        gap: 6px; 
-        margin-top: 0; 
-    }
-    
-    .nav-button { 
-        padding: 0 !important; 
-        border-radius: 50% !important; 
-        width: 35px !important; 
-        height: 35px !important; 
-        display: flex;
-        justify-content: center; 
-        align-items: center;
-        font-size: 0.9rem;
-    }
-    
-    .button-text, .user-display, .text-batal { display: none !important; }
+    /* Bagian navbar dihapus agar mengikuti bawaan stylewebtoko.css sama seperti halaman riwayat pesanan */
 
     .checkout-container { padding: 0 10px; margin: 20px auto; }
     .checkout-container h1 { font-size: 1.6rem; margin-bottom: 20px; }
