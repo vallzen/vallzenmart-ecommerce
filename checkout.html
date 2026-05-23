@@ -24,15 +24,22 @@
 
         .modal-content {
             background-color: #fff;
-            margin: 10vh auto;
+            margin: 5vh auto;
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 16px;
             width: 90%;
-            max-width: 500px;
+            max-width: 550px;
+            max-height: 90vh;
+            overflow-y: auto;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
             position: relative;
             animation: modalIn 0.3s ease-out;
         }
+
+        /* Custom Scrollbar untuk Modal */
+        .modal-content::-webkit-scrollbar { width: 6px; }
+        .modal-content::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        .modal-content::-webkit-scrollbar-thumb { background: #cbd5e0; border-radius: 10px; }
 
         @keyframes modalIn {
             from { opacity: 0; transform: translateY(-20px) scale(0.95); }
@@ -48,6 +55,7 @@
             cursor: pointer;
             color: #a0aec0;
             transition: 0.3s;
+            z-index: 10;
         }
 
         .close-modal:hover {
@@ -99,7 +107,7 @@
 
         /* Penyesuaian Tombol Kembali agar lebih jelas */
         .btn-back-checkout {
-            background-color: #e53e3e !important; /* Warna Merah */
+            background-color: #e53e3e !important;
             border: 2px solid white;
             box-shadow: 0 4px 10px rgba(229, 62, 62, 0.2);
             color: white !important;
@@ -112,11 +120,6 @@
             display: inline-block;
             margin-left: 5px;
             font-weight: 600;
-        }
-        @media (max-width: 576px) {
-            .text-batal {
-                display: none;
-            }
         }
     </style>
 </head>
@@ -131,7 +134,6 @@
                 </div>
             </div>
             <div class="navbar-right">
-                <!-- Fitur Profil untuk Konsistensi -->
                 <div class="user-profile-btn" style="cursor: default;">
                     <img src="assets/images/default-avatar.png" alt="Profile" id="navProfileImage" class="nav-avatar">
                     <span id="loggedInUser" class="user-display"></span>
@@ -148,155 +150,199 @@
 
     <div class="checkout-container">
         <h1>Selesaikan Pesanan Anda</h1>
-        <div class="checkout-grid">
+        
+        <!-- FORM UTAMA MEMBUNGKUS KESELURUHAN GRID -->
+        <form id="checkoutForm">
+            <div class="checkout-grid">
+                
+                <!-- KOLOM KIRI (Untuk Desktop) -->
+                <div class="left-col">
+                    <div class="customer-info">
+                        <div class="section-header">
+                            <h2><i class="fas fa-map-marker-alt" style="color: #48bb78; margin-right: 8px;"></i> Informasi Pengiriman</h2>
+                        </div>
+                        
+                        <!-- Informasi Email -->
+                        <div class="form-group">
+                            <label for="customerEmail">Email Aktif*</label>
+                            <input type="email" id="customerEmail" placeholder="email@contoh.com" required>
+                        </div>
+
+                        <div class="form-divider">Alamat Pengiriman</div>
+
+                        <!-- KARTU ALAMAT (Buku Alamat) -->
+                        <div class="address-card" id="addressCard" onclick="openAddressModal()">
+                            <div class="address-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="address-card-content" id="addressCardContent">
+                                <div style="color: #e53e3e; font-weight: 600; font-size: 1.05rem;">Belum ada alamat terpilih</div>
+                                <div style="font-size: 0.85rem; color: #718096; margin-top: 5px;">Klik di sini untuk mengisi atau mengubah alamat pengiriman Anda.</div>
+                            </div>
+                            <div class="address-edit-icon"><i class="fas fa-chevron-right"></i></div>
+                        </div>
+
+                        <!-- Hidden Inputs untuk menyimpan data alamat -->
+                        <input type="hidden" id="h_name" required>
+                        <input type="hidden" id="h_phone" required>
+                        <input type="hidden" id="h_prov" required>
+                        <input type="hidden" id="h_fullAddress" required>
+
+                        <div class="form-divider">Opsi Pengiriman & Pembayaran</div>
+
+                        <div class="form-group">
+                            <label for="customerNote">Pesan untuk Penjual (Opsional)</label>
+                            <textarea id="customerNote" rows="2" placeholder="Tuliskan catatan khusus untuk pesanan ini..."></textarea>
+                        </div>
+
+                        <!-- KARTU PENGIRIMAN INTERAKTIF -->
+                        <div class="form-group">
+                            <label>Pilih Kurir Pengiriman*</label>
+                            <div id="shippingCardsContainer" class="shipping-grid">
+                                <div style="grid-column: 1/-1; color: #e53e3e; font-size: 0.9rem; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px dashed #fc8181;">
+                                    <i class="fas fa-info-circle"></i> Silakan isi/pilih <strong>Alamat Pengiriman</strong> terlebih dahulu untuk melihat opsi pengiriman.
+                                </div>
+                            </div>
+                            <input type="hidden" id="selectedShippingName" value="">
+                            <input type="hidden" id="selectedShippingPrice" value="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="paymentMethod">Metode Pembayaran*</label>
+                            <select id="paymentMethod" required>
+                                <option value="">Pilih metode...</option>
+                                <option value="transfer">Transfer Bank (BRI)</option>
+                                <option value="ewallet">E-Wallet (DANA)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- TOMBOL SUBMIT KELUAR DARI KOTAK PUTIH AGAR BISA PINDAH POSISI DI MOBILE -->
+                    <div class="submit-container">
+                        <button type="submit" class="submit-order">
+                            <i class="fas fa-shield-alt"></i> Buat Pesanan Sekarang
+                        </button>
+                    </div>
+                </div>
+
+                <!-- KOLOM KANAN (Untuk Desktop) -->
+                <div class="right-col order-summary-wrapper">
+                    <!-- RINGKASAN PESANAN -->
+                    <div class="order-summary">
+                        <h2><i class="fas fa-box-open" style="color: #4299e1; margin-right: 8px;"></i> Ringkasan Pesanan</h2>
+                        <div id="orderItems" class="order-items-container"></div>
+                        <div class="order-total">
+                            <span>Total Produk:</span>
+                            <span id="orderTotal" style="color: #48bb78;">Rp. 0</span>
+                        </div>
+                    </div>
+
+                    <!-- RINCIAN PEMBAYARAN -->
+                    <div class="payment-summary">
+                        <h3>Rincian Pembayaran</h3>
+                        <div class="payment-detail">
+                            <span>Subtotal Produk</span>
+                            <span id="subtotalOrder">Rp. 0</span>
+                        </div>
+                        <div class="payment-detail">
+                            <span>Subtotal Pengiriman</span>
+                            <span id="subtotalShipping">Rp. 0</span>
+                        </div>
+                        <div class="payment-detail">
+                            <span>Biaya Layanan & Penanganan</span>
+                            <span>Rp. 2.000</span>
+                        </div>
+                        <div class="payment-total">
+                            <span>Total Pembayaran</span>
+                            <span id="totalPayment" style="color: #e53e3e; font-size: 1.3rem;">Rp. 0</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    <!-- Modal Pengeditan Alamat -->
+    <div id="addressModal" class="modal" style="display: none;">
+        <div class="modal-content address-modal-content">
+            <span class="close-modal" onclick="closeAddressModal()">&times;</span>
+            <h2 style="color: #2d3748; margin-bottom: 15px; font-size: 1.3rem; padding-bottom: 10px; border-bottom: 1px solid #e2e8f0;">
+                <i class="fas fa-map-marked-alt" style="color: #48bb78;"></i> Detail Alamat
+            </h2>
             
-            <!-- FORM PENGISIAN DATA -->
-            <div class="customer-info">
-                <div class="section-header">
-                    <h2><i class="fas fa-map-marker-alt" style="color: #48bb78; margin-right: 8px;"></i> Informasi Pengiriman</h2>
-                    <span id="autoFillBadge" class="autofill-badge" style="display: none;"><i class="fas fa-check-circle"></i> Menggunakan Alamat Utama</span>
+            <div class="modal-scroll-area">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nama Penerima*</label>
+                        <input type="text" id="modalName" placeholder="Nama lengkap">
+                    </div>
+                    <div class="form-group">
+                        <label>Nomor HP/WhatsApp*</label>
+                        <input type="tel" id="modalPhone" pattern="[0-9]*" inputmode="numeric" placeholder="08xx...">
+                        <div id="phoneError" class="error-message" style="color: #e53e3e; font-size: 0.85rem; margin-top: 5px; display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Provinsi*</label>
+                        <input type="text" id="modalProv" class="uppercase-input" placeholder="Contoh: JAWA BARAT">
+                    </div>
+                    <div class="form-group">
+                        <label>Kota/Kabupaten*</label>
+                        <input type="text" id="modalCity" class="uppercase-input" placeholder="Contoh: KOTA BEKASI">
+                    </div>
                 </div>
                 
-                <form id="checkoutForm">
-                    <!-- Informasi Kontak -->
+                <div class="form-grid">
                     <div class="form-group">
-                        <label for="customerEmail">Email Aktif*</label>
-                        <input type="email" id="customerEmail" placeholder="email@contoh.com" required>
+                        <label>Kecamatan*</label>
+                        <input type="text" id="modalDistrict" class="uppercase-input" placeholder="Kecamatan">
                     </div>
-
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label for="customerName">Nama Penerima*</label>
-                            <input type="text" id="customerName" placeholder="Nama lengkap" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="customerPhone">Nomor HP/WhatsApp*</label>
-                            <input type="tel" id="customerPhone" pattern="[0-9]*" inputmode="numeric" placeholder="08xx..." required>
-                            <div id="phoneError" class="error-message" style="color: #e53e3e; font-size: 0.85rem; margin-top: 5px; display: none;"></div>
-                        </div>
-                    </div>
-
-                    <div class="form-divider">Detail Alamat Lengkap</div>
-
-                    <!-- Alamat Lengkap (Grid Setup) -->
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Provinsi*</label>
-                            <input type="text" id="addrProv" class="uppercase-input" required placeholder="Contoh: JAWA BARAT">
-                        </div>
-                        <div class="form-group">
-                            <label>Kota/Kabupaten*</label>
-                            <input type="text" id="addrCity" class="uppercase-input" required placeholder="Contoh: KOTA BEKASI">
-                        </div>
-                    </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Kecamatan*</label>
-                            <input type="text" id="addrDistrict" class="uppercase-input" required placeholder="Kecamatan">
-                        </div>
-                        <div class="form-group">
-                            <label>Kode Pos*</label>
-                            <input type="text" id="addrPostal" class="uppercase-input" required placeholder="Kode Pos">
-                        </div>
-                    </div>
-
                     <div class="form-group">
-                        <label>Kelurahan / Desa*</label>
-                        <input type="text" id="addrVillage" required placeholder="Kelurahan/Desa">
+                        <label>Kode Pos*</label>
+                        <input type="text" id="modalPostal" class="uppercase-input" placeholder="Kode Pos">
                     </div>
-                    
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Nama Jalan*</label>
-                            <input type="text" id="addrStreet" required placeholder="Jl. Contoh...">
-                        </div>
-                        <div class="form-group">
-                            <label>Nomor Rumah*</label>
-                            <input type="text" id="addrHouseNum" required placeholder="No. 12">
-                        </div>
-                    </div>
+                </div>
 
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>RT / RW*</label>
-                            <input type="text" id="addrRtRw" required placeholder="01/02">
-                        </div>
-                        <div class="form-group">
-                            <label>Detail Lainnya (Patokan)</label>
-                            <input type="text" id="addrDetails" placeholder="Blok/Unit, Warna Pagar, dll.">
-                        </div>
-                    </div>
-
-                    <div class="form-divider">Opsi Pengiriman & Pembayaran</div>
-
+                <div class="form-group">
+                    <label>Kelurahan / Desa*</label>
+                    <input type="text" id="modalVillage" placeholder="Kelurahan/Desa">
+                </div>
+                
+                <div class="form-grid">
                     <div class="form-group">
-                        <label for="customerNote">Pesan untuk Penjual (Opsional)</label>
-                        <textarea id="customerNote" rows="2" placeholder="Tuliskan catatan khusus untuk pesanan ini..."></textarea>
+                        <label>Nama Jalan*</label>
+                        <input type="text" id="modalStreet" placeholder="Jl. Contoh...">
                     </div>
-
-                    <!-- KARTU PENGIRIMAN INTERAKTIF -->
                     <div class="form-group">
-                        <label>Pilih Kurir Pengiriman*</label>
-                        <div id="shippingCardsContainer" class="shipping-grid">
-                            <!-- Cards will be generated here by JS -->
-                        </div>
-                        <input type="hidden" id="selectedShippingName" value="">
-                        <input type="hidden" id="selectedShippingPrice" value="0">
+                        <label>Nomor Rumah*</label>
+                        <input type="text" id="modalHouseNum" placeholder="No. 12">
                     </div>
+                </div>
 
+                <div class="form-grid">
                     <div class="form-group">
-                        <label for="paymentMethod">Metode Pembayaran*</label>
-                        <select id="paymentMethod" required>
-                            <option value="">Pilih metode...</option>
-                            <option value="transfer">Transfer Bank (BRI)</option>
-                            <option value="ewallet">E-Wallet (DANA)</option>
-                        </select>
+                        <label>RT / RW*</label>
+                        <input type="text" id="modalRtRw" placeholder="01/02">
                     </div>
-
-                    <button type="submit" class="submit-order">
-                        <i class="fas fa-shield-alt"></i> Buat Pesanan Sekarang
-                    </button>
-                </form>
+                    <div class="form-group">
+                        <label>Detail Lainnya (Patokan)</label>
+                        <input type="text" id="modalDetails" placeholder="Blok/Unit, Warna Pagar, dll.">
+                    </div>
+                </div>
             </div>
 
-            <!-- RINGKASAN PESANAN -->
-            <div class="order-summary-wrapper">
-                <div class="order-summary">
-                    <h2><i class="fas fa-box-open" style="color: #4299e1; margin-right: 8px;"></i> Ringkasan Pesanan</h2>
-                    <div id="orderItems" class="order-items-container"></div>
-                    <div class="order-total">
-                        <span>Total Produk:</span>
-                        <span id="orderTotal" style="color: #48bb78;">Rp. 0</span>
-                    </div>
-                </div>
-
-                <div class="payment-summary">
-                    <h3>Rincian Pembayaran</h3>
-                    <div class="payment-detail">
-                        <span>Subtotal Produk</span>
-                        <span id="subtotalOrder">Rp. 0</span>
-                    </div>
-                    <div class="payment-detail">
-                        <span>Subtotal Pengiriman</span>
-                        <span id="subtotalShipping">Rp. 0</span>
-                    </div>
-                    <div class="payment-detail">
-                        <span>Biaya Layanan & Penanganan</span>
-                        <span>Rp. 2.000</span>
-                    </div>
-                    <div class="payment-total">
-                        <span>Total Pembayaran</span>
-                        <span id="totalPayment" style="color: #e53e3e; font-size: 1.3rem;">Rp. 0</span>
-                    </div>
-                </div>
+            <div class="modal-footer-fixed">
+                <button type="button" class="submit-order btn-save-modal" onclick="saveAddressFromModal()">
+                    <i class="fas fa-save"></i> Simpan & Gunakan
+                </button>
             </div>
         </div>
     </div>
 
     <!-- Modal Konfirmasi -->
     <div id="confirmationPopup" class="modal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content" style="max-height: none;">
             <span class="close-modal">&times;</span>
             <h2 id="modalTitle" style="color: #2d3748; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Konfirmasi Pesanan</h2>
             <div id="modalContent">
@@ -311,7 +357,7 @@
 
     <!-- Modal Pembayaran -->
     <div id="paymentModal" class="modal" style="display: none;">
-        <div class="modal-content">
+        <div class="modal-content" style="max-height: none;">
             <span class="close-modal">&times;</span>
             <h2 id="paymentModalTitle" style="color: #2d3748; margin-bottom: 10px; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Instruksi Pembayaran</h2>
             <div id="paymentModalContent">
@@ -329,17 +375,79 @@
             <i class="fas fa-check-circle"></i>
         </div>
         <div class="success-content">
-            <div class="success-title">Pesanan Berhasil!</div>
-            <div class="success-message">Mengarahkan ke riwayat pesanan...</div>
+            <div class="success-title">Tindakan Berhasil!</div>
+            <div class="success-message" id="successMessageText">Mengarahkan ke halaman selanjutnya...</div>
         </div>
-        <button class="close-notification">
+        <button class="close-notification" onclick="this.parentElement.classList.remove('show')">
             <i class="fas fa-times"></i>
         </button>
     </div>
 
     <script>
+        // Modal Address Functions
+        function openAddressModal() {
+            document.getElementById('addressModal').style.display = 'block';
+        }
+
+        function closeAddressModal() {
+            document.getElementById('addressModal').style.display = 'none';
+        }
+
+        function showNotification(message, type = 'success') {
+            const notif = document.getElementById('successNotification');
+            const title = notif.querySelector('.success-title');
+            const msgText = document.getElementById('successMessageText');
+            
+            if (type === 'success') {
+                notif.style.backgroundColor = '#48bb78';
+                title.textContent = 'Berhasil!';
+            } else {
+                notif.style.backgroundColor = '#e53e3e';
+                title.textContent = 'Perhatian!';
+            }
+            
+            msgText.textContent = message;
+            notif.classList.add('show');
+            setTimeout(() => notif.classList.remove('show'), 4000);
+        }
+
+        function saveAddressFromModal() {
+            const name = document.getElementById('modalName').value.trim();
+            const phone = document.getElementById('modalPhone').value.trim();
+            const prov = document.getElementById('modalProv').value.trim().toUpperCase();
+            const city = document.getElementById('modalCity').value.trim().toUpperCase();
+            const district = document.getElementById('modalDistrict').value.trim().toUpperCase();
+            const postal = document.getElementById('modalPostal').value.trim();
+            const village = document.getElementById('modalVillage').value.trim();
+            const street = document.getElementById('modalStreet').value.trim();
+            const houseNum = document.getElementById('modalHouseNum').value.trim();
+            const rtRw = document.getElementById('modalRtRw').value.trim();
+            const details = document.getElementById('modalDetails').value.trim();
+
+            if(!name || !phone || !prov || !city || !district || !postal || !village || !street || !houseNum || !rtRw) {
+                showNotification('Harap lengkapi semua kolom alamat pengiriman!', 'error');
+                return;
+            }
+
+            const fullAddr = `Jl. ${street} No. ${houseNum}, RT/RW ${rtRw}, Kel/Desa. ${village}, Kec. ${district}, ${city}, Prov. ${prov} ${postal}. Patokan: ${details || '-'}`;
+
+            document.getElementById('h_name').value = name;
+            document.getElementById('h_phone').value = phone;
+            document.getElementById('h_prov').value = prov;
+            document.getElementById('h_fullAddress').value = fullAddr;
+
+            document.getElementById('addressCardContent').innerHTML = `
+                <div class="address-card-name">${name} <span class="address-badge-utama">Terpilih</span></div>
+                <div class="address-card-phone">${phone}</div>
+                <div class="address-card-text">${fullAddr}</div>
+            `;
+
+            closeAddressModal();
+            document.dispatchEvent(new Event('addressUpdated')); 
+            showNotification('Alamat berhasil diterapkan.', 'success');
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
-            // Tampilkan nama user dan avatar yang login
             const loggedInUser = localStorage.getItem('loggedInUser');
             if (loggedInUser) {
                 document.getElementById('loggedInUser').textContent = 'Halo, ' + loggedInUser;
@@ -347,15 +455,25 @@
                 if(profData.image) document.getElementById('navProfileImage').src = profData.image;
             }
 
-            // Ambil data checkout
+            const phoneInput = document.getElementById('modalPhone');
+            const phoneError = document.getElementById('phoneError');
+            phoneInput.addEventListener('input', function () {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value.length < 10 || this.value.length > 15) {
+                    phoneError.textContent = 'Nomor HP harus 10-15 digit angka';
+                    phoneError.style.display = 'block';
+                } else {
+                    phoneError.style.display = 'none';
+                }
+            });
+
             const checkoutData = JSON.parse(localStorage.getItem('yupita_shop_checkout')) || [];
             if (checkoutData.length === 0) {
                 showNotification('Tidak ada item untuk checkout!', 'error');
-                window.location.href = 'webtoko.html';
+                setTimeout(() => { window.location.href = 'webtoko.html'; }, 1500);
                 return;
             }
 
-            // Render Item Pesanan
             const checkoutTotal = checkoutData.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             const orderItems = document.getElementById('orderItems');
             orderItems.innerHTML = checkoutData.map(item => {
@@ -377,7 +495,6 @@
             }).join('');
             document.getElementById('orderTotal').textContent = `Rp ${checkoutTotal.toLocaleString('id-ID')}`;
 
-            // --- FITUR AUTOFILL ALAMAT DARI BUKU ALAMAT ---
             function autoFillAddress() {
                 const addrs = JSON.parse(localStorage.getItem('yupita_addresses')) || [];
                 const mainAddr = addrs.find(a => a.isMain) || addrs[0];
@@ -388,45 +505,37 @@
                 }
 
                 if (mainAddr) {
-                    document.getElementById('customerName').value = mainAddr.name;
-                    document.getElementById('customerPhone').value = mainAddr.phone;
-                    document.getElementById('addrProv').value = mainAddr.prov;
-                    document.getElementById('addrCity').value = mainAddr.city;
-                    document.getElementById('addrDistrict').value = mainAddr.district;
-                    document.getElementById('addrPostal').value = mainAddr.postal;
-                    document.getElementById('addrVillage').value = mainAddr.village;
-                    document.getElementById('addrStreet').value = mainAddr.street;
-                    document.getElementById('addrHouseNum').value = mainAddr.houseNum;
-                    document.getElementById('addrRtRw').value = mainAddr.rtRw;
-                    if(mainAddr.details) document.getElementById('addrDetails').value = mainAddr.details;
+                    document.getElementById('modalName').value = mainAddr.name || '';
+                    document.getElementById('modalPhone').value = mainAddr.phone || '';
+                    document.getElementById('modalProv').value = mainAddr.prov || '';
+                    document.getElementById('modalCity').value = mainAddr.city || '';
+                    document.getElementById('modalDistrict').value = mainAddr.district || '';
+                    document.getElementById('modalPostal').value = mainAddr.postal || '';
+                    document.getElementById('modalVillage').value = mainAddr.village || '';
+                    document.getElementById('modalStreet').value = mainAddr.street || '';
+                    document.getElementById('modalHouseNum').value = mainAddr.houseNum || '';
+                    document.getElementById('modalRtRw').value = mainAddr.rtRw || '';
+                    document.getElementById('modalDetails').value = mainAddr.details || '';
 
-                    document.getElementById('autoFillBadge').style.display = 'inline-block';
+                    document.getElementById('h_name').value = mainAddr.name;
+                    document.getElementById('h_phone').value = mainAddr.phone;
+                    document.getElementById('h_prov').value = mainAddr.prov;
+                    
+                    const fullAddr = `Jl. ${mainAddr.street} No. ${mainAddr.houseNum}, RT/RW ${mainAddr.rtRw}, Kel/Desa. ${mainAddr.village}, Kec. ${mainAddr.district}, ${mainAddr.city}, Prov. ${mainAddr.prov} ${mainAddr.postal}. Patokan: ${mainAddr.details || '-'}`;
+                    document.getElementById('h_fullAddress').value = fullAddr;
+
+                    document.getElementById('addressCardContent').innerHTML = `
+                        <div class="address-card-name">${mainAddr.name} <span class="address-badge-utama">Utama</span></div>
+                        <div class="address-card-phone">${mainAddr.phone}</div>
+                        <div class="address-card-text">${fullAddr}</div>
+                    `;
                     renderShippingOptions(); 
                 } else {
-                    if(userProfile.name) document.getElementById('customerName').value = userProfile.name;
-                    if(userProfile.phone) document.getElementById('customerPhone').value = userProfile.phone;
-                    renderShippingOptions(); 
+                    if(userProfile.name) document.getElementById('modalName').value = userProfile.name;
+                    if(userProfile.phone) document.getElementById('modalPhone').value = userProfile.phone;
                 }
             }
-            
 
-            // Validasi input nomor HP
-            const phoneInput = document.getElementById('customerPhone');
-            const phoneError = document.getElementById('phoneError');
-            phoneInput.addEventListener('input', function () {
-                this.value = this.value.replace(/[^0-9]/g, '');
-                if (this.value.length < 10 || this.value.length > 15) {
-                    phoneError.textContent = 'Nomor HP harus 10-15 digit angka';
-                    phoneError.style.display = 'block';
-                } else {
-                    phoneError.style.display = 'none';
-                }
-            });
-
-            // ==========================================
-            // LOGIKA PENGIRIMAN INTERAKTIF & REKOMENDASI OTOMATIS
-            // Pusat Toko: BEKASI TIMUR (Jawa Barat)
-            // ==========================================
             const shippingData = [
                 { courier: "JNE", service: "REG (Reguler)", minWeight: 1, eta: "1-3 Hari", rates: { "lokal_jabodetabek": 10000, "jawa_sumatera": 20000, "indonesia_timur": 45000 } },
                 { courier: "JNE", service: "JTR (Kargo)", minWeight: 10, eta: "3-7 Hari", rates: { "lokal_jabodetabek": 3000, "jawa_sumatera": 5000, "indonesia_timur": 12000 } },
@@ -437,7 +546,7 @@
             ];
 
             function getCalculatedZone() {
-                const provInput = document.getElementById('addrProv').value.toUpperCase().trim();
+                const provInput = document.getElementById('h_prov').value.toUpperCase().trim();
                 const jabodetabekJabar = ["DKI JAKARTA", "BANTEN", "JAWA BARAT"];
                 const jawaSumatera = ["ACEH", "SUMATERA UTARA", "SUMATERA BARAT", "RIAU", "KEPULAUAN RIAU", "JAMBI", "SUMATERA SELATAN", "KEPULAUAN BANGKA BELITUNG", "BENGKULU", "LAMPUNG", "JAWA TENGAH", "DI YOGYAKARTA", "JAWA TIMUR", "BALI"];
 
@@ -463,7 +572,7 @@
                 updateTotalPayment();
 
                 if(!zone) {
-                    cardsContainer.innerHTML = '<div style="grid-column: 1/-1; color: #e53e3e; font-size: 0.9rem; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px dashed #fc8181;"><i class="fas fa-info-circle"></i> Silakan isi kolom <strong>Provinsi</strong> pada form alamat terlebih dahulu untuk melihat opsi pengiriman.</div>';
+                    cardsContainer.innerHTML = '<div style="grid-column: 1/-1; color: #e53e3e; font-size: 0.9rem; padding: 10px; background: #fff5f5; border-radius: 8px; border: 1px dashed #fc8181;"><i class="fas fa-info-circle"></i> Silakan isi <strong>Alamat Pengiriman</strong> terlebih dahulu untuk melihat opsi pengiriman.</div>';
                     return;
                 }
 
@@ -504,7 +613,7 @@
                 });
             }
 
-            document.getElementById('addrProv').addEventListener('input', renderShippingOptions);
+            document.addEventListener('addressUpdated', renderShippingOptions);
             autoFillAddress();
 
             function updateTotalPayment() {
@@ -521,41 +630,40 @@
                 btn.addEventListener('click', function () { this.closest('.modal').style.display = 'none'; });
             });
 
-            const successNotification = document.getElementById('successNotification');
             document.getElementById('confirmPayment').addEventListener('click', function () {
                 paymentModal.style.display = 'none';
-                successNotification.classList.add('show');
-                setTimeout(() => { window.location.href = 'riwayatpesanan.html'; }, 3000);
+                showNotification('Mengarahkan ke riwayat pesanan...', 'success');
+                setTimeout(() => { window.location.href = 'riwayatpesanan.html'; }, 2000);
             });
-
-            function showNotification(message, type = 'success') {
-                const notif = document.createElement('div');
-                notif.style.cssText = `position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; background: ${type === 'success' ? '#48bb78' : '#e53e3e'}; color: white; padding: 15px 30px; border-radius: 30px; font-weight: bold; box-shadow: 0 4px 12px rgba(0,0,0,0.2); animation: fadeInDown 0.5s;`;
-                notif.textContent = message;
-                document.body.appendChild(notif);
-                setTimeout(() => notif.remove(), 4000);
-            }
 
             document.getElementById('checkoutForm').addEventListener('submit', function (e) {
                 e.preventDefault();
+                
+                if (!document.getElementById('h_fullAddress').value) {
+                    showNotification('Silakan pilih atau isi alamat pengiriman pada Kartu Alamat!', 'error');
+                    return;
+                }
+
                 const selectedShipping = document.getElementById('selectedShippingName').value;
                 if (!selectedShipping) {
                     showNotification('Silakan pilih kurir pengiriman terlebih dahulu!', 'error');
                     return;
                 }
+
                 confirmationModal.style.display = 'block';
                 document.getElementById('confirmAction').onclick = processCheckout;
                 document.getElementById('cancelAction').onclick = () => confirmationModal.style.display = 'none';
             });
 
             function processCheckout() {
-                const name = document.getElementById('customerName').value;
+                const name = document.getElementById('h_name').value;
+                const phone = document.getElementById('h_phone').value;
+                const fullAddress = document.getElementById('h_fullAddress').value;
+                
                 const email = document.getElementById('customerEmail').value;
-                const phone = document.getElementById('customerPhone').value;
                 const note = document.getElementById('customerNote').value;
                 const paymentMethod = document.getElementById('paymentMethod').value;
                 const shippingMethodValue = document.getElementById('selectedShippingName').value;
-                const fullAddress = `Jl. ${document.getElementById('addrStreet').value} No. ${document.getElementById('addrHouseNum').value}, RT/RW ${document.getElementById('addrRtRw').value}, Kel/Desa. ${document.getElementById('addrVillage').value}, Kec. ${document.getElementById('addrDistrict').value}, ${document.getElementById('addrCity').value}, Prov. ${document.getElementById('addrProv').value} ${document.getElementById('addrPostal').value}. Patokan: ${document.getElementById('addrDetails').value || '-'}`;
 
                 const now = new Date();
                 const formattedDate = now.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -585,8 +693,8 @@
                     paymentModal.style.display = 'block';
                 } else {
                     window.open('https://link.dana.id/minta?full_url=https://qr.dana.id/v1/281012012022101940950559', '_blank');
-                    successNotification.classList.add('show');
-                    setTimeout(() => { window.location.href = 'riwayatpesanan.html'; }, 3000);
+                    showNotification('Mengarahkan ke riwayat pesanan...', 'success');
+                    setTimeout(() => { window.location.href = 'riwayatpesanan.html'; }, 2000);
                 }
             }
         });
