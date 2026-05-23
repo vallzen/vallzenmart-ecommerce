@@ -536,53 +536,49 @@ input:checked + .slider:before { transform: translateX(20px); }
    ========================================= */
 
 @media (max-width: 768px) {
-    /* 1. KEMBALIKAN HEADER BERJAJAR & SEMBUNYIKAN SCROLLBAR */
     .navbar-container { 
         flex-wrap: nowrap; 
-        overflow-x: auto; /* Bisa digeser perlahan kalau layar sangat sempit (misal HP iPhone SE) */
-        gap: 5px; /* Rapatkan jarak antar elemen */
-        -ms-overflow-style: none;  /* IE and Edge */
-        scrollbar-width: none;  /* Firefox */
+        overflow-x: auto; 
+        gap: 10px; 
+        -ms-overflow-style: none;  
+        scrollbar-width: none;  
+        padding: 0 10px; /* Tambahan spasi di kiri-kanan layar */
     }
-    .navbar-container::-webkit-scrollbar {
-        display: none; /* Sembunyikan garis scrollbar agar rapi */
-    }
+    .navbar-container::-webkit-scrollbar { display: none; }
 
-    /* 2. PERBAIKAN LOGO AGAR TIDAK TABRAKAN */
+    /* 2. PERBAIKAN MUTLAK LOGO (HILANGKAN EFEK ABSOLUTE) */
     .navbar-brand { 
-        width: 110px; /* Kurangi lebar area logo */
+        width: auto; /* Biarkan menyesuaikan ukuran logo otomatis */
         height: 60px; 
-        flex-shrink: 0; /* Cegah logo gepeng */
+        flex-shrink: 0; 
+        margin-right: auto; /* Mendorong tombol-tombol lain mentok ke kanan */
     }
     .navbar-logo-img { 
-        height: 65px; /* Perkecil ukuran logo khusus di HP */
+        position: relative; /* KUNCI UTAMA: Menghapus sifat melayang (absolute) */
+        top: 0;
+        transform: none; /* Menghapus efek translateY */
+        height: 40px; /* Tinggi logo yang ideal dan aman untuk layar HP */
+        width: auto;
+        max-width: 140px; /* Mencegah logo terlalu melar ke samping */
     }
 
-    /* 3. PERBAIKAN PROFIL & TOMBOL (DIKECILKAN & DIRAPATKAN) */
+    /* 3. PERBAIKAN PROFIL & TOMBOL (Sama seperti sebelumnya) */
     .navbar-right { 
         width: auto; 
         justify-content: flex-end; 
         margin-top: 0; 
         gap: 5px; 
     }
-    .user-profile-btn { 
-        padding: 4px; /* Perkecil bantalan tombol profil */
-    }
-    .nav-avatar { 
-        width: 30px; /* Perkecil ukuran foto profil */
-        height: 30px; 
-    }
+    .user-profile-btn { padding: 4px; }
+    .nav-avatar { width: 30px; height: 30px; }
     .navbar-buttons { 
         display: flex !important; 
         flex-direction: row !important; 
         width: auto; 
-        gap: 5px; /* Rapatkan jarak antar tombol ikon */
+        gap: 5px; 
         margin-top: 0; 
     }
-    .nav-button { 
-        padding: 7px 10px; /* Perkecil ukuran kotak tombol ikon */
-        font-size: 0.9rem;
-    }
+    .nav-button { padding: 7px 10px; font-size: 0.9rem; }
     
     /* 4. SEMBUNYIKAN TEKS DAN GARIS TIGA */
     .hamburger-menu { display: none !important; } 
