@@ -536,28 +536,60 @@ input:checked + .slider:before { transform: translateX(20px); }
    ========================================= */
 
 @media (max-width: 768px) {
-    /* 1. KEMBALIKAN HEADER BERJAJAR (TANPA GARIS 3) */
+    /* 1. KEMBALIKAN HEADER BERJAJAR & SEMBUNYIKAN SCROLLBAR */
     .navbar-container { 
-        flex-wrap: nowrap; /* Memaksa elemen tetap dalam 1 baris */
-        overflow-x: auto; /* Memunculkan scroll horizontal kecil jika layar HP sangat sempit */
-        gap: 10px; 
+        flex-wrap: nowrap; 
+        overflow-x: auto; /* Bisa digeser perlahan kalau layar sangat sempit (misal HP iPhone SE) */
+        gap: 5px; /* Rapatkan jarak antar elemen */
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
     }
-    .navbar-right { width: auto; justify-content: flex-end; margin-top: 0; }
+    .navbar-container::-webkit-scrollbar {
+        display: none; /* Sembunyikan garis scrollbar agar rapi */
+    }
+
+    /* 2. PERBAIKAN LOGO AGAR TIDAK TABRAKAN */
+    .navbar-brand { 
+        width: 110px; /* Kurangi lebar area logo */
+        height: 60px; 
+        flex-shrink: 0; /* Cegah logo gepeng */
+    }
+    .navbar-logo-img { 
+        height: 65px; /* Perkecil ukuran logo khusus di HP */
+    }
+
+    /* 3. PERBAIKAN PROFIL & TOMBOL (DIKECILKAN & DIRAPATKAN) */
+    .navbar-right { 
+        width: auto; 
+        justify-content: flex-end; 
+        margin-top: 0; 
+        gap: 5px; 
+    }
+    .user-profile-btn { 
+        padding: 4px; /* Perkecil bantalan tombol profil */
+    }
+    .nav-avatar { 
+        width: 30px; /* Perkecil ukuran foto profil */
+        height: 30px; 
+    }
     .navbar-buttons { 
-        display: flex !important; /* Memaksa tombol tetap muncul */
+        display: flex !important; 
         flex-direction: row !important; 
         width: auto; 
-        gap: 8px; 
+        gap: 5px; /* Rapatkan jarak antar tombol ikon */
         margin-top: 0; 
     }
-    .hamburger-menu { display: none !important; } /* Sembunyikan garis 3 */
+    .nav-button { 
+        padding: 7px 10px; /* Perkecil ukuran kotak tombol ikon */
+        font-size: 0.9rem;
+    }
     
-    /* Menghemat Ruang agar Muat di 1 Baris */
-    .button-text { display: none !important; } /* Sembunyikan tulisan di tombol */
-    .user-display { display: none !important; } /* Sembunyikan nama user, hanya foto */
-    .nav-button { padding: 8px 12px; } /* Perkecil sedikit tombol icon */
+    /* 4. SEMBUNYIKAN TEKS DAN GARIS TIGA */
+    .hamburger-menu { display: none !important; } 
+    .button-text { display: none !important; } 
+    .user-display { display: none !important; } 
 
-    /* Aturan untuk Quick View & Keranjang */
+    /* Aturan untuk Quick View & Keranjang (Tetap sama) */
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
@@ -565,45 +597,4 @@ input:checked + .slider:before { transform: translateX(20px); }
     .cart-item { grid-template-columns: auto 60px 1fr; }
     .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
     .footer-container { grid-template-columns: 1fr; gap: 35px; }
-}
-
-@media (max-width: 576px) {
-    /* 2. PAKSA PRODUK MENJADI 2 KOLOM KE SAMPING */
-    .product-grid { 
-        grid-template-columns: repeat(2, 1fr) !important; /* !important memaksa 2 kolom */
-        gap: 10px; 
-    }
-    .product-image { height: 160px; } /* Sesuaikan tinggi gambar agar proporsional */
-    .product-info { padding: 10px; }
-    .product-info h3 { font-size: 0.85rem; height: 2.8em; } /* Kecilkan teks judul */
-    .product-price { font-size: 1.1rem; margin-bottom: 10px; }
-    .product-actions button { padding: 6px; font-size: 0.75rem; } /* Kecilkan tombol beli */
-
-    /* 3. FITUR: 2 DI ATAS, 1 DI TENGAH BAWAH */
-    .features {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px;
-        padding: 20px 10px;
-    }
-    .feature-item { 
-        min-width: 0 !important; 
-        padding: 10px; 
-    }
-    .feature-item:last-child {
-        grid-column: span 2; /* Memaksa item ke-3 mengisi penuh lebar bawah */
-        width: 60%; /* Mengecilkan ukurannya */
-        margin: 0 auto; /* Memposisikannya tepat di tengah */
-    }
-    .feature-icon { width: 45px; height: 45px; font-size: 1.2rem; margin-bottom: 10px; }
-    .feature-item h3 { font-size: 0.9rem; }
-    .feature-item p { font-size: 0.75rem; }
-
-    /* Aturan Lainnya di Mobile */
-    .qv-options-grid { grid-template-columns: 1fr; }
-    .qv-actions { flex-direction: column; }
-    .hero-title { font-size: 2rem; }
-    .form-grid { grid-template-columns: 1fr; }
-    .review-form-actions { flex-direction: column; gap: 10px; align-items: stretch; }
-    .submit-review-btn { width: 100%; }
 }
