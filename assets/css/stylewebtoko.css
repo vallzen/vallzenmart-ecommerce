@@ -536,56 +536,65 @@ input:checked + .slider:before { transform: translateX(20px); }
    ========================================= */
 
 @media (max-width: 768px) {
+    /* 1. HEADER CONTAINER MURNI FLEXBOX */
     .navbar-container { 
         flex-wrap: nowrap; 
         overflow-x: auto; 
-        gap: 10px; 
+        gap: 15px; 
+        padding-left: 10px; /* Tambahkan sedikit jarak di kiri */
         -ms-overflow-style: none;  
         scrollbar-width: none;  
-        padding: 0 10px; /* Tambahan spasi di kiri-kanan layar */
     }
-    .navbar-container::-webkit-scrollbar { display: none; }
+    .navbar-container::-webkit-scrollbar {
+        display: none; /* Hilangkan scrollbar */
+    }
 
-    /* 2. PERBAIKAN MUTLAK LOGO (HILANGKAN EFEK ABSOLUTE) */
+    /* 2. MATIKAN EFEK ABSOLUTE PADA LOGO */
     .navbar-brand { 
-        width: auto; /* Biarkan menyesuaikan ukuran logo otomatis */
-        height: 60px; 
-        flex-shrink: 0; 
-        margin-right: auto; /* Mendorong tombol-tombol lain mentok ke kanan */
+        width: auto; 
+        height: auto; 
+        position: static; /* Hilangkan batas box melayang */
+        display: flex;
+        align-items: center;
     }
     .navbar-logo-img { 
-        position: relative; /* KUNCI UTAMA: Menghapus sifat melayang (absolute) */
-        top: 0;
-        transform: none; /* Menghapus efek translateY */
-        height: 40px; /* Tinggi logo yang ideal dan aman untuk layar HP */
+        position: static; /* Mengembalikan logo ke dalam barisan (tidak melayang/nabrak) */
+        transform: none; /* Matikan efek geser Y */
+        height: 45px; /* Ukuran yang pas untuk Header HP */
         width: auto;
-        max-width: 140px; /* Mencegah logo terlalu melar ke samping */
+    }
+    .navbar-logo-img:hover {
+        transform: none; /* Matikan efek zoom saat disentuh di HP */
     }
 
-    /* 3. PERBAIKAN PROFIL & TOMBOL (Sama seperti sebelumnya) */
+    /* 3. PERBAIKAN PROFIL & TOMBOL AGAR RAPI */
     .navbar-right { 
-        width: auto; 
+        width: 100%; 
         justify-content: flex-end; 
         margin-top: 0; 
-        gap: 5px; 
+        gap: 8px; 
+        flex-shrink: 0; /* Mencegah menu gepeng */
     }
     .user-profile-btn { padding: 4px; }
-    .nav-avatar { width: 30px; height: 30px; }
+    .nav-avatar { width: 32px; height: 32px; }
     .navbar-buttons { 
         display: flex !important; 
         flex-direction: row !important; 
         width: auto; 
-        gap: 5px; 
+        gap: 8px; 
         margin-top: 0; 
     }
-    .nav-button { padding: 7px 10px; font-size: 0.9rem; }
+    .nav-button { 
+        padding: 8px 12px; 
+        font-size: 1rem;
+    }
     
-    /* 4. SEMBUNYIKAN TEKS DAN GARIS TIGA */
-    .hamburger-menu { display: none !important; } 
-    .button-text { display: none !important; } 
-    .user-display { display: none !important; } 
+    /* 4. SEMBUNYIKAN ELEMEN YANG MEMBUAT PENUH */
+    .hamburger-menu, .button-text, .user-display { 
+        display: none !important; 
+    }
 
-    /* Aturan untuk Quick View & Keranjang (Tetap sama) */
+    /* Bawaan Modal & Cart (Biarkan sama) */
     .quick-view-wrapper { grid-template-columns: 1fr; }
     .qv-image { padding: 20px; border-right: none; border-bottom: 1px solid #e2e8f0; }
     .qv-image img { max-height: 250px; }
@@ -593,4 +602,4 @@ input:checked + .slider:before { transform: translateX(20px); }
     .cart-item { grid-template-columns: auto 60px 1fr; }
     .item-subtotal { grid-column: 1 / -1; text-align: right; border-top: 1px dashed #e2e8f0; padding-top: 10px; }
     .footer-container { grid-template-columns: 1fr; gap: 35px; }
-}
+} 
