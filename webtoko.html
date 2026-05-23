@@ -800,6 +800,14 @@
             const profData = JSON.parse(localStorage.getItem('userProfile')) || {};
             if(profData.image) document.getElementById('navProfileImage').src = profData.image;
 
+            // --- FUNGSI HAMBURGER MENU (MOBILE VIEW) ---
+            const hamburgerBtn = document.querySelector('.hamburger-menu');
+            const navbarButtons = document.querySelector('.navbar-buttons');
+
+            hamburgerBtn.addEventListener('click', () => {
+                navbarButtons.classList.toggle('show');
+            });
+
             document.body.addEventListener('click', (e) => {
                 if(e.target.closest('.main-add')) { 
                     const id = e.target.closest('.main-add').dataset.id; 
